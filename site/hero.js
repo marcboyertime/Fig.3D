@@ -4,7 +4,8 @@ const $=s=>document.querySelector(s),canvas=$('#hero-canvas'),ctx=canvas.getCont
 const slider=$('#hero-progress'),play=$('#hero-play'),stage=$('#hero-stage'),explore=$('#hero-explore'),insight=$('#hero-insight');
 let gpu;try{gpu=createHopRenderer($('#hero-gl'));}catch{gpu={failed:true,begin(){},line(){},triangle(){},ball(){},finish(){}};}
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-const source=new Image();source.src='references/hau-2025-figure-1-original.png';
+// A lossless WebP of the untouched PNG (pixel-identical, about 30% smaller); the PNG is the fallback.
+const source=new Image(),SOURCE_PNG='references/hau-2025-figure-1-original.png';source.src='assets/hau-2025-figure-1.webp';
 let progress=0,playing=false,last=0,frame=0,w=0,h=0,yaw=0,pitch=0,selection='',hover='',pointer=null,dragged=false,hitAreas=[],phase='';
 const anchors={li:[142,384],b:[262,388],c:[239,399],tm:[215,488],t:[213,414]};
 const colors={li:'#97d975',oxygen:'#ec575e',tm:'#ad50d5',sites:'#719f78'};
@@ -97,5 +98,5 @@ canvas.addEventListener('keydown',e=>{if(progress<.68||!['ArrowLeft','ArrowRight
 reduced.addEventListener('change',()=>{if(reduced.matches)pause();});document.addEventListener('visibilitychange',()=>{last=0;if(document.hidden)pause();});
 new ResizeObserver(()=>{const r=canvas.getBoundingClientRect();w=r.width;h=r.height;const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx?.setTransform(dpr,0,0,dpr,0,0);draw();}).observe(canvas);
 function start(){draw();if(gpu.failed){play.hidden=true;$('#hero-replay').hidden=true;slider.disabled=true;$('#hero-spatial').hidden=true;stage.textContent='The paper figure. 3D is unavailable in this browser.';return;}if(!reduced.matches){playing=true;controls();schedule();}else controls();}
-source.addEventListener('load',start);source.addEventListener('error',()=>{jump(.7);stage.textContent='Source image unavailable. Explore the ideal geometry.';});if(source.complete&&source.naturalWidth)start();
+source.addEventListener('load',start);source.addEventListener('error',()=>{if(!source.src.endsWith('.png')){source.src=SOURCE_PNG;return;}jump(.7);stage.textContent='Source image unavailable. Explore the ideal geometry.';});if(source.complete&&source.naturalWidth)start();
 const notes=$('#hero-notes-dialog');$('#hero-notes').addEventListener('click',()=>{pause();notes.showModal();});notes.querySelector('.dialog-close').addEventListener('click',()=>notes.close());
