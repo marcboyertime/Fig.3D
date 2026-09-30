@@ -13,6 +13,16 @@ const particle=(radiusNm,cx,cy,unit)=>{const {tau}=particleState(radiusNm),R=rad
  return `${fills}${rings}<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#c6cbd9" stroke-opacity=".7"/><text class="diffusion-radius" x="${cx}" y="${cy+R+34}" text-anchor="middle">${radiusNm} nm</text>`}
 document.querySelector('#diffusion-field').innerHTML=particle(50,230,225,3)+particle(25,500,225,3)
 
+// Share of random DRX crystals whose 0-TM Li network crosses along one axis, from
+// evidence/rocksalt-percolation/sweep-output.txt (the companion's own lattice core, 200 seeds; 60 at 16 cells).
+const excess=[0,.03,.06,.09,.12,.15,.2,.3],crossing={3:[.07,.10,.12,.17,.21,.28,.39,.61],6:[.04,.09,.14,.22,.36,.47,.69,.97],16:[0,0,.03,.25,.65,.90,1,1]}
+const px=x=>105+450*x/.3,py=p=>370-265*p
+document.querySelector('#percolation-curves').innerHTML=Object.entries(crossing).map(([cells,ps],i)=>{
+ const color=['#5b6aa8','#8c8fe6','#b7c6ff'][i],at=6
+ return `<path d="M${ps.map((p,j)=>`${px(excess[j]).toFixed(1)},${py(p).toFixed(1)}`).join('L')}" fill="none" stroke="${color}" stroke-width="3"/><text x="${px(excess[at])+14}" y="${py(ps[at])+(cells==='16'?22:24)}" class="plot-label" fill="${color}">${cells} cells</text>`}).join('')
+document.querySelector('#percolation-mark').setAttribute('d',`M${px(.09)} 370V105`)
+document.querySelector('#percolation-mark-label').setAttribute('x',px(.09))
+
 // A normalized Nyquist plot of Z = Rs + Rp/(1 + i ω Rp C).
 // Sampling log frequency is only a plotting choice, not measured cell data.
 const points=Array.from({length:181},(_,i)=>{

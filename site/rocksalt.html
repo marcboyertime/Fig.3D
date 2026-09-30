@@ -1,10 +1,9 @@
 <!doctype html>
 <html lang="en"><head>
 <!-- Working copy of references/rocksalt-li-pathways-user-original.html (kept unchanged). Edits follow context/space/Companion-001/Claim-Trace-2026-09-30.md: tetrahedral-site wording, 9% small-crystal note, 9% conditions. --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}</style></head><body>
-<title>Rocksalt Li Pathways</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<nav class="fig-bar" aria-label="Fig.3D"><a class="fig-brand" href="index.html" aria-label="Fig.3D home">Fig.<span>3D</span></a><span class="fig-tag">COMPANION PREVIEW</span><a class="fig-back" href="index.html#next-title">Back to the collection</a></nav>
+<title>Rocksalt Li Pathways — Fig.3D</title>
+<link rel="preload" href="assets/fonts/Sora-Variable.ttf" as="font" type="font/ttf" crossorigin>
 <style>
 /* Layout: a guided sequence. Step chips across the top, a dark 3D stage that stays in view on the left,
    and the step's explanation and controls on the right.
@@ -58,7 +57,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:20px;align-items
 .ui-tl{left:12px;top:10px;color:var(--stage-dim);max-width:calc(100% - 230px)}
 .ui-tr{right:10px;top:8px;display:flex;gap:6px;pointer-events:auto}
 .ui-tr button{background:var(--stage-chip);border:1px solid var(--stage-line);color:var(--stage-ink);padding:5px 9px;border-radius:6px;cursor:pointer;font:11.5px var(--font-mono)}
-.ui-tr button[aria-pressed="true"]{border-color:#4fd394;color:#4fd394}
+.ui-tr button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .ui-bl{left:12px;bottom:10px;display:flex;flex-direction:column;gap:4px;background:var(--stage-chip);padding:8px 10px;border-radius:6px;border:1px solid var(--stage-line);max-width:calc(100% - 24px)}
 .lg{display:flex;align-items:center;gap:7px;color:var(--stage-ink)}
 .lg i{width:11px;height:11px;border-radius:50%;flex:none;display:inline-block}
@@ -168,6 +167,24 @@ sub,sup{font-size:.72em}
   .crow .ct{display:none}
   .factors li{grid-template-columns:1fr}
 }
+</style>
+<style>
+/* Fig.3D shell for this companion preview: self-hosted Sora, the collection's blue/dark-purple surfaces and a way back.
+   Species colours (Li green, TM purple, O red) stay as in the paper's Figure 1. */
+@font-face{font-family:Sora;src:url('assets/fonts/Sora-Variable.ttf') format('truetype');font-weight:100 800;font-display:swap}
+:root,:root[data-theme="dark"],:root:not([data-theme="light"]){
+  --bg:#080a12; --surface:#0e1221; --ink:#eef1fa; --muted:#a7adc0; --line:#252c42; --soft:#151b2e;
+  --accent:#7d9cff; --accent-ink:#080a12; --ok:#7d9cff;
+  --c1:#39457a; --c2:#6f84e6; --c3:#c3d0ff;
+  --stage:#080a12; --stage-ink:#e3e8f6; --stage-dim:#9aa3bd; --stage-line:#252c42; --stage-chip:rgba(8,10,18,.8);
+  --font-body:Sora,Arial,sans-serif; --font-display:Sora,Arial,sans-serif; color-scheme:dark}
+.fig-bar{display:flex;align-items:center;gap:24px;padding:18px 16px;border-bottom:1px solid var(--line);font-family:Sora,Arial,sans-serif;font-size:14px}
+.fig-bar .fig-brand{color:var(--ink);font-size:24px;font-weight:600;letter-spacing:-1.3px;text-decoration:none}
+.fig-bar .fig-brand span{font-weight:400}
+.fig-bar .fig-tag{color:var(--muted);letter-spacing:.07em;font-size:12px}
+.fig-bar .fig-back{margin-left:auto;color:var(--accent);text-decoration:none}
+.fig-bar .fig-back:hover,.fig-bar .fig-back:focus-visible{text-decoration:underline}
+@media(max-width:520px){.fig-bar .fig-tag{display:none}}
 </style>
 
 <div class="app">
@@ -561,7 +578,7 @@ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 
 // Li green, TM purple, O red follow the paper's Figure 1. Tetrahedra are coloured by TM count, the same five colours everywhere.
-const COL={li:0x86e07a,liDim:0x4f7d5d,tm:0xa846cc,o:0xe4463c,site:0xc9d6de,ghost:0x9fb4b7,td:0x22b35e,gold:0xfff0a8,win:0xffcf5a,stage:0x0b1315,octa:0x57c7d4,o4:0xff8f5e,closed:0x2c3d42};
+const COL={li:0x86e07a,liDim:0x4f7d5d,tm:0xa846cc,o:0xe4463c,site:0xc9d6de,ghost:0x9fb4b7,td:0x22b35e,gold:0xfff0a8,win:0xffcf5a,stage:0x080a12,octa:0x57c7d4,o4:0xff8f5e,closed:0x2c3d42};
 const TMCOL=[0x2fd6b4,0x6f97ff,0xf6c453,0xf28c3a,0xff5a60];
 const ISLAND=[0x4cc9f0,0xff7eb6,0xb892ff,0xff9a4c,0x6f8cff,0xe8e86a];
 
