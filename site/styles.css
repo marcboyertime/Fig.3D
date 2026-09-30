@@ -55,3 +55,5 @@
 @media(max-width:700px){.hero-connectors>path{stroke-width:2.1}.battery-feature{display:flex;flex-direction:column;align-items:stretch;gap:20px;padding-top:55px;padding-bottom:35px}.battery-feature .feature-copy{position:relative;z-index:1}.battery-feature h2{font-size:40px}.battery-feature h2 br{display:none}.battery-feature .section-intro>p:last-child:not(.eyebrow){font-size:16px;max-width:300px}.battery-figure{margin:0 -14px}.battery-figure>a{height:320px}.feature-copy>.text-link{margin-top:24px}}
 /* Keep the geometry caption clear of the outer oxygen coordination shell. */
 #hero-scene-label{top:auto;bottom:8px}
+
+.diffusion-radius{fill:#9eabc4;font-family:var(--fig-font);font-size:19px;letter-spacing:.04em}

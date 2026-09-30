@@ -1,6 +1,18 @@
 import {concentration, particleState} from './model.mjs';
-const state=particleState(50);
-document.querySelector('#teaser-gradient').innerHTML=Array.from({length:61},(_,i)=>{const c=concentration(i/60,state.tau);const rgb=[23,36,69].map((v,j)=>Math.round(v+([125,156,255][j]-v)*c));return `<stop offset="${i/60*100}%" stop-color="rgb(${rgb})"/>`;}).join('');
+// Two radii after the same elapsed time, drawn as stepped concentration bands
+// bounded by calculated iso-concentration contours (no smooth gradient).
+const levels=[.2,.4,.6,.8],low=[23,36,69],high=[125,156,255]
+const shade=c=>`rgb(${low.map((v,k)=>Math.round(v+(high[k]-v)*c))})`
+// c(x) increases monotonically from centre to surface, so bisection finds each contour radius.
+const contour=(level,tau)=>{if(concentration(0,tau)>=level)return 0;let a=0,b=1;for(let n=0;n<40;n++){const m=(a+b)/2;concentration(m,tau)<level?a=m:b=m}return (a+b)/2}
+const particle=(radiusNm,cx,cy,unit)=>{const {tau}=particleState(radiusNm),R=radiusNm*unit
+ // Outermost band holds c in [0.8,1]; each inner disc is the region below the next contour, shaded at its band midpoint.
+ const discs=[[1,.9],...[.8,.6,.4,.2].map(l=>[contour(l,tau),l-.1])].filter(([x])=>x>0)
+ const fills=discs.map(([x,c])=>`<circle cx="${cx}" cy="${cy}" r="${(x*R).toFixed(2)}" fill="${shade(c)}"/>`).join('')
+ const rings=discs.slice(1).map(([x])=>`<circle cx="${cx}" cy="${cy}" r="${(x*R).toFixed(2)}" fill="none" stroke="#dfe6ff" stroke-opacity=".5"/>`).join('')
+ return `${fills}${rings}<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#c6cbd9" stroke-opacity=".7"/><text class="diffusion-radius" x="${cx}" y="${cy+R+34}" text-anchor="middle">${radiusNm} nm</text>`}
+document.querySelector('#diffusion-field').innerHTML=particle(50,230,225,3)+particle(25,500,225,3)
+
 // A normalized Nyquist plot of Z = Rs + Rp/(1 + i ω Rp C).
 // Sampling log frequency is only a plotting choice, not measured cell data.
 const points=Array.from({length:181},(_,i)=>{
