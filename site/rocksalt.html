@@ -185,6 +185,7 @@ sub,sup{font-size:.72em}
 .fig-bar .fig-back{margin-left:auto;color:var(--accent);text-decoration:none}
 .fig-bar .fig-back:hover,.fig-bar .fig-back:focus-visible{text-decoration:underline}
 @media(max-width:520px){.fig-bar .fig-tag{display:none}}
+.ctl-note{margin:8px 0 0;color:var(--muted);font-size:12.5px;line-height:1.5}
 @media(min-width:900px){.steps{flex-wrap:wrap;row-gap:10px;overflow-x:visible}}
 </style>
 
@@ -413,7 +414,7 @@ sub,sup{font-size:.72em}
           </div>
 
           <div class="ctl" data-steps="drx real">
-            <div class="lab">Li excess <span class="val" id="xVal"></span></div>
+            <div class="lab"><span>Li excess x in Li₁₊ₓM₁₋ₓO₂</span> <span class="val" id="xVal"></span></div>
             <input type="range" id="xIn" min="0" max="30" step="0.5" value="4" aria-label="Li excess in percent">
             <div class="ticks"><span>0%</span><span class="mid" style="left:calc(30% + 6px - 0.12 * 30%)">≈9%</span><span class="r">30%</span></div>
           </div>
@@ -422,6 +423,7 @@ sub,sup{font-size:.72em}
             <div class="lab">Short-range order <span class="val" id="sVal"></span></div>
             <input type="range" id="sIn" min="-100" max="100" step="5" value="0" aria-label="Short-range order">
             <div class="ends"><span>Li with Li</span><span>random</span><span>Li–TM mixing</span></div>
+            <p class="ctl-note">A teaching control. It sets how strongly neighbouring sites prefer like or unlike cations while keeping the composition fixed. It shows the direction of the effect the review describes, not a fitted short-range-order parameter for any real material.</p>
           </div>
           <div class="ctl" data-steps="real">
             <div class="lab">Crystal size <span class="val" id="lVal"></span></div>
@@ -1023,7 +1025,7 @@ function renderReadouts(){
       `0-TM needs all 4 corners Li: ${f.toFixed(3)}⁴ = <b>${(p0*100).toFixed(1)}%</b> of tetrahedra<br>`+
       `1-TM: 4 × ${f.toFixed(3)}³ × ${(1-f).toFixed(3)} = <b>${(p1*100).toFixed(1)}%</b><br>`+
       `<span style="color:var(--muted)">this crystal: ${(an.census[0]/tot*100).toFixed(1)}% 0-TM, ${(an.census[1]/tot*100).toFixed(1)}% 1-TM</span>`;
-    const s=drx.sro;$('#sVal').textContent=s===0?'random':s>0?`Li–TM mixing ${Math.round(s*100)}%`:`Li with Li ${Math.round(-s*100)}%`;
+    const s=drx.sro;$('#sVal').textContent=s===0?'random':s>0?`Li–TM mixing, strength ${s.toFixed(2)}`:`Li with Li, strength ${(-s).toFixed(2)}`;
     $('#lVal').textContent=`${drx.L} cells ≈ ${(drx.L*.42).toFixed(1)} nm`;
     $$('#sizeSeg button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.l===drx.L)));
   }
