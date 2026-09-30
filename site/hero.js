@@ -42,7 +42,9 @@ function draw(){if(!ctx||!w||!h)return;const q=sequence(progress),inspect=hover|
  if(source.complete&&source.naturalWidth&&q.replace<1){const tr=sourceTransform(q.zoom);ctx.save();ctx.globalAlpha=1-q.replace;
  // The complete source is held first; a continuous viewport zoom isolates its 1-TM glyph.
  const crop=ease((q.zoom-.15)/.85),left=74*crop,top=322*crop,cw=1500+(275-1500)*crop,ch=850+(240-850)*crop;
- ctx.beginPath();ctx.rect(tr.x+left*tr.scale,tr.y+top*tr.scale,cw*tr.scale,ch*tr.scale);ctx.clip();ctx.drawImage(source,tr.x,tr.y,1500*tr.scale,850*tr.scale);ctx.restore();}
+ ctx.beginPath();ctx.rect(tr.x+left*tr.scale,tr.y+top*tr.scale,cw*tr.scale,ch*tr.scale);ctx.clip();ctx.drawImage(source,tr.x,tr.y,1500*tr.scale,850*tr.scale);
+ // While the mesh takes over, dissolve the paper from its edges inward so no flat grey card is left around the actors.
+ if(q.replace>0){const mx=tr.x+(left+cw/2)*tr.scale,my=tr.y+(top+ch/2)*tr.scale,hh=ch*tr.scale/2,R=hh*1.42,inner=Math.max(0,R*(1-1.6*q.replace)),mask=ctx.createRadialGradient(0,0,inner,0,0,inner+R*.45);mask.addColorStop(0,'#000');mask.addColorStop(1,'rgba(0,0,0,0)');ctx.globalAlpha=1;ctx.globalCompositeOperation='destination-in';ctx.translate(mx,my);ctx.scale(cw/ch,1);ctx.fillStyle=mask;ctx.fillRect(-w,-h,2*w,2*h);}ctx.restore();}
  if(q.replace>0){const alpha=q.replace,unfold=q.unfold,scale=spatialScale(),glyph=sourceTransform(1).scale;
  const a=anchored('li',A,unfold),b=anchored('b',B,unfold),c=anchored('c',C,unfold),d=anchored('tm',D,unfold),t=anchored('t',T,unfold);
  const li=q.hop>0?project(hopPosition(q.hop)):a,rad=22*glyph+(scale*.14-22*glyph)*unfold;
