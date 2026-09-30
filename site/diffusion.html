@@ -7,10 +7,10 @@
   <title>Fig.3D — Diffusion preview</title>
   <meta name="description" content="Interactive science, from the page to the physical picture. Explore an emerging collection of companions for batteries, electrochemistry, and nanomaterials.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23080a12'/%3E%3Ctext x='5' y='24' font-family='Arial' font-size='25' font-weight='bold' fill='%237d9cff'%3Ef.%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="preview.css">
+  <link rel="preload" href="assets/fonts/Sora-Variable.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="preview.css"><link rel="stylesheet" href="visual-language.css">
   <script type="module" src="preview.js"></script>
 </head>
-<body class="preview-page"><header class="preview-header"><a class="brand" href="index.html">Fig.<span>3D</span></a><a href="index.html#collection">Back to the collection</a></header><main><section class="preview-volume" aria-label="Rotatable concentration field">      <div class="hero-visual">
+<body class="preview-page"><header class="preview-header"><a class="brand" href="index.html">Fig.<span>3D</span></a><a href="index.html#collection">Back to the collection</a></header><main><h1 class="sr-only">Spherical diffusion in a particle</h1><section class="preview-volume" aria-label="Rotatable concentration field">      <div class="hero-visual">
         <canvas id="field-canvas" tabindex="0" aria-describedby="rotation-help" role="img" aria-label="Rotating cutaway of a spherical particle. Color represents calculated concentration at a fixed elapsed time of two seconds. Drag to rotate the view."></canvas>
         <p id="rotation-help" class="sr-only">Drag with a mouse, or focus the figure and use the arrow keys to rotate the view. Use the Pause rotation button to stop automatic movement.</p>
         <div class="field-label"><span class="crosshair" aria-hidden="true">+</span><div>FIG. 01 <span>SPHERICAL DIFFUSION</span><small>Concentration field · illustrative model</small></div></div>
