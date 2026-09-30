@@ -1,0 +1,275 @@
+{
+  "status": "PASS",
+  "date": "2026-09-30",
+  "syntax_files": [
+    "battery.js",
+    "battery-teaser.js",
+    "preview.js",
+    "navigation-motion.js",
+    "hero.js",
+    "hero-renderer.js",
+    "app.js",
+    "battery-controller-verification.mjs",
+    "battery-verification.mjs",
+    "battery-model.mjs",
+    "hop-verification.mjs",
+    "hero-controller-verification.mjs",
+    "hop-model.mjs",
+    "battery-scene.mjs",
+    "model.mjs"
+  ],
+  "local_reference_occurrences": 42,
+  "local_references": [
+    {
+      "from": "battery.js",
+      "target": "site/battery-model.mjs",
+      "exists": true
+    },
+    {
+      "from": "battery.js",
+      "target": "site/battery-scene.mjs",
+      "exists": true
+    },
+    {
+      "from": "battery-teaser.js",
+      "target": "site/battery-scene.mjs",
+      "exists": true
+    },
+    {
+      "from": "battery-teaser.js",
+      "target": "site/battery-model.mjs",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/assets/fonts/Sora-Variable.ttf",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/styles.css",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/visual-language.css",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/navigation-motion.js",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/assets/battery-three-r128.min.js",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/app.js",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/references/hau-2025-figure-1-original.png",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/battery.html",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/battery.html",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/diffusion.html",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/references/advanced-materials-figure-1-user-reference.png",
+      "exists": true
+    },
+    {
+      "from": "index.html",
+      "target": "site/references/rocksalt-li-pathways-user-original.html",
+      "exists": true
+    },
+    {
+      "from": "battery-controller-verification.mjs",
+      "target": "site/battery-model.mjs",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/battery.css",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/visual-language.css",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/assets/fonts/Sora-Variable.ttf",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/navigation-motion.js",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/assets/battery-three-r128.min.js",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/battery.js",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/index.html",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/index.html",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/battery-notes.md",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/index.html",
+      "exists": true
+    },
+    {
+      "from": "battery.html",
+      "target": "site/battery-notes.md",
+      "exists": true
+    },
+    {
+      "from": "battery-verification.mjs",
+      "target": "site/battery-model.mjs",
+      "exists": true
+    },
+    {
+      "from": "diffusion.html",
+      "target": "site/preview.css",
+      "exists": true
+    },
+    {
+      "from": "diffusion.html",
+      "target": "site/preview.js",
+      "exists": true
+    },
+    {
+      "from": "diffusion.html",
+      "target": "site/index.html",
+      "exists": true
+    },
+    {
+      "from": "diffusion.html",
+      "target": "site/index.html",
+      "exists": true
+    },
+    {
+      "from": "preview.js",
+      "target": "site/model.mjs",
+      "exists": true
+    },
+    {
+      "from": "hop-verification.mjs",
+      "target": "site/hop-model.mjs",
+      "exists": true
+    },
+    {
+      "from": "visual-language.css",
+      "target": "site/assets/fonts/Sora-Variable.ttf",
+      "exists": true
+    },
+    {
+      "from": "hero-controller-verification.mjs",
+      "target": "site/hop-model.mjs",
+      "exists": true
+    },
+    {
+      "from": "hero.js",
+      "target": "site/hero-renderer.js",
+      "exists": true
+    },
+    {
+      "from": "hero.js",
+      "target": "site/hop-model.mjs",
+      "exists": true
+    },
+    {
+      "from": "hero.js",
+      "target": "site/references/hau-2025-figure-1-original.png",
+      "exists": true
+    },
+    {
+      "from": "battery-scene.mjs",
+      "target": "site/battery-model.mjs",
+      "exists": true
+    },
+    {
+      "from": "app.js",
+      "target": "site/model.mjs",
+      "exists": true
+    }
+  ],
+  "external_source_links": [
+    {
+      "from": "index.html",
+      "url": "https://doi.org/10.1002/adma.202502766"
+    },
+    {
+      "from": "battery.html",
+      "url": "https://www.energy.gov/science/doe-explainsbatteries"
+    },
+    {
+      "from": "battery.html",
+      "url": "https://doi.org/10.1149/1.2220849"
+    },
+    {
+      "from": "battery.html",
+      "url": "https://doi.org/10.1016/0025-5408(80)90012-4"
+    },
+    {
+      "from": "battery.html",
+      "url": "https://doi.org/10.1103/PhysRevB.90.155448"
+    },
+    {
+      "from": "battery.html",
+      "url": "https://arxiv.org/html/1410.5632v1"
+    },
+    {
+      "from": "battery.html",
+      "url": "https://doi.org/10.1351/goldbook.A00370"
+    },
+    {
+      "from": "battery.html",
+      "url": "https://doi.org/10.1351/goldbook.C00905"
+    },
+    {
+      "from": "diffusion.html",
+      "url": "https://weewave.mer.utexas.edu/MED_files/MED_research/MEMS_chem_snsr/beads/sph_diff_web.html"
+    }
+  ],
+  "runtime_absolute_user_paths": [],
+  "original_reference_checksums": "PASS",
+  "scope": "Static dependency/reference checks plus executable model/controller tests. Browser checks documented separately; no new browser engine matrix."
+}
