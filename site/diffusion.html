@@ -26,23 +26,23 @@
             <title id="particle-title">Concentration through a spherical particle</title>
             <desc id="particle-desc">A circular cross section colors the concentration at each radial position. At the same diffusivity and elapsed time, a smaller particle has a more uniform profile.</desc>
             <defs><radialGradient id="concentration-gradient"></radialGradient></defs>
-            <path d="M54 168H506M280 23V311" stroke="#d1d3d8" stroke-dasharray="3 6"/>
-            <circle id="particle-outline" cx="280" cy="168" r="109" fill="url(#concentration-gradient)" stroke="#292d37" stroke-width="1"/>
-            <circle id="particle-inner" cx="280" cy="168" r="71" fill="none" stroke="#fff" stroke-opacity=".22" stroke-dasharray="2 5"/>
+            <path d="M54 168H506M280 23V311" stroke="#2a3147" stroke-dasharray="3 6"/>
+            <circle id="particle-outline" cx="280" cy="168" r="109" fill="url(#concentration-gradient)" stroke="#9ea6be" stroke-opacity=".7" stroke-width="1"/><g id="particle-contours"></g>
+            
             <path id="radius-line" d="M280 168H389" stroke="#fff" stroke-width="1.2"/>
             <circle cx="280" cy="168" r="3" fill="#fff"/>
             <text id="radius-label" x="330" y="156" fill="#fff" font-size="15" font-family="monospace">R</text>
-            <path id="surface-pointer" d="M357 91L443 47H496" fill="none" stroke="#696c76" stroke-width=".75"/>
-            <text x="442" y="36" fill="#525661" font-size="13" font-family="monospace">c = cₛ</text>
+            <path id="surface-pointer" d="M357 91L443 47H496" fill="none" stroke="#6b7390" stroke-width=".75"/>
+            <text x="442" y="36" fill="#9aa1b8" font-size="13" font-family="monospace">c = cₛ</text>
           </svg><button class="part-marker core-marker" data-part="core" type="button" aria-pressed="true" aria-describedby="part-explanation"><span class="marker-point" aria-hidden="true"></span><span class="marker-label">Core</span></button><button class="part-marker surface-marker" data-part="surface" type="button" aria-pressed="false" aria-describedby="part-explanation"><span class="marker-point" aria-hidden="true"></span><span class="marker-label">Surface</span></button></div>
           <p id="part-explanation" class="part-explanation" aria-live="polite"></p>
           <div class="concentration-key"><span>Relative concentration, c/cₛ</span><span class="color-key"><span>0</span><i aria-hidden="true"></i><span>1</span></span></div>
           <div class="profile-header"><span>FIG. 01 / B</span><span>THE SAME FIELD, AS A PROFILE</span></div>
           <svg class="profile-plot" viewBox="0 0 560 130" role="img" aria-labelledby="profile-title profile-desc">
             <title id="profile-title">Radial concentration profile</title><desc id="profile-desc">Concentration from center to surface. The horizontal axis is normalized distance r over R; the vertical axis is relative concentration from zero to one.</desc>
-            <path d="M34 15V99H538M34 15H538M34 57H538" stroke="#d1d3d8" fill="none" stroke-width=".7"/>
-            <path id="profile-fill" fill="#4b5675" fill-opacity=".08"/><path id="profile-curve" stroke="#2b3759" stroke-width="2" fill="none"/>
-            <g font-size="12" fill="#525661" font-family="monospace"><text x="10" y="20">1</text><text x="10" y="103">0</text><text x="34" y="122">center</text><text x="280" y="122" text-anchor="middle">r / R</text><text x="538" y="122" text-anchor="end">surface</text></g>
+            <path d="M34 15V99H538M34 15H538M34 57H538" stroke="#2a3147" fill="none" stroke-width=".7"/>
+            <path id="profile-fill" fill="#7d9cff" fill-opacity=".12"/><path id="profile-curve" stroke="#7d9cff" stroke-width="2" fill="none"/>
+            <g font-size="12" fill="#9aa1b8" font-family="monospace"><text x="10" y="20">1</text><text x="10" y="103">0</text><text x="34" y="122">center</text><text x="280" y="122" text-anchor="middle">r / R</text><text x="538" y="122" text-anchor="end">surface</text></g>
           </svg>
         </div>
         <div class="experiment-controls">

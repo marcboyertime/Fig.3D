@@ -22,7 +22,6 @@ function updateParticle() {
   $('scale-value').innerHTML = `${currentState.relativeTime.toFixed(2)}<span>×</span>`;
   const visualRadius = 70 + radius * .7;
   $('particle-outline').setAttribute('r', visualRadius);
-  $('particle-inner').setAttribute('r', visualRadius * .68);
   $('radius-line').setAttribute('d', `M280 168H${280 + visualRadius}`);
   $('radius-label').setAttribute('x', 280 + visualRadius / 2);
   document.querySelector('.surface-marker').style.left = `${(280 + visualRadius) / 560 * 100}%`;
@@ -36,11 +35,18 @@ function updateParticle() {
     stops.push(`<stop offset="${i / 60 * 100}%" stop-color="rgb(${rgb.join(',')})"/>`);
   }
   $('concentration-gradient').innerHTML = stops.join('');
+  // Iso-concentration rings at 20/40/60/80% of the surface value; c(x) rises monotonically, so bisection finds each radius.
+  $('particle-contours').innerHTML = [.2, .4, .6, .8].map(level => {
+    if (concentration(0, currentState.tau) >= level) return '';
+    let lo = 0, hi = 1;
+    for (let n = 0; n < 40; n++) { const mid = (lo + hi) / 2; concentration(mid, currentState.tau) < level ? lo = mid : hi = mid; }
+    return `<circle cx="280" cy="168" r="${((lo + hi) / 2 * visualRadius).toFixed(2)}" fill="none" stroke="#dfe6ff" stroke-opacity=".45"/>`;
+  }).join('');
   const points = Array.from({length:101}, (_, i) => `${34 + i * 5.04},${99 - concentration(i / 100, currentState.tau) * 84}`);
   const path = `M${points.join('L')}`;
   $('profile-curve').setAttribute('d', path);
   $('profile-fill').setAttribute('d', `${path}L538,99L34,99Z`);
-  $('particle-desc').textContent = `Circular cross section at radius ${radius} nanometers. At fixed diffusivity and elapsed time, characteristic diffusion time is ${currentState.relativeTime.toFixed(2)} times the value for a 50 nanometer particle. Color shows normalized concentration from zero to one, not measured cathode data. Displayed particle size is schematic.`;
+  $('particle-desc').textContent = `Circular cross section at radius ${radius} nanometers. At fixed diffusivity and elapsed time, characteristic diffusion time is ${currentState.relativeTime.toFixed(2)} times the value for a 50 nanometer particle. Color shows normalized concentration from zero to one, with rings at 20, 40, 60 and 80 percent; not measured cathode data. Displayed particle size is schematic.`;
   $('field-canvas').setAttribute('aria-label', `Rotating cutaway of a spherical particle with radius ${radius} nanometers, at two seconds. Color shows the same concentration field as the radial cross section below. The view rotates; time remains fixed. Drag to rotate the view.`);
   updateField();
 }

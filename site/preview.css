@@ -17,3 +17,13 @@ nav{font-size:14px}.header-note,.hero-kicker,.eyebrow,.section-label,.hero-botto
 @media(max-width:370px){.brand{font-size:27px}nav{gap:13px;font-size:13px}.hero-kicker{font-size:12px}.hero-bottom{font-size:12px}.hero-bottom>span:first-child{max-width:140px}.field-label{left:53%;max-width:160px}.field-label small{font-size:12px}.section-label{font-size:12px}.figure-top,.profile-header,.topic-meta,.status{font-size:12px}.result-line{flex-wrap:wrap}.part-explanation{min-height:90px}}
 
 .motion-toggle,.marker-label,.result-line p,nav{font-size:14px}
+
+/* Dark surface for the model section, matching the collection. */
+.light-section{--white:#0c1020;--ink:#eef1fa;--muted:#a7adc0;--line:#252c42}
+.figure-top,.profile-header{color:#9aa1b8}
+.color-key i{background:linear-gradient(90deg,#172445,#7d9cff)}
+.light-section input[type=range]::-webkit-slider-thumb{background:var(--accent);outline-color:var(--accent)}
+.light-section input[type=range]::-moz-range-thumb{background:var(--accent);outline-color:var(--accent)}
+.experiment-caption{color:#9aa1b8}
+dialog{--white:#0e1221;--ink:#eef1fa;--muted:#a7adc0;--line:#252c42}
+.light-section .section-label,.light-section #part-explanation,.light-section .concentration-key,.light-section .interaction-label,.light-section .range-ends,.light-section #radius-help,.light-section .fixed-inputs{color:#9aa1b8}
