@@ -106,10 +106,10 @@ function renderField() {
     const shade = point.surface ? .34 + .6 * Math.max(0, -.34*x - .48*y + .8*z) : .78;
     const depth = .48 + .52 * (z + 1) / 2;
     const strength = Math.min(1, .3 + shade * depth);
-    const low = [38,53,88], high = [150,176,245];
+    const low = [72,62,150], high = [160,188,255];
     const rgb = low.map((v,i) => Math.round((v + (high[i] - v) * point.c) * strength));
     ctx.fillStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-    const dot = (point.surface ? 1.35 : 1.6) * perspective * Math.max(.65, size / 290);
+    const dot = (point.surface ? 1.7 : 2.3) * perspective * Math.max(.75, size / 260);
     ctx.fillRect(sx-dot/2,sy-dot/2,dot,dot);
   }
   // Three great-circle arcs provide a spatial reference on the sphere's surface.

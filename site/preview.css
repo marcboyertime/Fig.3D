@@ -27,3 +27,4 @@ nav{font-size:14px}.header-note,.hero-kicker,.eyebrow,.section-label,.hero-botto
 .experiment-caption{color:#9aa1b8}
 dialog{--white:#0e1221;--ink:#eef1fa;--muted:#a7adc0;--line:#252c42}
 .light-section .section-label,.light-section #part-explanation,.light-section .concentration-key,.light-section .interaction-label,.light-section .range-ends,.light-section #radius-help,.light-section .fixed-inputs{color:#9aa1b8}
+@media(max-width:700px){.field-label{z-index:2}.field-label>div{background:rgba(8,10,18,.78);padding:4px 8px 6px;border-radius:4px}}
