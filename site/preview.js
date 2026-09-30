@@ -64,6 +64,7 @@ let visible = true;
 let width = 0, height = 0, yaw = -.62, pitch = -.23;
 let dragStart = null, frame = null, previousTime = 0, phase = 0;
 const samples = [];
+let contourRadii = [];
 const goldenAngle = Math.PI * (3 - Math.sqrt(5));
 for (let i = 0; i < 6500; i++) {
   const y = 1 - (i + .5) / 6500 * 2;
@@ -127,6 +128,23 @@ function renderField() {
     }
     ctx.strokeStyle='rgba(135,161,232,.19)';ctx.stroke();
   }
+  // Iso-concentration contours on the two cut faces, at the same 20/40/60/80% levels as the cross section below.
+  const project = (px, py, pz) => {
+    const x=px*cy+pz*sy,z0=-px*sy+pz*cy,y=py*cp-z0*sp,z=py*sp+z0*cp,perspective=4.4/(4.4-z);
+    return [centerX+x*size*perspective, centerY+y*size*perspective];
+  };
+  // Each face is drawn only while it faces the viewer (its outward normal, +x or +z, points toward the camera).
+  ctx.lineWidth = 1.1;
+  const faces = [[(r,t)=>[0,r*Math.cos(t),r*Math.sin(t)], -sy*cp], [(r,t)=>[r*Math.sin(t),r*Math.cos(t),0], cy*cp]];
+  for (const radius of contourRadii) {
+    for (const [face, facing] of faces) {
+      if (facing <= 0) continue;
+      ctx.strokeStyle = `rgba(223,230,255,${(.6*Math.min(1,facing*2)).toFixed(3)})`;
+      ctx.beginPath();
+      for (let i=0;i<=60;i++){const [sx,sy2]=project(...face(radius,i/60*Math.PI));i?ctx.lineTo(sx,sy2):ctx.moveTo(sx,sy2);}
+      ctx.stroke();
+    }
+  }
 }
 function tick(time) {
   frame = null;
@@ -152,6 +170,7 @@ function resize() {
 }
 updateField=()=>{
   for(const point of samples) if(!point.surface) point.c=concentration(point.r,currentState.tau);
+  contourRadii=[.2,.4,.6,.8].filter(level=>concentration(0,currentState.tau)<level).map(level=>{let lo=0,hi=1;for(let n=0;n<40;n++){const mid=(lo+hi)/2;concentration(mid,currentState.tau)<level?lo=mid:hi=mid;}return (lo+hi)/2;});
   renderField();
 };
 updateField();setMotionLabel();
