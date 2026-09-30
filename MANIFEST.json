@@ -1,0 +1,360 @@
+{
+  "snapshot": "2026-09-30",
+  "files": [
+    {
+      "path": "DESIGN_AND_PRODUCT_HANDOFF.md",
+      "bytes": 17244,
+      "sha256": "df75ae355232009270c37cc623604969aa98532affe6f889d8d112ef17ff97d0"
+    },
+    {
+      "path": "ENGINEERING_STATE.md",
+      "bytes": 16027,
+      "sha256": "71137afda0937bd2ed1640d98342025241aa8356fd388ea6d6109c158e74704f"
+    },
+    {
+      "path": "START_HERE.md",
+      "bytes": 3735,
+      "sha256": "f20875856f956de9a61186fd73cdf4837393f13641f929d576d0b23abd32f7bd"
+    },
+    {
+      "path": "context/Fig3D-Scientific-Visuals-Guide.md",
+      "bytes": 22128,
+      "sha256": "1cb20ed4b03cfa7bdd7e0f891d9ec2b18e4ede82539d693088f1ebf02d34ea83"
+    },
+    {
+      "path": "context/README.md",
+      "bytes": 1358,
+      "sha256": "a287c1f97bd574020dcae6b357b7b15fd986fee3ad65c6fceb18082b6d4204ea"
+    },
+    {
+      "path": "context/space/001-Lithium-Pathways-in-Rocksalt-Cathodes.md",
+      "bytes": 3001,
+      "sha256": "8f6f09cff876cf9ee7f44fec2b2c03befb14b69ecfaf374e5b611b65ac802b87"
+    },
+    {
+      "path": "context/space/Companion-001/Claim-Ledger.md",
+      "bytes": 3374,
+      "sha256": "9d7ad1e13a3bb6ad568d953e8a18e688926f4116686affbb2b1394ecea80d624"
+    },
+    {
+      "path": "context/space/Companion-001/Model-Assumptions.md",
+      "bytes": 3149,
+      "sha256": "0bc11a8efb8169e14d135a9b6d66fdf7e5528e25f8933ac000be41226a79a9a3"
+    },
+    {
+      "path": "context/space/Companion-001/Next-Steps.md",
+      "bytes": 2539,
+      "sha256": "b97dacc658874db0db3486e7fbed4737f4f485c7ab5998c803e72860e6dd8b82"
+    },
+    {
+      "path": "context/space/Companion-001/Rocksalt-Visualizer.md",
+      "bytes": 2430,
+      "sha256": "35c47f6e5486c36866de5b726ded5f37235d8e8d709cd9c7d45cf0429365fd2b"
+    },
+    {
+      "path": "context/space/Companion-001/Scientific-Audit.md",
+      "bytes": 2924,
+      "sha256": "19383b476579f645b2354dd207b9ba1ad9765532d0a95abdafd52b4973d18220"
+    },
+    {
+      "path": "context/space/Companion-001/Verification-Tasks.md",
+      "bytes": 3563,
+      "sha256": "6f25b039f708fafa696a732e09c92357d597cbc54c6595561426bf295d213e55"
+    },
+    {
+      "path": "context/space/Companions.md",
+      "bytes": 981,
+      "sha256": "ea5c27615bb752d1ceab3824f3526905aec2098da6cc32455e06db71ea6ded1a"
+    },
+    {
+      "path": "context/space/Design-System.md",
+      "bytes": 2809,
+      "sha256": "3dc50e4928575d73070fadc500d2e28e73c73db3c84c29164580d2e62453514c"
+    },
+    {
+      "path": "context/space/Engineering.md",
+      "bytes": 3250,
+      "sha256": "dadeb49a223ea067951a81c525aca002edf11cf2600c16cfb3e32754455ed118"
+    },
+    {
+      "path": "context/space/Home.md",
+      "bytes": 1854,
+      "sha256": "11d41667fc0f86b3a8105775a1f97122f9e62d4f0621f8854cd0787a4cc9ed67"
+    },
+    {
+      "path": "context/space/Ideas-Backlog.md",
+      "bytes": 2727,
+      "sha256": "e022d8f32b400a5b1b6b8695727a29e994eef9170127371441d83d43609439e9"
+    },
+    {
+      "path": "context/space/Launch-Plan.md",
+      "bytes": 3325,
+      "sha256": "1e9af14808c9e313ce63781c881d52b6b8ef868b4a5f699b52f545c227ac64fa"
+    },
+    {
+      "path": "context/space/Project-Blueprint.md",
+      "bytes": 3665,
+      "sha256": "5de7d0f2382df4ce7d37d9b63388b40e130a21d92f4536bb552fbfcc939ae176"
+    },
+    {
+      "path": "context/space/Scientific-Verification-Standard.md",
+      "bytes": 4221,
+      "sha256": "ed848bf518e511a6ffb848d5458a2728ee62b4ca353d14781f22f6e9c975f124"
+    },
+    {
+      "path": "evidence/README.md",
+      "bytes": 1257,
+      "sha256": "a61e2374a7470836330c74deeed9b54b0617d191e7fa3ab0e132f67362acb298"
+    },
+    {
+      "path": "evidence/fig3d-battery-charge-mobile.png",
+      "bytes": 34997,
+      "sha256": "09ddca8871b32f0e628e16656dc2d01a9114a1e04dad3e2775094ba95f1602d7"
+    },
+    {
+      "path": "evidence/fig3d-battery-desktop.png",
+      "bytes": 88298,
+      "sha256": "87a74288f2c65c3e99f2268a8f591897e3330575bcf94591bee54b73924d6c6e"
+    },
+    {
+      "path": "evidence/fig3d-battery-mobile.png",
+      "bytes": 34594,
+      "sha256": "420c4aee4dc04501885ca67dc196924db28e10b0a335bdbc9f584719dab71e8a"
+    },
+    {
+      "path": "evidence/fig3d-collection-desktop.png",
+      "bytes": 64465,
+      "sha256": "4a4f0a456a8dfeb85561fa41b357c371c31aed8c54de483a9b22b212876836ad"
+    },
+    {
+      "path": "evidence/fig3d-collection-mobile.png",
+      "bytes": 30035,
+      "sha256": "830f079164e7bb4a1af32d4a587826b65325e8aa07d37ab6472329f8e3492d88"
+    },
+    {
+      "path": "evidence/fig3d-graphite-mobile.png",
+      "bytes": 41846,
+      "sha256": "dd1a5b7d7e8fe5e519e31941ff5ba3eae4e9bf7217aa781a158d974a2c9c1c4c"
+    },
+    {
+      "path": "evidence/fig3d-hero-focused-figure.png",
+      "bytes": 62930,
+      "sha256": "27185e419861b0cf3db53afdf5422a9b5e96baf5239ede0cfbb3d14a8a778162"
+    },
+    {
+      "path": "evidence/fig3d-hero-source-desktop.png",
+      "bytes": 92982,
+      "sha256": "1d5546de38befa27379192d28679428b492ad30e96e9e59a6b11356f4e3eae9b"
+    },
+    {
+      "path": "evidence/fig3d-home-desktop.png",
+      "bytes": 59404,
+      "sha256": "3dde015c47fd7ae77a9ee279ebd0f4539ef19d20afa27ed65f9b607f1200e87c"
+    },
+    {
+      "path": "evidence/fig3d-home-mobile.png",
+      "bytes": 35999,
+      "sha256": "d60c63c0ffe38dca71b7bb4b4a97be6543a380bc257a9fd26988c0094e78c903"
+    },
+    {
+      "path": "evidence/focused-checks.txt",
+      "bytes": 1978,
+      "sha256": "31a634cf4fa1bc4c0f26cee698b845279a2910d54e52e4e98cd319fb174218ab"
+    },
+    {
+      "path": "evidence/historical-diffusion/check_diffusion.py",
+      "bytes": 1495,
+      "sha256": "40f664e827bc5fb22e802dd8ab643b5ed44e503536f9dbb7dd35abee54a00162"
+    },
+    {
+      "path": "evidence/historical-diffusion/diffusion-samples.json",
+      "bytes": 4964,
+      "sha256": "10adc33d2be1cd585f10409cf77cf6c53cd8b9858b0571e198713dc614752b72"
+    },
+    {
+      "path": "evidence/package-integrity.json",
+      "bytes": 6293,
+      "sha256": "d3a01a845df8a7285ee5724ef32fa0dcc5e5195747c4d4d6f574474d1a512443"
+    },
+    {
+      "path": "site/README.md",
+      "bytes": 1189,
+      "sha256": "f3c194709e074ec1246c49414498c9848bd6c90432c222ac412665e91f743fb8"
+    },
+    {
+      "path": "site/app.js",
+      "bytes": 2330,
+      "sha256": "1b2bb109b36d4ba3598758b4fd5ba5a93c2205006119706a460bc7a177072850"
+    },
+    {
+      "path": "site/assets/battery-preview-provenance.json",
+      "bytes": 506,
+      "sha256": "5d77a1a37cdfbc609183a43622a0df86f84cc6e11ae59d650abe5cc8953ff260"
+    },
+    {
+      "path": "site/assets/battery-three-LICENSE.txt",
+      "bytes": 1271,
+      "sha256": "1cab897a68d5743250cabe7a180dd3904c909b4e9910de6931d87ee27e1d80e1"
+    },
+    {
+      "path": "site/assets/battery-three-r128.min.js",
+      "bytes": 603445,
+      "sha256": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2"
+    },
+    {
+      "path": "site/assets/fonts/OFL-Sora.txt",
+      "bytes": 4385,
+      "sha256": "ba0b9729c9428ba79a0459ab8ec575791b51509dbec213e383d0316d37fec299"
+    },
+    {
+      "path": "site/assets/fonts/Sora-Variable.ttf",
+      "bytes": 111400,
+      "sha256": "84ff7096ae3ec6c8be47d906d1a0ba4de7f2ce78c615275c77301964a316e16c"
+    },
+    {
+      "path": "site/battery-controller-verification.mjs",
+      "bytes": 4255,
+      "sha256": "8218f2c7f082008e4313a15962ebd8d8d91d14d9942fee70c755bd0fcfe1fd41"
+    },
+    {
+      "path": "site/battery-model.mjs",
+      "bytes": 5431,
+      "sha256": "3e51c6aa88a51b15035969252fe3e61ab4345dfcd7e99f042dfe79dcdc26aafc"
+    },
+    {
+      "path": "site/battery-notes.md",
+      "bytes": 11268,
+      "sha256": "0c7579961bdd49c2ab91e869eba6c977bf9d285cb29462b14e7199f9318cf669"
+    },
+    {
+      "path": "site/battery-scene.mjs",
+      "bytes": 16291,
+      "sha256": "95e0d7f615ff8a80c5482c89baf83ac4fac3e66ae1b6e3f3f82c4d62622af287"
+    },
+    {
+      "path": "site/battery-teaser.js",
+      "bytes": 1274,
+      "sha256": "37789399978c6f71f8755864dde081572539d3fad9d1710e883aa024086df386"
+    },
+    {
+      "path": "site/battery-verification.mjs",
+      "bytes": 5605,
+      "sha256": "66954dfa48d6886c4175320abf7ecb0d6b42ce41507b6228700b2bf4d1955ba9"
+    },
+    {
+      "path": "site/battery.css",
+      "bytes": 15647,
+      "sha256": "cc1758fcafb1f6e9819b11f3d0f57bac0fece26c72994479c5af6e22a57dfddb"
+    },
+    {
+      "path": "site/battery.html",
+      "bytes": 10991,
+      "sha256": "f2cb64656304140e35a820c7533687374f0cce3a4408b57a7cb4df8fc74e162d"
+    },
+    {
+      "path": "site/battery.js",
+      "bytes": 10742,
+      "sha256": "2fc9d2de001bca02c270a1e01df73b2aad66058fb70c4178af4a8f63d2e96c25"
+    },
+    {
+      "path": "site/diffusion.html",
+      "bytes": 9493,
+      "sha256": "86f89b1515e5f42e359e0dab581ab3aef41c5bc3505fc6dfe5ad26056adc8066"
+    },
+    {
+      "path": "site/hero-controller-verification.mjs",
+      "bytes": 2346,
+      "sha256": "92136d7c98c2ec8afcad9cc53ed4306bcdb77bcf9572372777d681efaebb7898"
+    },
+    {
+      "path": "site/hero-renderer.js",
+      "bytes": 3801,
+      "sha256": "35e075ed2a6de887338bbcf28c6bd9e701390267ec69e0f0cc0aeca116966bd8"
+    },
+    {
+      "path": "site/hero.js",
+      "bytes": 13059,
+      "sha256": "5f2c35c5afb895d25a1775f0f688d3a57b66b6a6e3895935b99fd0b18cfe7d46"
+    },
+    {
+      "path": "site/hop-model.mjs",
+      "bytes": 1131,
+      "sha256": "00547c1bab77a2571fa0fc33dd46f03aea3d146ecc22ef5d9085ff783da5c862"
+    },
+    {
+      "path": "site/hop-verification.mjs",
+      "bytes": 1677,
+      "sha256": "16d24bd68caab7199d1cef4fadd32447955d98ed76c9f88eea9d587aa1a904c8"
+    },
+    {
+      "path": "site/index.html",
+      "bytes": 11499,
+      "sha256": "22f26e07a66043bc029302879f9516e69e967e70f320da83343aa51ac7961a52"
+    },
+    {
+      "path": "site/model.mjs",
+      "bytes": 939,
+      "sha256": "d34bb9478578018ec456f440532391e5dca934a55304844c942660ea74535f24"
+    },
+    {
+      "path": "site/navigation-motion.js",
+      "bytes": 740,
+      "sha256": "b9a50dacb13875db899cf4443cb0d10152cf3c613445de9e43dbbc98c0aaa17b"
+    },
+    {
+      "path": "site/preview.css",
+      "bytes": 29502,
+      "sha256": "e16d140a1c97a7563d57d19a9519fc9be3edf880228d45573544d352a9d86138"
+    },
+    {
+      "path": "site/preview.js",
+      "bytes": 11289,
+      "sha256": "3fc7fb814e9eece6873f6416aa814d7e9635e3c6c533fe6ae288671667ae98b2"
+    },
+    {
+      "path": "site/references/advanced-materials-figure-1-user-reference.png",
+      "bytes": 1243728,
+      "sha256": "1a940f77e042b64ce31de9c643b44708f8839e9d53d5dca3debfbbb853ec51d2"
+    },
+    {
+      "path": "site/references/hau-2025-figure-1-original.png",
+      "bytes": 1014459,
+      "sha256": "5c60f2d19cdaa51b6e5250586ecda5aeea77740a9b2ab3e3e6c5c1ca0acef1a4"
+    },
+    {
+      "path": "site/references/hau-2025-source-paper.pdf",
+      "bytes": 3912624,
+      "sha256": "e15795cd379c641ed5e5234539f890edfe015c58d2e8d8c0465a0abf18297d9a"
+    },
+    {
+      "path": "site/references/hero-replacement-brief.md",
+      "bytes": 1782,
+      "sha256": "fac98895e610a7eaa56a5adb7e07ce6a64aae6856d71e6c5162b6da2f57e6ceb"
+    },
+    {
+      "path": "site/references/hop-scientific-audit.md",
+      "bytes": 8626,
+      "sha256": "9c10e7cbe17217c5cac74386a8f8fd6c51ab5d87006995e81b3bbb1a4dcd9602"
+    },
+    {
+      "path": "site/references/rocksalt-li-pathways-user-original.html",
+      "bytes": 698597,
+      "sha256": "da9b84115755f4aae092f6d01d60dd81ffe159ef4c53a1986ec66ea050d2a3cc"
+    },
+    {
+      "path": "site/references/source-checksums.json",
+      "bytes": 654,
+      "sha256": "f41dde857339283307216b41a8aa4a79429d98da5cd63c64706361b754b88a5a"
+    },
+    {
+      "path": "site/styles.css",
+      "bytes": 18948,
+      "sha256": "4a58b3a48cac496b60895a0740769e070bf0ed907d8f4f9356d82f7eba707a55"
+    },
+    {
+      "path": "site/visual-language.css",
+      "bytes": 3687,
+      "sha256": "3ef2493f209e40b73686e1502679c69ec0e499c313d7889b3c7e37cf0857758e"
+    }
+  ]
+}

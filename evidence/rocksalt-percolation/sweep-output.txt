@@ -1,0 +1,10 @@
+spinel: tetrahedra by TM count 0..4 = 45/0/252/0/46; 0-TM spans x,y,z = true,true,true; 0+1-TM spans = true,true,true
+layered: tetrahedra by TM count 0..4 = 0/171/0/172/0; 0-TM spans x,y,z = false,false,false; 0+1-TM spans = true,true,true
+
+P(0-TM Li network crosses the crystal along x), 200 seeds per point (60 for L=16)
+cells   0.00  0.03  0.06  0.09  0.12  0.15  0.20  0.30
+3       0.07  0.10  0.12  0.17  0.21  0.28  0.39  0.61
+4       0.04  0.06  0.11  0.15  0.23  0.32  0.47  0.77
+6       0.04  0.09  0.14  0.22  0.36  0.47  0.69  0.97
+10      0.01  0.02  0.09  0.20  0.38  0.69  0.96  1.00
+16      0.00  0.00  0.03  0.25  0.65  0.90  1.00  1.00

@@ -1,0 +1,49 @@
+Current package verification, 2026-09-30.
+
+$ node site/hop-verification.mjs
+PASS: actual model parity, six/four coordination, 10 unique O, face-sharing geometry, divacancy layer, endpoints and face crossings; 1,001 sequence fixtures.
+Exit: 0
+
+$ node site/hero-controller-verification.mjs
+PASS: hero autoplay, reduced-motion static start, explicit play, preference-change pause, end scrubbing and reduced-motion replay.
+Exit: 0
+
+$ node site/battery-verification.mjs
+{
+  "status": "PASS",
+  "progressStates": 2002,
+  "maximumConservationResidual": 3.552713678800501e-15,
+  "graphite": {
+    "atomsPerSheet": 96,
+    "bondsPerSheet": 132,
+    "hexagonsPerSheet": 37,
+    "sheets": 4,
+    "interlayerSites": 39,
+    "bondRange": [
+      0.6499999999999995,
+      0.6500000000000006
+    ]
+  },
+  "checks": [
+    "independent charge/discharge inventories",
+    "mode-switch composition continuity",
+    "Li/electron and half-reaction atom/charge balance",
+    "role and source/load reversal",
+    "deterministic scrub",
+    "3D route domains and solid endpoints",
+    "honeycomb ring/bond geometry",
+    "unique sites in galleries",
+    "edge-entry paths parallel to carbon sheets",
+    "linked fractional population"
+  ],
+  "limitation": "Bookkeeping and geometry checks, not empirical or kinetic validation."
+}
+Exit: 0
+
+$ node site/battery-controller-verification.mjs
+PASS: fixed-composition continuous motion, no finite-state autoplay/loop, charge reverses marker velocity, slider couples inventories, preserved composition and reversed roles on mode change, graphite entry/return, reduced-motion static arrival, explicit Resume, preference-change and hidden-tab pause. Real controller with stub 3D renderer; WebGL visual QA is separate.
+Exit: 0
+
+PASS: JavaScript syntax checks for 15 application and verification files.
+
+PASS: 42 local HTML/CSS/module/image reference occurrences resolve; no required absolute user-directory paths; original screenshot and HTML SHA-256 unchanged.
