@@ -15,8 +15,10 @@ function project(p){const v=p.map((q,i)=>q-T[i]),r=Math.SQRT1_2;
  const unfold=sequence(progress).unfold,viewYaw=yaw+.34*unfold,viewPitch=pitch-.08*unfold;
  const x0=x*Math.cos(viewYaw)+z*Math.sin(viewYaw),z0=-x*Math.sin(viewYaw)+z*Math.cos(viewYaw);
  const y0=y*Math.cos(viewPitch)-z0*Math.sin(viewPitch);z=y*Math.sin(viewPitch)+z0*Math.cos(viewPitch);x=x0;y=y0;
- const scale=Math.min(w*.38,h*.39),perspective=1;
- return {x:w*.5+x*scale*perspective,y:h*.47-y*scale*perspective,z,r:scale*perspective};}
+ const scale=spatialScale(),perspective=1;
+ return {x:w*(w<640?.46:.5)+x*scale*perspective,y:h*.47-y*scale*perspective,z,r:scale*perspective};}
+// Narrow canvases leave less room beside the central hop, so the outer coordination context gets a smaller unit to stay in frame.
+function spatialScale(){return Math.min(w*(w<640?.28:.38),h*.39)}
 function sourceTransform(zoom){const fit=Math.min((w-24)/1500,(h-30)/850),end=Math.min(.95,w*.7/390,h*.7/310),scale=fit+(end-fit)*zoom;
  const cx=750+(213-750)*zoom,cy=425+(424-425)*zoom;
  return {scale,x:w*.5-cx*scale,y:h*.47-cy*scale};}
@@ -36,12 +38,12 @@ function connectors(q){const hero=$('.hero').getBoundingClientRect(),r=canvas.ge
  }
 }
 function describe(){const current=hover||selection;insight.textContent=descriptions[current]||'Drag to rotate. Select an atom to look closer.';document.querySelectorAll('[data-inspect]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.inspect===selection)));}
-function draw(){if(!ctx||!w||!h)return;const q=sequence(progress),inspect=hover||selection;ctx.clearRect(0,0,w,h);hitAreas=[];gpu.begin(w,h,Math.min(w*.38,h*.39));
+function draw(){if(!ctx||!w||!h)return;const q=sequence(progress),inspect=hover||selection;ctx.clearRect(0,0,w,h);hitAreas=[];gpu.begin(w,h,spatialScale());
  if(source.complete&&source.naturalWidth&&q.replace<1){const tr=sourceTransform(q.zoom);ctx.save();ctx.globalAlpha=1-q.replace;
  // The complete source is held first; a continuous viewport zoom isolates its 1-TM glyph.
  const crop=ease((q.zoom-.15)/.85),left=74*crop,top=322*crop,cw=1500+(275-1500)*crop,ch=850+(240-850)*crop;
  ctx.beginPath();ctx.rect(tr.x+left*tr.scale,tr.y+top*tr.scale,cw*tr.scale,ch*tr.scale);ctx.clip();ctx.drawImage(source,tr.x,tr.y,1500*tr.scale,850*tr.scale);ctx.restore();}
- if(q.replace>0){const alpha=q.replace,unfold=q.unfold,scale=Math.min(w*.38,h*.39),glyph=sourceTransform(1).scale;
+ if(q.replace>0){const alpha=q.replace,unfold=q.unfold,scale=spatialScale(),glyph=sourceTransform(1).scale;
  const a=anchored('li',A,unfold),b=anchored('b',B,unfold),c=anchored('c',C,unfold),d=anchored('tm',D,unfold),t=anchored('t',T,unfold);
  const li=q.hop>0?project(hopPosition(q.hop)):a,rad=22*glyph+(scale*.14-22*glyph)*unfold;
  const allO=tetraO.map(o=>project(o));

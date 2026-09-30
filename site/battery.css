@@ -20,3 +20,6 @@
 
 .scene-label .polarity-word{display:inline}
 @media(max-width:520px){.scene-label .polarity-word{display:none}}
+
+/* The chart viewBox scales to ~0.58x on phones; keep its labels legible. */
+@media(max-width:520px){.chart-label{font-size:22px}}
