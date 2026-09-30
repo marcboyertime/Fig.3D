@@ -20,3 +20,12 @@ node site/battery-controller-verification.mjs
 ```
 
 Project context lives in `START_HERE.md`, `ENGINEERING_STATE.md`, `DESIGN_AND_PRODUCT_HANDOFF.md` and `context/`. Screenshots and check output from the handoff are in `evidence/`.
+
+## Since the Codex handoff (30 September 2026)
+
+The handoff documents describe the package as it arrived. Since then:
+
+- `site/rocksalt.html` is a corrected, Fig.3D-styled working copy of the original rocksalt companion, and the collection links to it. The original under `site/references/` is unchanged. The corrections and slider readings are recorded in `context/space/Companion-001/Claim-Trace-2026-09-30.md`, and the percolation sweep is in `evidence/rocksalt-percolation/`.
+- `site/diffusion.html` uses the dark collection design throughout, with calculated iso-concentration rings.
+- The homepage serves `site/assets/hau-2025-figure-1.webp`, a lossless, pixel-identical copy of the source PNG (provenance is in the JSON beside it), and falls back to the PNG.
+- axe-core reports no violations on any page at 1280px or 390px in headless Chromium. Real-device and non-Chromium checks are still pending.
