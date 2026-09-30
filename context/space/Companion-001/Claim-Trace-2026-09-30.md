@@ -49,3 +49,7 @@ Dispositions: **Supported** means the paper states it under the conditions given
 ## Suggested rewording for the one unsupported claim
 
 Replace "That is the highest-energy point of the hop, and it sets the migration barrier." with "How crowded this tetrahedral site is, and by what, controls how hard the hop is."
+
+## Applied
+
+`site/rocksalt.html` is a working copy of the original app with three text edits from this trace: the tetrahedral-site sentence is reworded as suggested above, the DRX step now says that its small crystals rarely cross at 9% (with numbers from the sweep), and the "Real DRX" step no longer says the 9% figure assumes a large particle. The simulation code is unchanged, and the reference file under `site/references/` still matches its recorded checksum. The working copy is not linked from the collection, because the rest of the companion is still unreleased.
