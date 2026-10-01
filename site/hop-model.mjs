@@ -8,6 +8,3 @@ export const octO=p=>offsets.map(o=>o.map((v,i)=>v+p[i]));
 export const oxygen=[...new Map([...tetraO,...octO(A),...octO(B)].map(p=>[p.join(','),p])).values()];
 export const windows=[tetraO.filter(o=>Math.hypot(...o.map((v,i)=>v-A[i]))<1.001),tetraO.filter(o=>Math.hypot(...o.map((v,i)=>v-B[i]))<1.001)];
 export function hopPosition(s){s=Math.max(0,Math.min(1,s));const [p,q,f]=s<=.5?[A,T,2*s]:[T,B,2*s-1];return p.map((v,i)=>v+(q[i]-v)*f);}
-export const clamp=x=>Math.max(0,Math.min(1,x));
-export const ease=x=>{x=clamp(x);return x*x*(3-2*x)};
-export function sequence(p){return {zoom:ease((p-.13)/.25),replace:ease((p-.38)/.14),unfold:ease((p-.50)/.18),oxygen:ease((p-.56)/.12),hop:clamp((p-.70)/.30),interactive:p>=.68};}
