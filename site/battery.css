@@ -55,3 +55,8 @@
 @media(max-width:800px){.explanation{padding-top:25px}.transport{grid-template-columns:1fr 210px;gap:25px}}
 @media(max-width:520px){.explanation h2 br{display:inline}.transport{grid-template-columns:1fr;gap:12px}.scene-label{max-width:none;padding:2px 4px}.flow-arrow .tag{font-size:12px}}
 .formula .term{white-space:nowrap}
+/* The graphite headlines are longer: size them so each line fits the column on one line. */
+.explanation{container-type:inline-size}
+.explanation h2.is-long{font-size:min(36px,8.4cqi)}
+@media(max-width:800px){.explanation h2.is-long{font-size:min(30px,calc((100cqi - 30px)/2/11.6))}}
+@media(max-width:520px){.explanation h2.is-long{font-size:min(30px,calc(100cqi/11.6))}}

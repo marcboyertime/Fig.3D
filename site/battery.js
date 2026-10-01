@@ -34,6 +34,7 @@ function view(){
   $('cell-view').toggleAttribute('aria-current',!inside);$('graphite-view').toggleAttribute('aria-current',inside);
   if(!inside)$('cell-view').setAttribute('aria-current','page');else $('graphite-view').setAttribute('aria-current','page');
   $('view-eyebrow').textContent=inside?'INSIDE THE NEGATIVE ELECTRODE':'THE WHOLE CELL';
+  $('view-title').classList.toggle('is-long',inside);
   $('view-title').innerHTML=inside?(mode==='discharge'?'Between the sheets<br>Out through an edge':'Through an edge<br>Between the sheets'):'Two paths<br>One reaction';
   $('view-copy').textContent=inside?(mode==='discharge'?'Graphite releases lithium from its interlayer galleries. Its carbon framework remains in place.':'Graphite accepts lithium into its interlayer galleries. This reversible insertion is called intercalation.'):(mode==='discharge'?'Lithium ions cross the electrolyte. Electrons take the external circuit. The electrode reactions connect their journeys.':'The charging source reverses the coupled reactions. Lithium returns to graphite as electrons arrive through the external circuit.');
   $('dive').textContent=inside?'Return to the cell':'Go inside graphite';
