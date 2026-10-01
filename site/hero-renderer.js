@@ -138,6 +138,7 @@ export function createHopRenderer(canvas) {
   yawM.makeRotationY(s.yaw); pitchM.makeRotationX(s.pitch); M.copy(pitchM).multiply(yawM).multiply(basis);
   model.matrixAutoUpdate = false; model.matrix.copy(M); model.matrix.setPosition(s.offsetX || 0, s.offsetY || 0, 0); model.updateMatrixWorld(true);
   lens(FOV + (LENS - FOV) * (s.lens || 0));
+  camera.updateMatrixWorld(); // projected label and connector positions must match this frame's camera, not the last render's
   const u = s.unfold, glyph = s.glyph, hop = s.hop, sel = s.selection, liPos = world(hopPosition(hop));
   // The paper card lays back under the atoms and fades.
   const cardOpacity = cardRect ? s.card || 0 : 0;

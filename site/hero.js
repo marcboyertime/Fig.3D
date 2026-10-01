@@ -69,7 +69,11 @@ function drawCard(g2d, tr, g, spot) {
 }
 function drawPaper(q) {
  pctx.clearRect(0, 0, size.w, size.h); figureBox = null;
- if (!(source.complete && source.naturalWidth) || q.paper <= 0) return;
+ // Once the page has lifted away the layer is empty: take it out of compositing rather than rely on an empty bitmap
+ // (an accelerated canvas can keep presenting an older frame, which would bring the whole page back).
+ const live = source.complete && source.naturalWidth && q.paper > 0;
+ paper.style.visibility = live ? '' : 'hidden';
+ if (!live) return;
  const tr = figureTransform(q.zoom), W = FIGURE.w * tr.scale, H = FIGURE.h * tr.scale, g = glyphRect(tr), f = size.frame;
  // The rest of the figure dims under a spotlight, stays faintly in view through the zoom, then clears.
  const rest = (1 - .62 * q.spot - .24 * q.zoom) * q.ghost;
