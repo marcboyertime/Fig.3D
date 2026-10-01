@@ -186,6 +186,39 @@ sub,sup{font-size:.72em}
 .fig-bar .fig-back:hover,.fig-bar .fig-back:focus-visible{text-decoration:underline}
 @media(max-width:520px){.fig-bar .fig-tag{display:none}}
 .ctl-note{margin:8px 0 0;color:var(--muted);font-size:12.5px;line-height:1.5}
+/* Source first: the paper's figure and passage, laid out on the same two columns as the stage and panel below */
+.source{display:grid;grid-template-columns:minmax(0,1fr) 430px;grid-template-rows:auto 1fr;grid-template-areas:"fig head" "fig body";column-gap:20px;row-gap:14px;align-items:start;margin:18px 0 26px;padding-bottom:26px;border-bottom:1px solid var(--line)}
+.source-figure{margin:0;grid-area:fig}
+.source-head{grid-area:head}
+.source-body{grid-area:body}
+.source-figure>a{display:block;background:#fff;border-radius:10px;padding:14px 16px;line-height:0}
+.source-figure>a:focus-visible{outline-offset:3px}
+.source-figure img{width:100%;height:auto;display:block}
+.source-figure figcaption{margin-top:12px;font-size:13px;line-height:1.55;color:var(--muted);max-width:78ch}
+.source-figure figcaption b{color:var(--ink);font-weight:600}
+.source-copy{display:flex;flex-direction:column;gap:14px}
+.source-copy h2{font-size:24px;line-height:1.18;margin-top:6px}
+.source-copy>p{font-size:14.5px}
+.source-quote{margin:0;border-left:2px solid var(--accent);padding:2px 0 2px 14px;font-size:14px;line-height:1.6;color:var(--ink)}
+.source-quote footer{margin-top:6px;font:11.5px var(--font-mono);color:var(--muted);letter-spacing:.02em}
+.source-more summary{cursor:pointer;color:var(--accent);font-size:13.5px;list-style:none;display:inline-flex;gap:8px;align-items:center}
+.source-more summary::-webkit-details-marker{display:none}
+.source-more summary::after{content:'+';font:15px var(--font-mono)}
+.source-more[open] summary::after{content:'−'}
+.source-more .passage{margin-top:10px;display:flex;flex-direction:column;gap:10px;font-size:13.5px;line-height:1.6;color:var(--muted);background:var(--soft);border-radius:8px;padding:12px 14px}
+.source-map{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.source-map a{min-height:44px}
+.source-map li+li{border-top:1px solid var(--line)}
+.source-map a{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:9px 0;color:var(--ink);text-decoration:none;font-size:13.5px;line-height:1.45}
+.source-map a span{font:500 11.5px/1.7 var(--font-mono);color:var(--accent);letter-spacing:.03em;white-space:nowrap}
+.source-map a:hover b,.source-map a:focus-visible b{text-decoration:underline;text-underline-offset:3px}
+.source-map b{font-weight:500}
+.source-cite{margin-top:8px;max-width:78ch;font-size:12.5px;line-height:1.55;color:var(--muted)}
+.source-cite a{color:var(--accent)}
+.source-zoom{display:none}
+@media (hover:none){.source-zoom{display:inline}}
+@media (max-width:980px){.source{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-template-areas:"head" "fig" "body";row-gap:18px}}
+@media (max-width:480px){.source-figure>a{padding:8px 9px;border-radius:8px}.source-copy h2{font-size:21px}.source-map a{grid-template-columns:84px minmax(0,1fr)}}
 @media(min-width:900px){.steps{flex-wrap:wrap;row-gap:10px;overflow-x:visible}}
 </style>
 
@@ -194,6 +227,40 @@ sub,sup{font-size:.72em}
     <h1>Rocksalt Li Pathways</h1>
     <p class="sub">How lithium finds its way through layered, spinel and disordered rocksalt (DRX) cathodes, built up one idea at a time. Based on Hau et al., <i>Adv. Mater.</i> 2025, Figure 1.</p>
   </header>
+
+  <section class="source" aria-labelledby="source-title">
+    <div class="source-copy source-head">
+      <p class="eyebrow">Start with the paper</p>
+      <h2 id="source-title">One figure<br>Four ideas at once</h2>
+      <p>The review sums up how lithium moves through three cathode families in a single image. It is dense: each row is a different idea, and it assumes you already know them.</p>
+    </div>
+    <figure class="source-figure">
+      <a href="references/hau-2025-figure-1-original.png" target="_blank" rel="noopener" aria-label="Open Figure 1 at full size"><picture><source type="image/webp" srcset="assets/hau-2025-figure-1.webp"><img src="references/hau-2025-figure-1-original.png" width="1500" height="850" alt="Figure 1 from Hau et al. Top row: layered, spinel and DRX structures on the same rocksalt frame. Middle row: a single lithium hop through a tetrahedral site with one or zero face-sharing transition metals. Bottom row: the 2-D layered, 3-D spinel and percolating DRX lithium networks."></picture></a>
+      <figcaption><b>Figure 1.</b> Overview of DRX and ordered rocksalt structures and their diffusion mechanisms. Diffusion networks of layered, spinel, and DRX ordering on the same rocksalt framework. Reproduced unchanged from Hau et al. 2025 under the Creative Commons Attribution License.<span class="source-zoom"> Tap the figure to open it at full size.</span></figcaption>
+      <p class="source-cite">H.-M. Hau et al., “Disordered Rocksalts as High-Energy and Earth-Abundant Li-Ion Cathodes,” <i>Advanced Materials</i> 37 (2025), 2502766. <a href="https://doi.org/10.1002/adma.202502766" target="_blank" rel="noopener">doi.org/10.1002/adma.202502766</a></p>
+    </figure>
+    <div class="source-copy source-body">
+      <blockquote class="source-quote">
+        <p>“Li in layered structures migrate between octahedral sites via an intermediate tetrahedral site (o-t-o diffusion) through a di-vacancy mechanism. The migration barrier of this hop is determined by the number of TM that face-share with the intermediate tetrahedral sites.”</p>
+        <footer>Section 1, Introduction · p. 2</footer>
+      </blockquote>
+      <details class="source-more">
+        <summary>Read the full passage</summary>
+        <div class="passage">
+          <p>“The comparison of crystal structures and Li transport mechanism is summarized in Figure 1. In layered cathodes (R-3m), oxygen occupies the FCC lattice, and the cations (Li and TM) occupy the octahedral sites, with the Li and TM octahedra order in alternating (111) planes. Li in layered structures migrate between octahedral sites via an intermediate tetrahedral site (o-t-o diffusion) through a di-vacancy mechanism,<sup>[5,8,21,22]</sup> The migration barrier of this hop is determined by the number of TM that face-share with the intermediate tetrahedral sites. In the ordered layered structure, only 1-TM (1 TM and 3 Li face-share with the tetrahedral site) and 3-TM (3 TM and 1 Li face-share with the tetrahedral site) environments are present, but the 1-TM channels form a 2-D percolation network. With a typical slab distance of 2.6–2.7 Å, the migration barrier is below 500 meV for layered structures.<sup>[8]</sup> Spinel structures (Fd-3m) present an ideal cation ordering in FCC framework, as the TM occupy on the 16d octahedral sites creates 0-TM, 2-TM, and 4-TM environments.<sup>[23]</sup> The intrinsic 0-TM tetrahedra provides low barrier 3-D percolation channels in spinel structures, making spinel a high-rate cathode materials. With the same FCC framework, DRX (Fm-3m) has no long-range cation ordering, creating all possible tetrahedral sites with 0-TM, 1-TM, 2-TM, 3-TM, and 4-TM as face-sharing neighbors.<sup>[5–8]</sup></p>
+          <p>Similar to layered structures, where Li migrates through a di-vacancy mechanism, the migration energy depends on the number of TMs present in the octahedra that face-share with the tetrahedral site. Among these, only 0-TM and 1-TM are considered active, as the other tetrahedral sites have too strong an electrostatic repulsion between Li and face-sharing TM for Li ions to migrate through them. Therefore, a percolating network of octahedral sites linked by 0-TM and 1-TM channels is required for Li to diffuse through DRX.<sup>[24]</sup>”</p>
+          <p>Section 1, Introduction, pp. 2–3. Reference numbers are the paper’s own.</p>
+        </div>
+      </details>
+      <p>This page takes the figure apart and rebuilds it in 3D, one idea per step.</p>
+      <ul class="source-map">
+        <li><a href="#frame" data-goto><span>Steps 1–2</span><b>The rocksalt frame all three structures share</b></a></li>
+        <li><a href="#hop" data-goto><span>Steps 3–5</span><b>Middle row: one hop and its TM count</b></a></li>
+        <li><a href="#perc" data-goto><span>Step 6</span><b>Why single hops must join into a network</b></a></li>
+        <li><a href="#layered" data-goto><span>Steps 7–10</span><b>Top and bottom rows: each ordering’s network</b></a></li>
+      </ul>
+    </div>
+  </section>
   <nav class="steps" id="steps" aria-label="Steps"></nav>
 
   <main>
@@ -245,7 +312,7 @@ sub,sup{font-size:.72em}
         <div class="slot"></div>
         <p>At the tetrahedral site the Li is squeezed closest to all four corners. How crowded this tetrahedral site is, and by what, controls how hard the hop is: the <b>migration barrier</b>.</p>
         <div class="try"><h3>Try this</h3><ul><li>Pause, then drag the position slider. Watch each gold window light up as the Li passes through it.</li></ul></div>
-        <p class="keyidea"><b>Key idea</b>Every Li hop goes through a tetrahedral site, and the hardest moment is in the middle.</p>
+        <p class="keyidea"><b>Key idea</b>Every Li hop goes through a tetrahedral site, and what surrounds that site sets how hard the hop is.</p>
       </section>
 
       <!-- ================= 4 COUNT ================= -->
@@ -1199,6 +1266,10 @@ goStep(Math.max(0,stepIdx(wanted)),true);
 window.addEventListener('hashchange',()=>{const k=stepIdx((location.hash||'').replace('#',''));if(k>=0&&k!==step)goStep(k)});
 if(GL)requestAnimationFrame(frame);
 })();
+</script>
+<script>
+// The source map links set the step through the hash; bring the step chips and stage into view as well
+document.querySelectorAll('[data-goto]').forEach(a=>a.addEventListener('click',()=>setTimeout(()=>{const top=document.getElementById('steps').getBoundingClientRect().top+scrollY-16;scrollTo({top,behavior:'auto'})},50)));
 </script>
 
 </body></html>
