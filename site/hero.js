@@ -1,102 +1,392 @@
 import {createHopRenderer} from './hero-renderer.js';
-import {A,B,C,D,T,tetraO,oxygen,octO,windows,hopPosition,clamp,ease,sequence} from './hop-model.mjs';
-const $=s=>document.querySelector(s),canvas=$('#hero-canvas'),ctx=canvas.getContext('2d');
-const slider=$('#hero-progress'),play=$('#hero-play'),stage=$('#hero-stage'),explore=$('#hero-explore'),insight=$('#hero-insight');
-let gpu;try{gpu=createHopRenderer($('#hero-gl'));}catch{gpu={failed:true,begin(){},line(){},triangle(){},ball(){},finish(){}};}
-const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-// A lossless WebP of the untouched PNG (pixel-identical, about 30% smaller); the PNG is the fallback.
-const source=new Image(),SOURCE_PNG='references/hau-2025-figure-1-original.png';source.src='assets/hau-2025-figure-1.webp';
-let progress=0,playing=false,last=0,frame=0,w=0,h=0,yaw=0,pitch=0,selection='',hover='',pointer=null,dragged=false,hitAreas=[],phase='';
-const anchors={li:[142,384],b:[262,388],c:[239,399],tm:[215,488],t:[213,414]};
-const colors={li:'#97d975',oxygen:'#ec575e',tm:'#ad50d5',sites:'#719f78'};
-const descriptions={li:'Li⁺ moves between two octahedral sites. Each endpoint has six oxygen neighbors.',oxygen:'Four oxygen atoms surround the tetrahedral site. Three form each entry or exit face.',tm:'One neighboring transition-metal ion: the “1-TM” local environment in the figure.',sites:'Two vacant octahedral sites form the gate. The small central marker is the tetrahedral site.'};
-const dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0),same=(a,b)=>a.every((v,i)=>Math.abs(v-b[i])<1e-6);
-function project(p){const v=p.map((q,i)=>q-T[i]),r=Math.SQRT1_2;
- let x=dot(v,[r,r,0]),y=dot(v,[.5,-.5,-r]),z=dot(v,[-.5,.5,-r]);
- const unfold=sequence(progress).unfold,viewYaw=yaw+.34*unfold,viewPitch=pitch-.08*unfold;
- const x0=x*Math.cos(viewYaw)+z*Math.sin(viewYaw),z0=-x*Math.sin(viewYaw)+z*Math.cos(viewYaw);
- const y0=y*Math.cos(viewPitch)-z0*Math.sin(viewPitch);z=y*Math.sin(viewPitch)+z0*Math.cos(viewPitch);x=x0;y=y0;
- const scale=spatialScale(),perspective=1;
- return {x:w*(w<640?.46:.5)+x*scale*perspective,y:h*.47-y*scale*perspective,z,r:scale*perspective};}
-// Narrow canvases leave less room beside the central hop, so the outer coordination context gets a smaller unit to stay in frame.
-function spatialScale(){return Math.min(w*(w<640?.28:.38),h*.39)}
-function sourceTransform(zoom){const fit=Math.min((w-24)/1500,(h-30)/850),end=Math.min(.95,w*.7/390,h*.7/310),scale=fit+(end-fit)*zoom;
- const cx=750+(213-750)*zoom,cy=425+(424-425)*zoom;
- return {scale,x:w*.5-cx*scale,y:h*.47-cy*scale};}
-function anchored(key,target,f){const t=sourceTransform(1),a=anchors[key],b=project(target);return {...b,x:t.x+a[0]*t.scale+(b.x-t.x-a[0]*t.scale)*f,y:t.y+a[1]*t.scale+(b.y-t.y-a[1]*t.scale)*f};}
-function line(...args){gpu.line(...args)}
-function triangle(...args){gpu.triangle(...args)}
-function ball(...args){gpu.ball(...args)}
-function label(p,text,dx=0,dy=0,color='#c6cbdc'){ctx.save();ctx.font='13px Sora, Arial';ctx.textAlign='center';ctx.fillStyle=color;ctx.shadowColor='#080a12';ctx.shadowBlur=7;ctx.fillText(text,p.x+dx,p.y+dy);ctx.restore();}
-function connectors(q){const hero=$('.hero').getBoundingClientRect(),r=canvas.getBoundingClientRect(),svg=$('.hero-connectors');svg.setAttribute('viewBox',`0 0 ${hero.width} ${hero.height}`);
- for(const [word,id,amount,drawn] of [['#figure-word','#figure-connector',1-ease((progress-.36)/.13),reduced.matches?1:ease(progress/.12)],['#understanding-word','#understanding-connector',progress>.50?1:0,ease((progress-.50)/.18)]]){
- const a=$(word).getBoundingClientRect(),p=$(id),small=hero.width<701;
- const x=a.right-hero.left+(small?8:15),y=a.top+a.height*.58-hero.top;
- const tr=sourceTransform(q.zoom),target=word==='#figure-word'?{x:tr.x+anchors.li[0]*tr.scale-28,y:tr.y+anchors.li[1]*tr.scale-14}:project(A);
- const ex=small?r.left+r.width*.68-hero.left:r.left+target.x-hero.left-(word==='#understanding-word'?38:0),ey=small?r.top+51-hero.top:r.top+target.y-hero.top+10;
- const d=small?`M${x} ${y} H${hero.width-18} Q${hero.width-9} ${y} ${hero.width-9} ${y+12} V${ey-18} Q${hero.width-9} ${ey} ${hero.width-28} ${ey} H${ex}`:`M${x} ${y} C${x+80} ${y+38},${ex-75} ${ey+32},${ex} ${ey}`;
- p.setAttribute('d',d);const length=p.getTotalLength();p.style.opacity=String(amount*.85);p.style.strokeDasharray=String(length);p.style.strokeDashoffset=String(length*(1-drawn));p.setAttribute('marker-end',drawn>.98?'url(#connector-end)':'');
- }
+import {BEATS, DURATION, HOP_REPLAY_AT, sequence, beatAt, clamp, easeInOut, easeOut} from './hero-timeline.mjs';
+
+const $ = s => document.querySelector(s);
+const hero = $('.home-hero'), frameEl = $('#hero-frame'), stageEl = $('.hero-stage');
+const paper = $('#hero-paper'), pctx = paper.getContext('2d'), overlay = $('#hero-canvas'), ctx = overlay.getContext('2d');
+const slider = $('#hero-progress'), play = $('#hero-play'), replay = $('#hero-replay'), caption = $('#hero-stage'), kicker = $('#hero-kicker'), resetButton = $('#hero-reset');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+let gpu; try { gpu = createHopRenderer($('#hero-gl')); } catch { gpu = null; }
+
+// The untouched Figure 1 (a pixel-identical lossless WebP; the PNG is the fallback).
+const source = new Image(), SOURCE_PNG = 'references/hau-2025-figure-1-original.png';
+source.decoding = 'async'; source.src = 'assets/hau-2025-figure-1.webp';
+const FIGURE = {w: 1500, h: 850}, GLYPH = {x: 74, y: 322, w: 275, h: 240};
+// Printed positions of the glyph's actors, in native figure pixels.
+const ANCHORS = {li: [142, 384], b: [262, 388], c: [239, 399], tm: [215, 488], t: [213, 414]};
+const DESCRIPTIONS = {
+ li: 'Li⁺ moves between two octahedral sites. Each has six oxygen neighbors.',
+ oxygen: 'Four oxygen atoms surround the tetrahedral site. Three of them form each window lithium squeezes through.',
+ tm: 'One transition-metal ion shares a face with the tetrahedral site. That count of one is the “1-TM” in the figure.',
+ sites: 'Dashed rings are empty octahedral sites: the destination and a second vacancy. The small ring is the tetrahedral site.',
+};
+
+let t = 0, playing = false, userPaused = false, wasAuto = false, last = 0, frame = 0, inView = true;
+let yaw = 0, pitch = 0, viewTween = null, selection = '', hover = '', pointer = null, dragged = false, hitAreas = [];
+let size = {w: 0, h: 0, dpr: 1, frame: {x: 0, y: 0, w: 1, h: 1}, unit: 100, narrow: false, stacked: false};
+let shownBeat = '', shownText = '', shownKicker = '', project = null, figureBox = null;
+
+// ---------- Layout ----------
+function measure() {
+ const c = stageEl.getBoundingClientRect(), f = frameEl.getBoundingClientRect();
+ const dpr = Math.min(devicePixelRatio || 1, 2), w = c.width, h = c.height;
+ if (!w || !h) return false;
+ const fr = {x: f.left - c.left, y: f.top - c.top, w: f.width, h: f.height};
+ const narrow = hero.getBoundingClientRect().width < 701;
+ // Stacked layouts (phones, portrait tablets) put the headline above the stage: words get underlines, not arrows.
+ const stacked = f.top >= $('.hero-copy').getBoundingClientRect().bottom - 1;
+ for (const cv of [paper, overlay]) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+ pctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+ // One model unit (a/2) in CSS pixels, sized so the whole oxygen context fits the frame.
+ const unit = Math.min(fr.h * (narrow ? .37 : .42), fr.w * (narrow ? .28 : .3));
+ size = {w, h, dpr, frame: fr, unit, narrow, stacked};
+ gpu?.layout(w, h, fr, unit, dpr);
+ paintCard();
+ return true;
 }
-function describe(){const current=hover||selection;insight.textContent=descriptions[current]||'Drag to rotate. Select an atom to look closer.';document.querySelectorAll('[data-inspect]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.inspect===selection)));}
-function draw(){if(!ctx||!w||!h)return;const q=sequence(progress),inspect=hover||selection;ctx.clearRect(0,0,w,h);hitAreas=[];gpu.begin(w,h,spatialScale());
- if(source.complete&&source.naturalWidth&&q.replace<1){const tr=sourceTransform(q.zoom);ctx.save();ctx.globalAlpha=1-q.replace;
- // The complete source is held first; a continuous viewport zoom isolates its 1-TM glyph.
- const crop=ease((q.zoom-.15)/.85),left=74*crop,top=322*crop,cw=1500+(275-1500)*crop,ch=850+(240-850)*crop;
- ctx.beginPath();ctx.rect(tr.x+left*tr.scale,tr.y+top*tr.scale,cw*tr.scale,ch*tr.scale);ctx.clip();ctx.drawImage(source,tr.x,tr.y,1500*tr.scale,850*tr.scale);
- // While the mesh takes over, dissolve the paper from its edges inward so no flat grey card is left around the actors.
- if(q.replace>0){const mx=tr.x+(left+cw/2)*tr.scale,my=tr.y+(top+ch/2)*tr.scale,hh=ch*tr.scale/2,R=hh*1.42,inner=Math.max(0,R*(1-1.6*q.replace)),mask=ctx.createRadialGradient(0,0,inner,0,0,inner+R*.45);mask.addColorStop(0,'#000');mask.addColorStop(1,'rgba(0,0,0,0)');ctx.globalAlpha=1;ctx.globalCompositeOperation='destination-in';ctx.translate(mx,my);ctx.scale(cw/ch,1);ctx.fillStyle=mask;ctx.fillRect(-w,-h,2*w,2*h);}ctx.restore();}
- if(q.replace>0){const alpha=q.replace,unfold=q.unfold,scale=spatialScale(),glyph=sourceTransform(1).scale;
- const a=anchored('li',A,unfold),b=anchored('b',B,unfold),c=anchored('c',C,unfold),d=anchored('tm',D,unfold),t=anchored('t',T,unfold);
- const li=q.hop>0?project(hopPosition(q.hop)):a,rad=22*glyph+(scale*.14-22*glyph)*unfold;
- const allO=tetraO.map(o=>project(o));
- if(unfold>0){line([a,t,b],'#99d8b1',1.5,unfold*.65,[4,5]);
-  // Oxygen tetrahedron is geometry, not a migration-energy surface.
-  for(let i=0;i<4;i++)for(let j=i+1;j<4;j++)line([allO[i],allO[j]],'#7387ac',1,q.oxygen*.35);
-  [[0,1,2],[0,1,3],[0,2,3],[1,2,3]].forEach(face=>triangle(face.map(i=>allO[i]),q.oxygen*.028));
-  const windowActive=Math.abs(q.hop-1/3)<.065?0:Math.abs(q.hop-2/3)<.065?1:-1;
-  if(inspect==='oxygen'||windowActive!==-1){windows.forEach((face,i)=>triangle(face.map(project),q.oxygen*(windowActive===i?.28:.07)));}
-  if(unfold>.7){const endpoint=q.hop>.5?B:A,vertices=octO(endpoint).map(project);for(let i=0;i<6;i++)for(let j=i+1;j<6;j++)if(Math.abs(Math.hypot(...octO(endpoint)[i].map((v,k)=>v-octO(endpoint)[j][k]))-Math.SQRT2)<.001)line([vertices[i],vertices[j]],'#91beec',1,(inspect==='li'?.6:.2)*q.oxygen);}
- }
- const atoms=[{p:b,r:rad,color:'#bed5c6',alpha:alpha*(q.hop<.98?1:.35),ring:true,type:'sites'},
- {p:c,r:rad*.88,color:'#bed5c6',alpha:alpha*(.45+.4*unfold),ring:true,type:'sites'},
- {p:d,r:rad*.97,color:colors.tm,alpha,type:'tm'},
- {p:t,r:Math.max(5,rad*.42),color:unfold>.5?'#8cb798':'#387a45',alpha:alpha*(1-.45*unfold),ring:unfold>.5,type:'sites'},
- {p:a,r:rad,color:'#bed5c6',alpha:alpha*(q.hop>0?.6:0),ring:true,type:'sites'},
- {p:li,r:rad,color:colors.li,alpha,type:'li'}];
- oxygen.forEach(o=>{const central=tetraO.some(t=>same(o,t));let visible=central?1:inspect==='li'&&octO(q.hop>.5?B:A).some(a=>same(o,a))?.85:.26;if(visible)atoms.push({p:project(o),r:scale*(central?.084:.065),color:colors.oxygen,alpha:q.oxygen*visible,type:'oxygen'});});
- atoms.sort((a,b)=>a.p.z-b.p.z).forEach(atom=>{ball(atom.p,atom.r,atom.color,atom.alpha,atom.ring);if(atom.alpha>.3)hitAreas.push({...atom,hit:Math.max(atom.r,17)});});
- if(unfold>.9){label(a,'octahedral',-18,-rad-13);label(b,'octahedral',18,-rad-13);label(t,'tetrahedral',-scale*.45,scale*.17,'#b8cdbd');
- if(inspect==='sites')label(c,'second vacancy',0,-rad-12);if(inspect==='tm')label(d,'transition metal',0,rad+22,'#d8b5ee');}
- }
- gpu.finish();connectors(q);
- const next=progress<.13?'paper':progress<.38?'focus':progress<.68?'unfold':q.hop===0?'ready':q.hop<.32?'depart':q.hop<.38?'entry':q.hop<.62?'tetra':q.hop<.7?'exit':'arrive';
- if(next!==phase){phase=next;stage.textContent={paper:'A mechanism, on paper.',focus:'Find one local pathway.',unfold:'The same sites, with depth.',ready:'Octahedral → tetrahedral → octahedral.',depart:'Leave the starting octahedral site.',entry:'Through a face of three oxygen atoms.',tetra:'Through the tetrahedral site.',exit:'Through the second oxygen face.',arrive:'Into a vacant octahedral site.'}[phase];}
- $('#hero-scene-label').textContent=q.unfold>.8?'1-TM · IDEAL LOCAL GEOMETRY':'';
- explore.hidden=!q.interactive;$('#hero-spatial').hidden=q.interactive;
- slider.setAttribute('aria-valuetext',`${Math.round(progress*100)} percent. ${stage.textContent}`);
- canvas.setAttribute('aria-label',q.interactive?`Ideal 1-TM rocksalt local geometry. Lithium ${q.hop<.5?'approaches':'leaves'} a tetrahedral site between two octahedral sites. ${Math.round(q.hop*100)} percent along the schematic path. Drag or use arrow keys to rotate.`:'Figure 1 from Hau et al. comparing layered, spinel and disordered rocksalt. The view focuses on the layered 1-TM hop.');
+
+// ---------- Figure layer ----------
+// Fit the whole figure in the frame, then zoom (geometrically) until the 1-TM glyph fills the centre.
+function figureTransform(zoom) {
+ const f = size.frame, fit = Math.min(f.w / FIGURE.w, f.h / FIGURE.h);
+ const end = Math.min(.95, f.h * .6 / GLYPH.h, f.w * .55 / GLYPH.w);
+ const scale = fit * Math.pow(end / fit, zoom);
+ const gx = GLYPH.x + GLYPH.w / 2, gy = GLYPH.y + GLYPH.h / 2;
+ const fitX = f.x + (f.w - FIGURE.w * fit) / 2 + gx * fit, fitY = f.y + (f.h - FIGURE.h * fit) / 2 + gy * fit;
+ const cx = fitX + (f.x + f.w / 2 - fitX) * zoom, cy = fitY + (f.y + f.h / 2 - fitY) * zoom;
+ return {scale, x: cx - gx * scale, y: cy - gy * scale};
 }
-function controls(){play.textContent=playing?'Pause':progress>=1?'Play hop':'Play';play.setAttribute('aria-label',playing?'Pause animation':progress>=1?'Play the lithium hop':'Play animation');play.setAttribute('aria-pressed',String(playing));}
-function schedule(){if(!frame)frame=requestAnimationFrame(tick);}
-function tick(now){frame=0;if(!playing)return;if(last)progress=Math.min(1,progress+Math.min(now-last,80)/19000);last=now;slider.value=String(Math.round(progress*1000));draw();if(progress>=1){playing=false;controls();return;}schedule();}
-function pause(){playing=false;last=0;controls();}
-function jump(p){pause();progress=p;slider.value=String(Math.round(p*1000));controls();draw();}
-play.addEventListener('click',()=>{if(playing)pause();else{if(progress>=1)progress=.7;playing=true;last=0;controls();schedule();}});
-$('#hero-replay').addEventListener('click',()=>{progress=0;yaw=0;pitch=0;selection='';hover='';describe();slider.value='0';playing=!reduced.matches;last=0;controls();draw();if(playing)schedule();});
-slider.addEventListener('input',()=>jump(Number(slider.value)/1000));
-slider.addEventListener('focus',pause);
-$('#hero-spatial').addEventListener('click',()=>jump(.7));
-$('#hero-reset').addEventListener('click',()=>{yaw=0;pitch=0;draw();});
-document.querySelectorAll('[data-inspect]').forEach(b=>{const key=b.dataset.inspect;b.addEventListener('click',()=>{selection=selection===key?'':key;hover='';pause();describe();draw();});b.addEventListener('mouseenter',()=>{hover=key;describe();draw();});b.addEventListener('mouseleave',()=>{hover='';describe();draw();});b.addEventListener('focus',()=>{hover=key;pause();describe();draw();});b.addEventListener('blur',()=>{hover='';describe();draw();});});
-const at=e=>{const r=canvas.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};};
-canvas.addEventListener('pointerdown',e=>{if(progress<.68)return;pointer={...at(e),id:e.pointerId};dragged=false;pause();});
-canvas.addEventListener('pointermove',e=>{if(progress<.68)return;const p=at(e);if(pointer){const dx=p.x-pointer.x,dy=p.y-pointer.y;if(Math.abs(dx)+Math.abs(dy)>3)dragged=true;if(e.pointerType!=='touch'||Math.abs(dx)>Math.abs(dy)){yaw+=dx*.008;pitch=Math.max(-1.15,Math.min(1.15,pitch+dy*.006));}pointer={...p,id:e.pointerId};draw();}else if(e.pointerType!=='touch'){hover=[...hitAreas].reverse().find(a=>Math.hypot(a.p.x-p.x,a.p.y-p.y)<a.hit)?.type||'';canvas.style.cursor=hover?'pointer':'grab';describe();draw();}});
-canvas.addEventListener('pointerup',e=>{if(!pointer)return;if(!dragged){const p=at(e),hit=[...hitAreas].reverse().find(a=>Math.hypot(a.p.x-p.x,a.p.y-p.y)<a.hit);selection=hit?.type||'';hover='';describe();draw();}pointer=null;});
-canvas.addEventListener('pointercancel',()=>{pointer=null;});canvas.addEventListener('pointerleave',()=>{pointer=null;hover='';describe();draw();});
-canvas.addEventListener('keydown',e=>{if(progress<.68||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'].includes(e.key))return;e.preventDefault();pause();if(e.key==='Home'){yaw=0;pitch=0;}else{yaw+=e.key==='ArrowLeft'?-.15:e.key==='ArrowRight'?.15:0;pitch=Math.max(-1.15,Math.min(1.15,pitch+(e.key==='ArrowUp'?-.12:e.key==='ArrowDown'?.12:0)));}draw();});
-reduced.addEventListener('change',()=>{if(reduced.matches)pause();});document.addEventListener('visibilitychange',()=>{last=0;if(document.hidden)pause();});
-new ResizeObserver(()=>{const r=canvas.getBoundingClientRect();w=r.width;h=r.height;const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx?.setTransform(dpr,0,0,dpr,0,0);draw();}).observe(canvas);
-function start(){draw();if(gpu.failed){play.hidden=true;$('#hero-replay').hidden=true;slider.disabled=true;$('#hero-spatial').hidden=true;stage.textContent='The paper figure. 3D is unavailable in this browser.';return;}if(!reduced.matches){playing=true;controls();schedule();}else controls();}
-source.addEventListener('load',start);source.addEventListener('error',()=>{if(!source.src.endsWith('.png')){source.src=SOURCE_PNG;return;}jump(.7);stage.textContent='Source image unavailable. Explore the ideal geometry.';});if(source.complete&&source.naturalWidth)start();
-const notes=$('#hero-notes-dialog');$('#hero-notes').addEventListener('click',()=>{pause();notes.showModal();});notes.querySelector('.dialog-close').addEventListener('click',()=>notes.close());
+const toScreen = (tr, [x, y]) => [tr.x + x * tr.scale, tr.y + y * tr.scale];
+function roundRect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+const glyphRect = tr => ({x: tr.x + GLYPH.x * tr.scale, y: tr.y + GLYPH.y * tr.scale, w: GLYPH.w * tr.scale, h: GLYPH.h * tr.scale});
+// The 1-TM glyph on its patch of white paper, with the accent frame drawing around it once spotlit.
+function drawCard(g2d, tr, g, spot) {
+ roundRect(g2d, g.x, g.y, g.w, g.h, 4); g2d.save(); g2d.clip(); g2d.drawImage(source, tr.x, tr.y, FIGURE.w * tr.scale, FIGURE.h * tr.scale); g2d.restore();
+ if (spot <= 0) return;
+ const w = g.w + 6, h = g.h + 6, r = 6, per = 2 * (w + h) - 8 * r + 2 * Math.PI * r;
+ g2d.save(); g2d.globalAlpha *= Math.min(1, spot * 3); g2d.strokeStyle = '#8fa8ff'; g2d.lineWidth = 1.5; g2d.lineCap = 'round';
+ g2d.setLineDash([per * spot, per]); roundRect(g2d, g.x - 3, g.y - 3, w, h, r); g2d.stroke(); g2d.restore();
+}
+function drawPaper(q) {
+ pctx.clearRect(0, 0, size.w, size.h); figureBox = null;
+ // Once the page has lifted away the layer is empty: take it out of compositing rather than rely on an empty bitmap
+ // (an accelerated canvas can keep presenting an older frame, which would bring the whole page back).
+ const live = source.complete && source.naturalWidth && q.paper > 0;
+ paper.style.visibility = live ? '' : 'hidden';
+ if (!live) return;
+ const tr = figureTransform(q.zoom), W = FIGURE.w * tr.scale, H = FIGURE.h * tr.scale, g = glyphRect(tr), f = size.frame;
+ // The rest of the figure dims under a spotlight, stays faintly in view through the zoom, then clears.
+ const rest = (1 - .62 * q.spot - .24 * q.zoom) * q.ghost;
+ figureBox = {x: tr.x, y: tr.y, w: W, h: H, glyph: g, rest};
+ // A short fade-in when the story (re)starts, so the white page never pops onto the dark hero.
+ const base = playing && !reduced.matches ? q.intro : 1;
+ if (rest > .003) {
+  // Keep the page inside the frame while it zooms, so it never spills over the headline.
+  pctx.save(); pctx.beginPath(); pctx.rect(f.x, f.y, f.w, f.h); pctx.clip();
+  pctx.globalAlpha = base * rest; roundRect(pctx, tr.x, tr.y, W, H, 3); pctx.clip(); pctx.drawImage(source, tr.x, tr.y, W, H);
+  pctx.restore();
+  // As the camera closes in, the page's edges soften into the background instead of stopping at the frame.
+  // (Erased outside the clip, so no antialiased sliver survives along the frame edge.)
+  if (q.zoom > 0) {
+   pctx.save(); pctx.globalCompositeOperation = 'destination-out';
+   pctx.translate(f.x + f.w / 2, f.y + f.h / 2); pctx.scale(f.w / 2, f.h / 2);
+   const vignette = pctx.createRadialGradient(0, 0, .42, 0, 0, .98);
+   vignette.addColorStop(0, 'rgba(0,0,0,0)'); vignette.addColorStop(1, `rgba(0,0,0,${Math.min(1, q.zoom * 2.4)})`);
+   pctx.fillStyle = vignette; pctx.fillRect(-1.1, -1.1, 2.2, 2.2); pctx.restore();
+  }
+ }
+ pctx.save(); pctx.globalAlpha = base; drawCard(pctx, tr, g, q.spot); pctx.restore();
+}
+// The zoomed card, painted once per layout for the 3D scene, where it lays back as the atoms lift off.
+const cardCanvas = document.createElement('canvas');
+function paintCard() {
+ if (!gpu || !(source.complete && source.naturalWidth)) return;
+ const tr = figureTransform(1), g = glyphRect(tr), pad = 8, k = Math.min(3, size.dpr * 1.5);
+ const rect = {x: g.x - pad, y: g.y - pad, w: g.w + 2 * pad, h: g.h + 2 * pad};
+ cardCanvas.width = Math.round(rect.w * k); cardCanvas.height = Math.round(rect.h * k);
+ const c = cardCanvas.getContext('2d');
+ c.setTransform(cardCanvas.width / rect.w, 0, 0, cardCanvas.height / rect.h, 0, 0); c.translate(-rect.x, -rect.y); c.imageSmoothingQuality = 'high';
+ drawCard(c, tr, g, 1);
+ gpu.setCard(cardCanvas, rect);
+}
+
+// ---------- Labels ----------
+const labelFont = () => `500 ${size.narrow ? 11.5 : 12.5}px Sora, Arial, sans-serif`;
+const labelSide = {};
+// Greedy placement: each label tries its preferred side, then the mirrored and vertical sides, and takes the first
+// spot inside the stage that is clear of labels already placed and, if possible, of the atoms too (the text halo
+// keeps a label readable over an edge or an atom; two labels on top of each other never are). A label keeps its side
+// while that side still works, so nothing hops back and forth as the model turns.
+function placeLabels(items, obstacles) {
+ ctx.font = labelFont();
+ const boxes = [], reach = size.narrow ? 14 : 22;
+ const inside = b => b.x >= 3 && b.x + b.w <= size.w - 3 && b.y >= 3 && b.y + b.h <= size.h - 3;
+ const free = b => !boxes.some(o => b.x < o.x + o.w && b.x + b.w > o.x && b.y < o.y + o.h && b.y + b.h > o.y);
+ const open = b => !obstacles.some(c => Math.hypot(Math.max(b.x, Math.min(c.x, b.x + b.w)) - c.x, Math.max(b.y, Math.min(c.y, b.y + b.h)) - c.y) < c.r + 2);
+ const clear = b => inside(b) && free(b) && open(b), usable = b => inside(b) && free(b);
+ return items.filter(i => i.p && i.opacity > .01).map(item => {
+  const {p, dir, text} = item, tw = ctx.measureText(text).width;
+  const sides = [dir, [-dir[0], dir[1]], [dir[0], -dir[1]], [-dir[0], -dir[1]], [0, -1], [0, 1]];
+  const geometry = d => {
+   const len = Math.hypot(d[0], d[1]) || 1, ux = d[0] / len, uy = d[1] / len, x1 = p.x + ux * (p.r + reach), y1 = p.y + uy * (p.r + reach);
+   const across = Math.abs(ux) > .3, tx = across ? (ux > 0 ? x1 + 6 : x1 - 6 - tw) : x1 - tw / 2, ty = across ? y1 + 4 : uy < 0 ? y1 - 6 : y1 + 14;
+   return {from: [p.x + ux * (p.r + 5), p.y + uy * (p.r + 5)], to: [x1, y1], tx, ty, box: {x: tx - 2, y: ty - 12, w: tw + 4, h: 16}};
+  };
+  const kept = labelSide[item.key];
+  let side = kept !== undefined && usable(geometry(sides[kept]).box) ? kept : sides.findIndex(d => clear(geometry(d).box));
+  if (side < 0) side = sides.findIndex(d => usable(geometry(d).box));
+  if (side < 0) side = 0;
+  labelSide[item.key] = side;
+  const g = geometry(sides[side]);
+  // Last resort: slide the text back inside the stage.
+  const dx = Math.max(3 - g.box.x, Math.min(0, size.w - 3 - g.box.x - g.box.w));
+  g.tx += dx; g.box.x += dx; boxes.push(g.box);
+  return {...item, ...g};
+ });
+}
+function drawLabel({text, opacity, color = '#d5ddf3', from, to, tx, ty}) {
+ ctx.save(); ctx.globalAlpha = opacity; ctx.font = labelFont();
+ ctx.strokeStyle = 'rgba(160,176,220,.55)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(...from); ctx.lineTo(...to); ctx.stroke();
+ ctx.lineJoin = 'round'; ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(8,10,18,.88)'; ctx.strokeText(text, tx, ty);
+ ctx.fillStyle = color; ctx.textAlign = 'left'; ctx.fillText(text, tx, ty);
+ ctx.restore();
+}
+function drawLabels(q, pts) {
+ ctx.clearRect(0, 0, size.w, size.h);
+ if (!pts) return;
+ const inspect = hover || selection, c = pts.center, away = p => [p.x - c.x, p.y - c.y - 1e-3];
+ // Sides are chosen afresh each time the labels come in.
+ if (q.labels <= 0 && !inspect) for (const k in labelSide) delete labelSide[k];
+ const obstacles = [pts.li, pts.tm, ...pts.oxygen.filter(o => o.visible)];
+ // Phones have room for one octahedral label: it names the site lithium last occupied, and moves on with it.
+ const atB = clamp((q.hop - .6) / .15);
+ placeLabels([
+  {key: 'a', p: pts.a, text: 'Octahedral site', opacity: q.labels * (size.narrow ? 1 - atB : q.hop < .5 ? 1 : .8), dir: away(pts.a)},
+  {key: 'b', p: pts.b, text: 'Octahedral site', opacity: q.labels * (size.narrow ? atB : .55 + .45 * clamp((q.hop - .7) / .2)), dir: away(pts.b)},
+  {key: 't', p: pts.t, text: 'Tetrahedral site', opacity: q.labels, dir: [-1, .9], color: '#c9e6d0'},
+  {key: 'tm', p: pts.tm, text: 'Transition metal', opacity: Math.max(q.tm, inspect === 'tm' ? 1 : 0), dir: [.9, .55], color: '#e3c6f5'},
+  {key: 'c', p: inspect === 'sites' ? pts.c : null, text: 'Second vacancy', opacity: 1, dir: away(pts.c)},
+ ], obstacles).forEach(drawLabel);
+}
+
+// ---------- Connectors ----------
+const connectors = {figure: $('#figure-connector'), model: $('#model-connector')};
+// A single smooth arc from just after the word to a point `gap` short of the target. It leaves nearly level
+// and arrives at no more than ~34°, so the head always reads as pointing into its target.
+function connectorGeometry(word, target, gap, heroRect) {
+ const a = word.getBoundingClientRect();
+ const S = [a.right - heroRect.left + 12, a.top - heroRect.top + a.height * .56];
+ const P = target;
+ const theta = Math.atan2(P[1] - S[1], P[0] - S[0]), a0 = theta * .25, a1 = Math.max(-.6, Math.min(.6, theta * 1.3));
+ const dir = [Math.cos(a1), Math.sin(a1)], tip = [P[0] - dir[0] * gap, P[1] - dir[1] * gap], E = [tip[0] - dir[0] * 5, tip[1] - dir[1] * 5];
+ const k = Math.hypot(E[0] - S[0], E[1] - S[1]) * .38;
+ const c1 = [S[0] + Math.cos(a0) * k, S[1] + Math.sin(a0) * k], c2 = [E[0] - dir[0] * k, E[1] - dir[1] * k];
+ return {d: `M${S[0]} ${S[1]}C${c1[0]} ${c1[1]},${c2[0]} ${c2[1]},${E[0]} ${E[1]}`, S, E, tip, dir};
+}
+let stageRect = {left: 0, top: 0};
+function drawConnector(g, state, geometry) {
+ const [line, head, dot, ink] = [g.querySelector('.line'), g.querySelector('.head'), g.querySelector('.dot'), $(`#${g.id}-ink`)];
+ const draw = reduced.matches && !playing ? (state.draw > 0 ? 1 : 0) : state.draw;
+ if (!geometry || draw <= 0 || state.fade <= 0) { g.style.opacity = '0'; return; }
+ g.style.opacity = String(state.fade);
+ line.setAttribute('d', geometry.d);
+ const [sx, sy] = geometry.S, [tx, ty] = geometry.tip, [ux, uy] = geometry.dir;
+ ink?.setAttribute('x1', sx); ink?.setAttribute('y1', sy); ink?.setAttribute('x2', tx); ink?.setAttribute('y2', ty);
+ const L = line.getTotalLength(), lineP = clamp(draw / .9), headP = easeOut(clamp((draw - .8) / .2));
+ line.style.strokeDasharray = `${L} ${L}`; line.style.strokeDashoffset = String(L * (1 - lineP));
+ // A narrow filled head with a shallow notch: tip, wing, notch, wing.
+ const k = .55 + .45 * headP, len = 9.5 * k, half = 3.8 * k, notch = 6.6 * k, bx = tx - ux * len, by = ty - uy * len;
+ head.setAttribute('d', headP > 0 ? `M${tx} ${ty}L${bx - uy * half} ${by + ux * half}L${tx - ux * notch} ${ty - uy * notch}L${bx + uy * half} ${by - ux * half}Z` : '');
+ head.style.opacity = String(headP);
+ dot.setAttribute('cx', sx); dot.setAttribute('cy', sy); dot.setAttribute('r', String(2.4 * easeOut(clamp(draw / .12))));
+}
+function drawConnectors(q, pts) {
+ const hr = hero.getBoundingClientRect(); stageRect = stageEl.getBoundingClientRect();
+ const ox = stageRect.left - hr.left, oy = stageRect.top - hr.top;
+ const svg = $('.hero-connectors'); svg.setAttribute('viewBox', `0 0 ${hr.width} ${hr.height}`);
+ let fig = null, mod = null;
+ if (figureBox && q.figureConnector.draw > 0 && !size.stacked) {
+  // "figures" points at the figure's visible left edge, then slides to the glyph as the spotlight lands on it.
+  const f = size.frame, g = figureBox.glyph, word = $('#figure-word').getBoundingClientRect();
+  const edge = [Math.max(f.x, figureBox.x), Math.max(figureBox.y + 24, Math.min(figureBox.y + figureBox.h - 24, word.top + word.height * .56 - stageRect.top))];
+  const onGlyph = [g.x, g.y + g.h * .5];
+  const k = easeInOut(q.spot);
+  fig = connectorGeometry($('#figure-word'), [edge[0] + (onGlyph[0] - edge[0]) * k + ox, edge[1] + (onGlyph[1] - edge[1]) * k + oy], 7, hr);
+ }
+ if (pts && q.modelConnector.draw > 0 && !size.stacked) mod = connectorGeometry($('#understanding-word'), [pts.a.x + ox, pts.a.y + oy], pts.a.r + 9, hr);
+ drawConnector(connectors.figure, q.figureConnector, fig);
+ drawConnector(connectors.model, q.modelConnector, mod);
+}
+// Stacked layouts: the word underlines itself while its picture is introduced, instead of a long arrow.
+const words = {figure: $('#figure-word'), model: $('#understanding-word')};
+function markWords(q) {
+ const mark = c => size.stacked ? (reduced.matches && !playing ? (c.draw > 0 ? 1 : 0) : c.draw) * c.fade : 0;
+ words.figure.style.setProperty('--mark', mark(q.figureConnector).toFixed(3));
+ words.model.style.setProperty('--mark', mark(q.modelConnector).toFixed(3));
+}
+
+// ---------- Scene ----------
+function view(q) {
+ // The printed glyph is read in the basis view; the model turns as it unfolds, then drifts a little.
+ // Most of the turn happens while the atoms lift off the card, so parallax shows their depth.
+ return {yaw: yaw - .3 + .64 * q.unfold + .2 * q.drift, pitch: pitch - .08 * q.unfold};
+}
+function render() {
+ if (!size.w && !measure()) return;
+ const q = sequence(t / DURATION), inspect = hover || selection;
+ drawPaper(q);
+ let pts = null;
+ if (gpu) {
+  const v = view(q), tr = figureTransform(q.zoom);
+  const glyph = q.unfold < 1 ? {scale: tr.scale, anchors: Object.fromEntries(Object.entries(ANCHORS).map(([k, p]) => [k, toScreen(tr, p)]))} : null;
+  // The model's bounding box is off-centre about the tetrahedral site; these offsets balance it in the frame.
+  pts = gpu.update({...v, offsetX: -.17, offsetY: -.14, unfold: q.unfold, glyph, card: q.card, tilt: q.tilt, lens: q.lens, atoms: q.atoms, hop: q.hop, oxygen: q.oxygen, context: q.context, edges: q.edges, route: q.route, tm: q.tm, selection: inspect});
+  gpu.render();
+ }
+ project = pts;
+ drawLabels(q, q.atoms > 0 ? pts : null);
+ drawConnectors(q, q.unfold > .6 ? pts : null);
+ markWords(q);
+ hitAreas = pts && q.interactive ? [
+  {type: 'li', ...pts.li}, {type: 'tm', ...pts.tm}, {type: 'sites', ...pts.b}, {type: 'sites', ...pts.c}, {type: 'sites', ...pts.t, r: Math.max(pts.t.r, 12)},
+  ...pts.oxygen.filter(o => o.visible).map(o => ({type: 'oxygen', ...o})),
+ ].sort((a, b) => a.z - b.z) : [];
+ updatePanel(q);
+}
+
+// ---------- Panel ----------
+const ticks = $('.hero-ticks');
+ticks.innerHTML = BEATS.slice(1).map(b => `<i style="left:${(b.start / DURATION * 100).toFixed(3)}%"></i>`).join('');
+// Captions cross-fade: the old line lifts away quickly, then the new one settles in.
+const swaps = new WeakMap();
+function setText(el, text, animate) {
+ if (el.dataset.text === text) return;
+ el.dataset.text = text;
+ swaps.get(el)?.cancel(); swaps.delete(el);
+ if (el.textContent === text) return;
+ if (!animate || !el.animate || reduced.matches) { el.textContent = text; return; }
+ const out = el.animate([{opacity: 1, transform: 'none'}, {opacity: 0, transform: 'translateY(-3px)'}], {duration: 160, easing: 'cubic-bezier(.4,0,1,1)', fill: 'forwards'});
+ swaps.set(el, out);
+ out.onfinish = () => {
+  el.textContent = text; out.cancel();
+  swaps.set(el, el.animate([{opacity: 0, transform: 'translateY(5px)'}, {opacity: 1, transform: 'none'}], {duration: 380, easing: 'cubic-bezier(.22,.75,.2,1)'}));
+ };
+}
+function updatePanel(q) {
+ const beat = beatAt(q.t), inspect = hover || selection;
+ const text = inspect ? DESCRIPTIONS[inspect] : beat.caption;
+ if (text !== shownText) { setText(caption, text, playing || !!inspect); shownText = text; }
+ if (beat.kicker !== shownKicker) { setText(kicker, beat.kicker, playing); shownKicker = beat.kicker; }
+ shownBeat = beat.id;
+ const value = Math.round(t / DURATION * 1000);
+ if (String(value) !== slider.value) slider.value = String(value);
+ slider.style.setProperty('--progress', `${value / 10}%`);
+ slider.setAttribute('aria-valuetext', `${Math.round(value / 10)} percent. ${beat.caption}`);
+ overlay.setAttribute('aria-label', q.interactive
+  ? `Ideal 1-TM rocksalt geometry. Lithium ${q.hop < .5 ? 'approaches' : q.hop < 1 ? 'leaves' : 'has reached'} ${q.hop < 1 ? 'the tetrahedral site between two octahedral sites' : 'the vacant octahedral site'}. Drag or use arrow keys to rotate.`
+  : 'Figure 1 from Hau et al. comparing layered, spinel and disordered rocksalt structures. The view focuses on the layered 1-TM hop.');
+ resetButton.hidden = !(Math.abs(yaw) > .01 || Math.abs(pitch) > .01);
+ document.querySelectorAll('[data-inspect]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.inspect === selection)));
+ hero.dataset.beat = beat.id;
+}
+function controls() {
+ const end = t >= DURATION;
+ play.setAttribute('aria-pressed', String(playing));
+ play.setAttribute('aria-label', playing ? 'Pause animation' : end ? 'Play the lithium hop again' : 'Play animation');
+ play.dataset.state = playing ? 'pause' : end ? 'again' : 'play';
+}
+
+// ---------- Playback ----------
+function schedule() { if (!frame) frame = requestAnimationFrame(tick); }
+function tick(now) {
+ frame = 0;
+ let busy = false;
+ if (playing) {
+  if (last) t = Math.min(DURATION, t + Math.min(now - last, 80) / 1000);
+  last = now; busy = true;
+  if (t >= DURATION) { playing = false; last = 0; controls(); }
+ }
+ if (viewTween) {
+  const k = clamp((now - viewTween.start) / 380), e = easeInOut(k);
+  yaw = viewTween.yaw * (1 - e); pitch = viewTween.pitch * (1 - e); busy = true;
+  if (k >= 1) { viewTween = null; yaw = pitch = 0; }
+ }
+ render();
+ if (busy && (playing || viewTween)) schedule();
+}
+function start() { playing = true; userPaused = false; last = 0; controls(); schedule(); }
+function pause(byUser = true) { playing = false; last = 0; if (byUser) userPaused = true; controls(); }
+function seek(time) { pause(); t = clamp(time / DURATION) * DURATION; controls(); render(); }
+function ensureInteractive() { if (!sequence(t / DURATION).interactive) { pause(); t = DURATION; controls(); } }
+
+play.addEventListener('click', () => { if (playing) pause(); else { if (t >= DURATION) t = HOP_REPLAY_AT; start(); } });
+replay.addEventListener('click', () => { t = 0; yaw = pitch = 0; selection = hover = ''; last = 0; slider.value = '0'; if (reduced.matches) pause(); else start(); render(); });
+slider.addEventListener('input', () => seek(Number(slider.value) / 1000 * DURATION));
+slider.addEventListener('focus', () => pause());
+resetButton.addEventListener('click', () => { if (reduced.matches) { yaw = pitch = 0; render(); } else { viewTween = {start: performance.now(), yaw, pitch}; schedule(); } overlay.focus?.(); });
+document.querySelectorAll('[data-inspect]').forEach(b => {
+ const key = b.dataset.inspect;
+ b.addEventListener('click', () => { ensureInteractive(); selection = selection === key ? '' : key; hover = ''; pause(); render(); });
+ b.addEventListener('mouseenter', () => { if (!sequence(t / DURATION).interactive) return; hover = key; render(); });
+ b.addEventListener('mouseleave', () => { hover = ''; render(); });
+ b.addEventListener('focus', () => { if (!sequence(t / DURATION).interactive) return; hover = key; render(); });
+ b.addEventListener('blur', () => { hover = ''; render(); });
+});
+
+// ---------- Pointer and keyboard ----------
+const at = e => { const r = overlay.getBoundingClientRect(); return {x: e.clientX - r.left, y: e.clientY - r.top}; };
+const hitTest = p => [...hitAreas].reverse().find(a => Math.hypot(a.x - p.x, a.y - p.y) < Math.max(a.r, 14))?.type || '';
+overlay.addEventListener('pointerdown', e => { if (!sequence(t / DURATION).interactive) return; pointer = {...at(e), id: e.pointerId}; dragged = false; viewTween = null; pause(); });
+overlay.addEventListener('pointermove', e => {
+ if (!sequence(t / DURATION).interactive) return;
+ const p = at(e);
+ if (pointer) {
+  const dx = p.x - pointer.x, dy = p.y - pointer.y;
+  if (Math.abs(dx) + Math.abs(dy) > 3) dragged = true;
+  if (e.pointerType !== 'touch' || Math.abs(dx) > Math.abs(dy)) { yaw += dx * .008; pitch = Math.max(-1.1, Math.min(1.1, pitch + dy * .006)); }
+  pointer = {...p, id: e.pointerId}; render();
+ } else if (e.pointerType !== 'touch') {
+  const next = hitTest(p); overlay.style.cursor = next ? 'pointer' : 'grab';
+  if (next !== hover) { hover = next; render(); }
+ }
+});
+overlay.addEventListener('pointerup', e => { if (!pointer) return; if (!dragged) { selection = hitTest(at(e)); hover = ''; render(); } pointer = null; });
+overlay.addEventListener('pointercancel', () => { pointer = null; });
+overlay.addEventListener('pointerleave', () => { pointer = null; if (hover) { hover = ''; render(); } });
+overlay.addEventListener('keydown', e => {
+ if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home'].includes(e.key)) return;
+ e.preventDefault(); ensureInteractive(); pause();
+ if (e.key === 'Home') { yaw = pitch = 0; }
+ else { yaw += e.key === 'ArrowLeft' ? -.15 : e.key === 'ArrowRight' ? .15 : 0; pitch = Math.max(-1.1, Math.min(1.1, pitch + (e.key === 'ArrowUp' ? -.12 : e.key === 'ArrowDown' ? .12 : 0))); }
+ render();
+});
+
+// ---------- Lifecycle ----------
+reduced.addEventListener('change', () => { if (reduced.matches) pause(); });
+document.addEventListener('visibilitychange', () => { last = 0; if (document.hidden && playing) { pause(false); userPaused = false; wasAuto = true; } else if (!document.hidden && wasAuto) { wasAuto = false; if (!userPaused && !reduced.matches && inView) start(); } });
+// Pause the story while the hero is scrolled away, and pick it up again on return.
+if ('IntersectionObserver' in window) new IntersectionObserver(([entry]) => {
+ inView = entry.isIntersecting;
+ if (!inView && playing) { pause(false); wasAuto = true; }
+ else if (inView && wasAuto && !userPaused && !document.hidden) { wasAuto = false; start(); }
+}, {threshold: .2}).observe(hero);
+new ResizeObserver(() => { if (measure()) render(); }).observe(stageEl);
+if (document.fonts?.ready) document.fonts.ready.then(() => { if (measure()) render(); });
+function begin() {
+ measure();
+ if (!gpu) {
+  render(); play.hidden = replay.hidden = true; slider.disabled = true;
+  caption.textContent = '3D is unavailable in this browser, so this is the original figure'; return;
+ }
+ if (!reduced.matches) start(); else controls();
+ render();
+}
+source.addEventListener('load', begin);
+source.addEventListener('error', () => {
+ if (!source.src.endsWith('.png')) { source.src = SOURCE_PNG; return; }
+ t = DURATION; begin(); pause(false); caption.textContent = 'The source figure didn’t load, but the 3D model is here to explore';
+});
+if (source.complete && source.naturalWidth) begin();
+const notes = $('#hero-notes-dialog');
+$('#hero-notes').addEventListener('click', () => { pause(); notes.showModal(); });
+notes.querySelector('.dialog-close').addEventListener('click', () => notes.close());
