@@ -84,7 +84,7 @@ function setToggle() {
   $('film-toggle').setAttribute('aria-pressed', String(paused));
   $('film-toggle-label').textContent = paused ? 'Play' : 'Pause';
 }
-function play() { if (!userPaused && onScreen && !document.hidden) video.play().catch(() => { userPaused = true; setToggle(); }); }
+function play() { if (ready && data && !userPaused && onScreen && !document.hidden) video.play().catch(() => { userPaused = true; setToggle(); }); }
 
 $('film-toggle').addEventListener('click', () => {
   userPaused = !video.paused ? true : false;
@@ -108,8 +108,14 @@ new IntersectionObserver(entries => {
 document.addEventListener('visibilitychange', () => document.hidden ? video.pause() : play());
 new ResizeObserver(() => frame >= 0 && placeLabels(frame)).observe(stage);
 
-video.addEventListener('loadedmetadata', () => { if (video.currentTime === 0) video.currentTime = (POSTER_FRAME + .5) / 24; }, {once: true});
-if (video.readyState >= 1 && video.currentTime === 0) video.currentTime = (POSTER_FRAME + .5) / 24;
+// Start on the poster frame, and only play once that seek has landed.
+let ready = false;
+function startAtPoster() {
+  video.addEventListener('seeked', () => { ready = true; play(); }, {once: true});
+  video.currentTime = (POSTER_FRAME + .5) / 24;
+}
+if (video.readyState >= 1) startAtPoster();
+else video.addEventListener('loadedmetadata', startAtPoster, {once: true});
 
 fetch('assets/diffusion-film/film.json').then(r => r.json()).then(json => {
   data = json;
