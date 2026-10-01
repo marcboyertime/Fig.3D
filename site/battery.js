@@ -23,21 +23,27 @@ function selection(){
   $('part-copy').textContent=item?.copy||(mode==='discharge'?'During discharge, the coupled chemical reaction delivers electrical energy to the load.':'During charge, the external source drives lithium back into graphite, storing chemical energy in the cell.');
   $('clear-selection').hidden=!pinned;scene?.select(key);
 }
-function onPart(key,pin){if(pin)pinned=pinned===key?null:key;else previewed=key;selection();}
+// Hover previews wait a beat before showing, and a little longer before clearing, so a pointer sweeping across the scene does not flicker the panel.
+let hoverTimer=0;
+function onPart(key,pin){
+  clearTimeout(hoverTimer);
+  if(pin){pinned=pinned===key?null:key;previewed=null;selection();return;}
+  if(key===previewed)return;hoverTimer=setTimeout(()=>{previewed=key;selection();},key?(previewed?60:140):260);
+}
 function view(){
   $('cell-view').toggleAttribute('aria-current',!inside);$('graphite-view').toggleAttribute('aria-current',inside);
   if(!inside)$('cell-view').setAttribute('aria-current','page');else $('graphite-view').setAttribute('aria-current','page');
   $('view-eyebrow').textContent=inside?'INSIDE THE NEGATIVE ELECTRODE':'THE WHOLE CELL';
-  $('view-title').innerHTML=inside?(mode==='discharge'?'Between the sheets. <br>Out through an edge.':'Through an edge. <br>Between the sheets.'):'Two paths. <br>One reaction.';
+  $('view-title').innerHTML=inside?(mode==='discharge'?'Between the sheets<br>Out through an edge':'Through an edge<br>Between the sheets'):'Two paths<br>One reaction';
   $('view-copy').textContent=inside?(mode==='discharge'?'Graphite releases lithium from its interlayer galleries. Its carbon framework remains in place.':'Graphite accepts lithium into its interlayer galleries. This reversible insertion is called intercalation.'):(mode==='discharge'?'Lithium ions cross the electrolyte. Electrons take the external circuit. The electrode reactions connect their journeys.':'The charging source reverses the coupled reactions. Lithium returns to graphite as electrons arrive through the external circuit.');
   $('dive').textContent=inside?'Return to the cell':'Go inside graphite';
   $('scene-hint').textContent=inside?'Lithium occupies the interlayer galleries.':'Two paths, coupled at the electrodes.';
   $('lithium-key').textContent=inside?'Intercalated lithium':'Lithium ions';$('electron-key').hidden=inside;$('carbon-key').hidden=!inside;
-  $('cell-canvas').setAttribute('aria-label',inside?'Three-dimensional hexagonal carbon sheets, with lithium in the interlayer galleries. A highlighted path enters or exits through an exposed edge.':'Three-dimensional graphite and cobalt oxide cell. Lithium ions cross the electrolyte; electrons travel through the external circuit.');
+  $('cell-canvas').setAttribute('aria-label',inside?'Three-dimensional hexagonal carbon sheets, with lithium in the interlayer galleries. A highlighted path enters or exits through an exposed edge. Drag or use the arrow keys to rotate.':'Three-dimensional graphite and cobalt oxide cell. Lithium ions cross the electrolyte; electrons travel through the external circuit. Drag or use the arrow keys to rotate.');
   selection();
 }
 function setView(value){inside=value;pinned=null;previewed=null;scene?.setView(inside,reduced.matches);view();}
-const formula=(x,host)=>`Li<sub>${x.toFixed(2)}</sub>${host}`;
+const formula=(x,host)=>`<span class="term">Li<sub>${x.toFixed(2)}</sub>${host}</span>`;
 function renderState(){
   state=batteryState(progress,mode);scene?.setState(state);
   $('progress').value=String(Math.round(state.negative*1000));$('progress-label').textContent=state.negative.toFixed(3);
@@ -46,12 +52,16 @@ function renderState(){
   for(const name of ['negative','positive']){
     $(`${name}-line`).setAttribute('d',`M50 ${y(start[name])}L574 ${y(end[name])}`);
     $(`${name}-dot`).setAttribute('cx',x);$(`${name}-dot`).setAttribute('cy',y(state[name]));
-    $(`${name}-chart-label`).setAttribute('x',330);$(`${name}-chart-label`).setAttribute('y',y((start[name]+end[name])/2)+(name==='negative'?30:-16));
+    // Name each line at the end where the two are furthest apart: above the upper line, below the lower one.
+    const atEnd=Math.abs(end.negative-end.positive)>=Math.abs(start.negative-start.positive),v=atEnd?end[name]:start[name],upper=v>=(atEnd?Math.max(end.negative,end.positive):Math.max(start.negative,start.positive));
+    const tag=$(`${name}-chart-label`);tag.setAttribute('x',atEnd?566:58);tag.setAttribute('text-anchor',atEnd?'end':'start');tag.setAttribute('y',y(v)+(upper?-14:28));
   }
   $('chart-cursor').setAttribute('d',`M${x} 22V225`);
-  const xi=state.extent.toFixed(2),ions=`${xi} Li<sup>+</sup> + ${xi} e<sup>−</sup>`,arrow='<span class="rx-arrow">→</span>',c='C<sub>6</sub>',oxide='CoO<sub>2</sub>';
-  $('negative-reaction').innerHTML=mode==='discharge'?`${formula(.60,c)} ${arrow} ${formula(state.negative,c)} + ${ions}`:`${formula(.30,c)} + ${ions} ${arrow} ${formula(state.negative,c)}`;
-  $('positive-reaction').innerHTML=mode==='discharge'?`${formula(.60,oxide)} + ${ions} ${arrow} ${formula(state.positive,oxide)}`:`${formula(.90,oxide)} ${arrow} ${formula(state.positive,oxide)} + ${ions}`;
+  const xi=state.extent.toFixed(2),ions=`<span class="term">+ ${xi} Li<sup>+</sup></span> <span class="term">+ ${xi} e<sup>−</sup></span>`,arrow='<span class="rx-arrow">→</span>',c='C<sub>6</sub>',oxide='CoO<sub>2</sub>';
+  // Each term, and the arrow with the term after it, stays on one line when the equation wraps on a phone.
+  const yields=t=>`<span class="term">${arrow}${t}</span>`;
+  $('negative-reaction').innerHTML=mode==='discharge'?`${formula(.60,c)} ${yields(formula(state.negative,c))} ${ions}`:`${formula(.30,c)} ${ions} ${yields(formula(state.negative,c))}`;
+  $('positive-reaction').innerHTML=mode==='discharge'?`${formula(.60,oxide)} ${ions} ${yields(formula(state.positive,oxide))}`:`${formula(.90,oxide)} ${yields(formula(state.positive,oxide))} ${ions}`;
 }
 function renderMode(){
   document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));

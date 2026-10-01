@@ -1,6 +1,10 @@
 import {CELL,ROUTES,pointAlongPolyline,graphiteGeometry,graphiteIonPath,inventoryFills} from './battery-model.mjs';
 const COLORS={lithium:0x80f3d0,electron:0xc5a0ff,carbon:0x526b8e,negative:0x7da6f8,positive:0xa786ef};
-const smooth=t=>t*t*(3-2*t);
+const smooth=t=>t*t*(3-2*t),clamp01=t=>Math.max(0,Math.min(1,t)),easeOut=t=>1-Math.pow(1-clamp01(t),3);
+// Turntable orbit: yaw is unbounded (a drag can go all the way round); elevation stays between a low side view and a near top view.
+const ORBIT={yawPerPx:.0068,pitchPerPx:.0048,minElevation:-.22,maxElevation:1.3,follow:70,spinDecay:380};
+const wrapAngle=a=>Math.atan2(Math.sin(a),Math.cos(a));
+const SVG='http://www.w3.org/2000/svg';
 export class BatteryScene{
   constructor(canvas,labelLayer,onPart,options={}){
     const T=window.THREE;if(!T)throw new Error('The 3D library could not load.');this.T=T;this.canvas=canvas;this.labelLayer=labelLayer;this.onPart=onPart||(()=>{});this.options=options;this.phase=.25;
@@ -11,18 +15,40 @@ export class BatteryScene{
     const key=new T.DirectionalLight(0xd7e4ff,1.25);key.position.set(-2,8,8);this.scene.add(key);
     const rim=new T.DirectionalLight(0x8d65ff,.9);rim.position.set(2,3,-6);this.scene.add(rim);
     const glow=new T.PointLight(0x9afde4,.24,20);glow.position.set(-4,1,4);this.scene.add(glow);
-    this.cell=new T.Group();this.scene.add(this.cell);this.fadeMaterials=[];this.pickMeshes=[];this.labels=[];this.zoom=0;this.targetZoom=0;this.rotation={x:0,y:0};this.targetRotation={x:0,y:0};this.dragging=false;this.dirty=true;
+    this.cell=new T.Group();this.scene.add(this.cell);this.fadeMaterials=[];this.pickMeshes=[];this.labels=[];this.zoom=0;this.targetZoom=0;this.rotation={x:0,y:0};this.targetRotation={x:0,y:0};this.spin=0;this.dragging=false;this.dirty=true;this.fit=1;this.arrowDraw=1;this.reduced=matchMedia('(prefers-reduced-motion:reduce)');
     this.makeCell();this.makeGraphite();if(options.labels!==false)this.makeLabels();
     new ResizeObserver(()=>this.resize()).observe(canvas.parentElement);this.resize();
     if(options.interactive===false)return;
-    this.canvas.addEventListener('pointerdown',e=>{this.dragging=true;this.dragStart={x:e.clientX,y:e.clientY,rx:this.targetRotation.x,ry:this.targetRotation.y};this.dragDistance=0;canvas.setPointerCapture(e.pointerId);});
-    this.canvas.addEventListener('pointermove',e=>{
-      if(this.dragging){const dx=e.clientX-this.dragStart.x,dy=e.clientY-this.dragStart.y;this.dragDistance=Math.hypot(dx,dy);this.targetRotation.x=Math.max(-1.25,Math.min(1.25,this.dragStart.rx-dx*.004));this.targetRotation.y=Math.max(-.32,Math.min(.32,this.dragStart.ry+dy*.003));this.dirty=true;}
-      else this.pick(e,false);
+    // Drag follows the hand: right turns the cell right, down tips its top toward the reader.
+    canvas.addEventListener('pointerdown',e=>{
+      if(e.button>0)return;this.dragging=true;this.spin=0;this.dragDistance=0;
+      this.dragStart={x:e.clientX,y:e.clientY,rx:this.targetRotation.x,ry:this.targetRotation.y};this.lastDrag={t:performance.now(),x:this.targetRotation.x};
+      canvas.setPointerCapture?.(e.pointerId);canvas.classList.add('is-dragging');this.onPart(null,false);
     });
-    this.canvas.addEventListener('pointerup',e=>{this.dragging=false;if(this.dragDistance<6)this.pick(e,true);});
-    this.canvas.addEventListener('pointercancel',()=>this.dragging=false);
-    this.canvas.addEventListener('pointerleave',()=>{if(!this.dragging)this.onPart(null,false);});
+    canvas.addEventListener('pointermove',e=>{
+      if(!this.dragging){if(e.pointerType!=='touch')this.pick(e,false);return;}
+      const dx=e.clientX-this.dragStart.x,dy=e.clientY-this.dragStart.y;this.dragDistance=Math.max(this.dragDistance,Math.hypot(dx,dy));
+      this.targetRotation.x=this.dragStart.rx-dx*ORBIT.yawPerPx;
+      this.targetRotation.y=Math.max(ORBIT.minElevation-.4,Math.min(ORBIT.maxElevation-.4,this.dragStart.ry+dy*ORBIT.pitchPerPx));
+      // Release velocity, smoothed over the last few moves, carries the turn on.
+      const dt=Math.max(1,performance.now()-this.lastDrag.t),v=(this.targetRotation.x-this.lastDrag.x)/dt;
+      this.velocity=dt>80?v:(this.velocity||0)*.6+v*.4;this.lastDrag={t:performance.now(),x:this.targetRotation.x};this.dirty=true;
+    });
+    const release=(e,cancel)=>{
+      if(!this.dragging)return;this.dragging=false;canvas.classList.remove('is-dragging');
+      const recent=performance.now()-this.lastDrag.t<90;
+      if(!cancel&&recent&&!this.reduced.matches&&Math.abs(this.velocity||0)>.0003)this.spin=Math.max(-.012,Math.min(.012,this.velocity));
+      this.velocity=0;if(!cancel&&this.dragDistance<6)this.pick(e,true);
+    };
+    canvas.addEventListener('pointerup',e=>release(e,false));
+    canvas.addEventListener('pointercancel',e=>release(e,true));
+    canvas.addEventListener('pointerleave',()=>{if(!this.dragging)this.onPart(null,false);});
+    canvas.addEventListener('keydown',e=>{
+      const step={ArrowLeft:[.26,0],ArrowRight:[-.26,0],ArrowUp:[0,-.14],ArrowDown:[0,.14]}[e.key];
+      if(e.key==='Home'){e.preventDefault();this.resetCamera(this.reduced.matches);return;}
+      if(!step)return;e.preventDefault();this.spin=0;this.targetRotation.x+=step[0];
+      this.targetRotation.y=Math.max(ORBIT.minElevation-.4,Math.min(ORBIT.maxElevation-.4,this.targetRotation.y+step[1]));this.dirty=true;
+    });
   }
   vector(p){return new this.T.Vector3(...p);}
   material(color,props={}){const settings={color:new this.T.Color(color).convertSRGBToLinear(),roughness:.5,metalness:.16,...props};if(typeof settings.emissive==='number')settings.emissive=new this.T.Color(settings.emissive).convertSRGBToLinear();return new this.T.MeshStandardMaterial(settings);}
@@ -75,28 +101,103 @@ export class BatteryScene{
     carbon.userData.part='carbon';bonds.userData.part='carbon';this.pickMeshes.push(carbon,bonds);this.graphite.add(carbon,bonds);
     this.lithiumSites=g.sites.map(site=>{const m=new T.Mesh(new T.SphereGeometry(.145,16,12),this.material(COLORS.lithium,{emissive:COLORS.lithium,emissiveIntensity:.38,transparent:true}));m.position.set(...site);m.userData.part='lithium';this.graphite.add(m);this.pickMeshes.push(m);return m;});
     const site=g.sites.find(s=>Math.abs(s[0])<.01&&Math.abs(s[2])<.01&&s[1]<0)||g.sites[0];
-    this.galleryPath=graphiteIonPath(site);this.galleryMarker=new T.Mesh(new T.SphereGeometry(.2,20,14),this.material(COLORS.lithium,{emissive:COLORS.lithium,emissiveIntensity:.8}));this.graphite.add(this.galleryMarker);
+    this.galleryPath=graphiteIonPath(site);this.galleryMarker=new T.Mesh(new T.SphereGeometry(.2,20,14),this.material(COLORS.lithium,{emissive:COLORS.lithium,emissiveIntensity:1.1}));this.graphite.add(this.galleryMarker);
+    // A soft halo singles out the explanatory ion from the occupancy population.
+    this.galleryMarker.add(new T.Mesh(new T.SphereGeometry(.42,24,16),new T.MeshBasicMaterial({color:COLORS.lithium,transparent:true,opacity:.16,depthWrite:false})));
     this.galleryGuide=this.line(this.galleryPath,0x67b59f,.009,this.graphite);this.galleryGuide.material.transparent=true;this.galleryGuide.material.opacity=.5;
     this.galleryMarker.visible=false;this.galleryGuide.visible=false;
   }
   makeLabels(){
+    const g=this.graphiteData,local=p=>CELL.graphiteOrigin.map((o,i)=>o+p[i]*CELL.graphiteScale);
+    const top=g.layerY.at(-1),gallery=(g.layerY[0]+g.layerY[1])/2,edge=this.galleryPath[0];
+    // Each callout names a point on the object and sits off it in a fixed screen direction, joined by a hairline.
     const entries=[
-      ['negative','Graphite','Anode · negative −',[-3.5,-1.9,1.45],'cell'],
-      ['positive','Cobalt oxide','Cathode · positive +',[3.6,-1.9,1.45],'cell'],
-      ['separator','Separator','',[-.1,1.6,1.15],'cell'],
-      ['load','Load','Energy delivered',[0,3.4,0],'cell'],
-      ['carbon','Carbon sheets','Hexagonal networks',[-4,.9,.4],'inside'],
-      ['gallery','Interlayer gallery','Space for lithium',[-3.3,-.12,1.0],'inside'],
-      ['edge','Exposed edge','Entry / exit',[-1.8,-.25,0],'inside']
+      ['negative','Graphite','Anode · negative −',[-3.25,-1.5,0],[-.65,1],'cell'],
+      ['positive','Cobalt oxide','Cathode · positive +',[3.25,-1.5,0],[.3,1],'cell'],
+      ['separator','Separator','Porous film',[0,1.575,0],[1,-.15],'cell',1.4],
+      ['load','Load','Energy delivered',[0,3.1,0],[0,-1],'cell'],
+      ['carbon','Carbon sheets','Hexagonal networks',local([-2.6,top,-1.1]),[-.45,-1],'inside'],
+      ['gallery','Interlayer gallery','Space for lithium',local([-3.1,gallery,1.4]),[-.35,1],'inside',1.9],
+      ['edge','Exposed edge','Entry and exit',local([edge[0]-.6,edge[1],edge[2]]),[.6,1],'inside']
     ];
-    for(const [key,title,sub,point,view]of entries){const el=document.createElement('button');el.className=`scene-label label-${key}`;el.type='button';el.innerHTML=`<span>${title}</span><small>${sub}</small>`;el.dataset.part=key;el.setAttribute('aria-pressed','false');
-      el.addEventListener('pointerenter',()=>this.onPart(key,false));el.addEventListener('pointerleave',()=>this.onPart(null,false));el.addEventListener('focus',()=>this.onPart(key,false));el.addEventListener('blur',()=>this.onPart(null,false));el.addEventListener('click',()=>this.onPart(key,true));this.labelLayer.append(el);this.labels.push({key,el,point:this.vector(point),view});
+    this.annotations=document.createElementNS(SVG,'svg');this.annotations.setAttribute('class','scene-annotations');this.annotations.setAttribute('aria-hidden','true');this.labelLayer.prepend(this.annotations);
+    for(const [key,title,sub,point,dir,view,reach=1]of entries){
+      const el=document.createElement('button');el.className=`scene-label label-${key}`;el.type='button';el.innerHTML=`<span>${title}</span><small>${sub}</small>`;el.dataset.part=key;el.setAttribute('aria-pressed','false');
+      el.addEventListener('pointerenter',()=>this.onPart(key,false));el.addEventListener('pointerleave',()=>this.onPart(null,false));el.addEventListener('focus',()=>this.onPart(key,false));el.addEventListener('blur',()=>this.onPart(null,false));el.addEventListener('click',()=>this.onPart(key,true));this.labelLayer.append(el);
+      const leader=document.createElementNS(SVG,'path'),dot=document.createElementNS(SVG,'circle');leader.setAttribute('class',`leader leader-${key}`);dot.setAttribute('class',`anchor anchor-${key}`);dot.setAttribute('r','2.2');this.annotations.append(leader,dot);
+      const n=Math.hypot(...dir);this.labels.push({key,el,leader,dot,point:this.vector(point),dir:[dir[0]/n,dir[1]/n],view,reach});
+    }
+    // Direction arrows: lithium ions through the electrolyte, electrons around the circuit, lithium along a gallery.
+    this.arrows=['ion','electron','gallery'].map(kind=>{
+      const group=document.createElementNS(SVG,'g'),line=document.createElementNS(SVG,'path'),head=document.createElementNS(SVG,'path'),text=document.createElementNS(SVG,'text');
+      group.setAttribute('class',`flow-arrow flow-${kind}`);line.setAttribute('class','line');head.setAttribute('class','head');text.setAttribute('class','tag');
+      text.innerHTML=kind==='electron'?'e<tspan dy="-6" font-size="10">−</tspan>':'Li<tspan dy="-6" font-size="10">+</tspan>';
+      group.append(line,head,text);this.annotations.append(group);return {kind,group,line,head,text};
+    });
+  }
+  project(point){const p=point.clone().project(this.camera);return [(p.x*.5+.5)*this.width,(-p.y*.5+.5)*this.height,p.z];}
+  layoutLabels(z){
+    const W=this.width,H=this.height,placed=[];this.annotations.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    for(const label of this.labels){
+      const opacity=label.view==='cell'?1-smooth(clamp01(z/.22)):smooth(clamp01((z-.78)/.22));
+      label.el.hidden=opacity<.02;label.el.style.opacity=opacity.toFixed(3);label.el.style.pointerEvents=opacity>.6?'':'none';
+      label.leader.style.opacity=label.dot.style.opacity=(opacity*.9).toFixed(3);if(label.el.hidden)continue;
+      const [ax,ay]=this.project(label.point),w=label.el.offsetWidth||120,h=label.el.offsetHeight||40,[dx,dy]=label.dir,reach=(W<520?22:30)*label.reach,edge=W<520?12:6;
+      let cx=ax+dx*(reach+w/2),cy=ay+dy*(reach+h/2);
+      // Keep the whole callout inside the frame, then step it clear of callouts already placed.
+      const fit=()=>{cx=Math.max(w/2+edge,Math.min(W-w/2-edge,cx));cy=Math.max(h/2+4,Math.min(H-h/2-4,cy));};fit();
+      for(let pass=0;pass<3;pass++)for(const o of placed){const ox=(w+o.w)/2+6-Math.abs(cx-o.cx),oy=(h+o.h)/2+4-Math.abs(cy-o.cy);if(ox>0&&oy>0){cy+=(cy>=o.cy?1:-1)*oy;fit();}}
+      placed.push({cx,cy,w,h});label.el.style.left=`${cx}px`;label.el.style.top=`${cy}px`;
+      // The hairline runs from the anchor to the nearest edge of the text block.
+      const vx=ax-cx,vy=ay-cy,t=Math.min(Math.abs(vx)>1e-6?(w/2+5)/Math.abs(vx):Infinity,Math.abs(vy)>1e-6?(h/2+3)/Math.abs(vy):Infinity);
+      const ex=cx+vx*Math.min(1,t),ey=cy+vy*Math.min(1,t),len=Math.hypot(ax-ex,ay-ey);
+      if(t>=1||len<7){label.leader.setAttribute('d','');}else{const ux=(ex-ax)/len,uy=(ey-ay)/len;label.leader.setAttribute('d',`M${(ax+ux*4).toFixed(1)} ${(ay+uy*4).toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}`);}
+      label.dot.setAttribute('cx',ax.toFixed(1));label.dot.setAttribute('cy',ay.toFixed(1));
     }
   }
-  resize(){const r=this.canvas.parentElement.getBoundingClientRect();this.width=r.width;this.height=r.height;this.renderer.setSize(r.width,r.height,false);this.camera.aspect=r.width/r.height;this.camera.updateProjectionMatrix();this.dirty=true;this.render();}
+  layoutArrows(z){
+    if(!this.state)return;const forward=this.state.mode==='discharge',draw=this.arrowDraw,cellOpacity=1-smooth(clamp01(z/.22)),insideOpacity=smooth(clamp01((z-.78)/.22));
+    const g=this.graphiteData,local=p=>this.vector(CELL.graphiteOrigin.map((o,i)=>o+p[i]*CELL.graphiteScale)),path=this.galleryPath;
+    const lift=(g.layerY[1]-g.layerY[0])*.28,site=path[1],outer=path[0];
+    const spans={
+      ion:[this.vector([-.85,-2.35,1.5]),this.vector([1.45,-2.35,1.5]),cellOpacity],
+      electron:[this.vector([-3.5,3.22,0]),this.vector([-1.25,3.22,0]),cellOpacity],
+      // Discharge: out of the gallery toward the edge. Charge: in from the edge.
+      gallery:[local([site[0]+(outer[0]-site[0])*.28,site[1]+lift,site[2]]),local([site[0]+(outer[0]-site[0])*.92,site[1]+lift,site[2]]),insideOpacity]
+    };
+    for(const a of this.arrows){
+      const [p,q,opacity]=spans[a.kind];a.group.style.opacity=opacity.toFixed(3);if(opacity<.02)continue;
+      let [sx,sy]=this.project(p),[tx,ty]=this.project(q);if(!forward)[sx,sy,tx,ty]=[tx,ty,sx,sy];
+      const L=Math.hypot(tx-sx,ty-sy)||1,ux=(tx-sx)/L,uy=(ty-sy)/L,lineP=clamp01(draw/.85),headP=easeOut((draw-.75)/.25);
+      const ex=sx+ux*(L-5)*lineP,ey=sy+uy*(L-5)*lineP;
+      a.line.setAttribute('d',`M${sx.toFixed(1)} ${sy.toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}`);
+      const k=.55+.45*headP,len=9*k,half=3.6*k,notch=6.2*k,bx=tx-ux*len,by=ty-uy*len;
+      a.head.setAttribute('d',headP>0?`M${tx} ${ty}L${bx-uy*half} ${by+ux*half}L${tx-ux*notch} ${ty-uy*notch}L${bx+uy*half} ${by-ux*half}Z`:'');a.head.style.opacity=headP.toFixed(3);
+            // The tag leads the arrow, written just behind its tail: "Li⁺ →" or "← Li⁺".
+      const gap=(a.kind==='electron'?12:17)+(Math.abs(ux)>.5?0:4),mx=sx-ux*gap,my=sy-uy*gap;
+      a.text.setAttribute('x',mx.toFixed(1));a.text.setAttribute('y',(my+4.5).toFixed(1));a.text.style.opacity=clamp01(draw/.5).toFixed(3);
+    }
+  }
+  replayArrows(){this.arrowDraw=this.reduced.matches?1:0;this.dirty=true;}
+  resize(){const r=this.canvas.parentElement.getBoundingClientRect();this.width=r.width;this.height=r.height;this.renderer.setSize(r.width,r.height,false);this.camera.aspect=r.width/r.height;this.camera.updateProjectionMatrix();if(this.options.labels!==false)this.fitCell();this.dirty=true;this.render();}
+  // Frame the whole cell, circuit and callouts at the default angle, whatever the viewport's shape.
+  fitCell(){
+    const target=this.vector([0,.45,0]),dir=this.vector([6.4,4.6,9.5]),box=[];
+    for(const x of [-4.55,4.55])for(const y of [-1.625,1.625])for(const z of [-1.6,1.6])box.push(this.vector([x,y,z]));
+    for(const x of [-4.2,4.2])box.push(this.vector([x,2.85,0]));for(const x of [-.7,.7])for(const z of [-.32,.32])box.push(this.vector([x,3.1,z]));
+    const narrow=this.width<520,pad={x:narrow?8:40,top:narrow?60:64,bottom:narrow?52:58};
+    // Find the closest camera that fits the cell, then centre it in the space the callouts leave.
+    this.camera.clearViewOffset();
+    const bounds=k=>{this.camera.position.copy(target).add(dir.clone().multiplyScalar(k));this.camera.lookAt(target);this.camera.updateMatrixWorld();
+      const pts=box.map(p=>this.project(p));return {x0:Math.min(...pts.map(p=>p[0])),x1:Math.max(...pts.map(p=>p[0])),y0:Math.min(...pts.map(p=>p[1])),y1:Math.max(...pts.map(p=>p[1]))};};
+    const fits=k=>{const r=bounds(k);return r.x1-r.x0<=this.width-2*pad.x&&r.y1-r.y0<=this.height-pad.top-pad.bottom;};
+    let lo=.7,hi=2.6;for(let i=0;i<22;i++){const mid=(lo+hi)/2;if(fits(mid))hi=mid;else lo=mid;}this.fit=Math.max(.92,hi);
+    const r=bounds(this.fit);this.shift=[(r.x0+r.x1)/2-this.width/2,(r.y0+r.y1)/2-(pad.top+this.height-pad.bottom)/2];
+  }
   setState(state){
     this.state=state;const phase=this.phase;
-    this.ionMarkers.forEach((m,i)=>{const f=((phase+i/3)%1+1)%1;const p=pointAlongPolyline(ROUTES.cell.ions,f);m.position.set(p[0],[-.85,0,.85][i%3],[-.85,0,.85][Math.floor(i/3)]);m.visible=true;});
+    // Ions are staggered by the golden ratio so they cross as a stream, not in marching ranks, and grow or shrink at the electrode faces.
+    this.ionMarkers.forEach((m,i)=>{const f=((phase+i*.618034)%1+1)%1,p=pointAlongPolyline(ROUTES.cell.ions,f);m.position.set(p[0],[-.85,0,.85][i%3]+[.12,-.1,.04][Math.floor(i/3)],[-.85,0,.85][Math.floor(i/3)]+[-.08,.1,0][i%3]);m.scale.setScalar(Math.max(.001,smooth(clamp01(Math.min(f,1-f)/.07))));m.visible=true;});
     this.electronMarkers.forEach((m,i)=>{const f=((phase+i/9)%1+1)%1;m.position.set(...pointAlongPolyline(ROUTES.cell.electrons,f));m.visible=true;});
     inventoryFills(state.positive).forEach((fill,i)=>this.inventoryPositive[i].material.opacity=fill);
     inventoryFills(state.negative,this.lithiumSites.length).forEach((fill,i)=>{this.lithiumSites[i].material.opacity=fill;this.lithiumSites[i].visible=fill>0;});
@@ -106,20 +207,23 @@ export class BatteryScene{
     this.sourcePlus.visible=this.sourceBar.visible=state.mode==='charge';
     this.deviceBand.scale.x=state.mode==='charge'?.28:1;this.deviceBand.position.x=state.mode==='charge'?-.43:0;this.deviceBand.material.color.setHex(state.mode==='charge'?COLORS.electron:COLORS.lithium).convertSRGBToLinear();this.deviceBand.material.emissive.copy(this.deviceBand.material.color);
     if(this.labelMode!==state.mode){
-      const device=this.labels.find(l=>l.key==='load');if(device){device.el.querySelector('span').textContent=state.mode==='charge'?'Charging source':'Load';device.el.querySelector('small').textContent=state.mode==='charge'?'Energy supplied':'Energy delivered';}
+      this.labels.forEach(l=>{if(['negative','positive','load'].includes(l.key)&&this.labelMode){l.el.classList.remove('is-swapped');void l.el.offsetWidth;l.el.classList.add('is-swapped');}});const device=this.labels.find(l=>l.key==='load');if(device){device.el.querySelector('span').textContent=state.mode==='charge'?'Charging source':'Load';device.el.querySelector('small').textContent=state.mode==='charge'?'Energy supplied':'Energy delivered';}
       for(const [key,material,polarity,sign] of [['negative','Graphite','negative','−'],['positive','Cobalt oxide','positive','+']]){
         const label=this.labels.find(l=>l.key===key);if(!label)continue;
         const role=state.oxidation===key?'Anode':'Cathode',reaction=state.oxidation===key?'oxidation':'reduction';
         label.el.querySelector('small').innerHTML=`${role} · <span class="polarity-word">${polarity} </span>${sign}`;
         label.el.setAttribute('aria-label',`${material}, ${polarity} electrode: ${role.toLowerCase()}, ${reaction} during ${state.mode}. Select for explanation.`);
       }
-      this.labelMode=state.mode;
+      this.labelMode=state.mode;this.replayArrows();
     }
     this.dirty=true;
   }
   setFlow(phase){this.phase=phase;if(this.state)this.setState(this.state);}
-  setView(inside,reduced){this.targetZoom=inside?1:0;this.targetRotation={x:0,y:0};if(reduced){this.zoom=this.targetZoom;this.rotation={x:0,y:0};}this.dirty=true;}
-  resetCamera(reduced=false){this.targetRotation={x:0,y:0};if(reduced)this.rotation={x:0,y:0};this.dirty=true;}
+  setView(inside,reduced){this.targetZoom=inside?1:0;this.resetCamera(reduced);if(reduced)this.zoom=this.targetZoom;this.replayArrows();}
+  resetCamera(reduced=false){
+    // Unwind whole turns first, so the reset takes the short way back to the front view.
+    this.spin=0;this.rotation.x=wrapAngle(this.rotation.x);this.targetRotation={x:0,y:0};if(reduced)this.rotation={x:0,y:0};this.dirty=true;
+  }
   select(part){this.labels.forEach(l=>l.el.setAttribute('aria-pressed',String(l.key===part)));}
   pick(event,pin){
     const r=this.canvas.getBoundingClientRect();this.pointer.set((event.clientX-r.left)/r.width*2-1,-(event.clientY-r.top)/r.height*2+1);this.raycaster.setFromCamera(this.pointer,this.camera);
@@ -128,20 +232,23 @@ export class BatteryScene{
   }
   render(dt=16){
     const delta=this.targetZoom-this.zoom;if(Math.abs(delta)>.0005){this.zoom+=delta*Math.min(1,dt/145);this.dirty=true;}else this.zoom=this.targetZoom;
-    for(const axis of ['x','y']){const d=this.targetRotation[axis]-this.rotation[axis];if(Math.abs(d)>.0001){this.rotation[axis]+=d*Math.min(1,dt/80);this.dirty=true;}else this.rotation[axis]=this.targetRotation[axis];}
+    if(this.spin&&!this.dragging){this.targetRotation.x+=this.spin*dt;this.spin*=Math.exp(-dt/ORBIT.spinDecay);if(Math.abs(this.spin)<.00002)this.spin=0;this.dirty=true;}
+    for(const axis of ['x','y']){const d=this.targetRotation[axis]-this.rotation[axis];if(Math.abs(d)>.0001){this.rotation[axis]+=d*Math.min(1,dt/ORBIT.follow);this.dirty=true;}else this.rotation[axis]=this.targetRotation[axis];}
+    if(this.arrowDraw<1){this.arrowDraw=Math.min(1,this.arrowDraw+dt/900);this.dirty=true;}
     if(!this.dirty)return;this.dirty=false;const z=smooth(this.zoom),T=this.T;
-    const aspect=this.camera.aspect,mobile=aspect<1.25,dist=Math.max(1,1.15/aspect);
+    const aspect=this.camera.aspect,mobile=aspect<1.25,dist=this.options.labels===false?Math.max(1,1.15/aspect):this.fit;
     const base=this.vector([6.4*dist,4.6*dist,9.5*dist]),near=this.vector([CELL.graphiteOrigin[0]+(mobile?2.65:2.15),mobile?1.6:1.3,mobile?3.65:3.05]);
     const target=this.vector([0,.45,0]).lerp(this.vector(CELL.graphiteOrigin),z);
-    this.camera.position.copy(base.lerp(near,z));
-    const offset=this.camera.position.clone().sub(target);offset.applyAxisAngle(new T.Vector3(0,1,0),this.rotation.x);offset.y+=this.rotation.y*offset.length();this.camera.position.copy(target).add(offset);this.camera.lookAt(target);this.camera.updateMatrixWorld();
+    // Orbit on a sphere around the target: yaw turns freely, elevation is held between a low side view and a near top view.
+    const offset=base.lerp(near,z).sub(target),radius=offset.length(),azimuth=Math.atan2(offset.x,offset.z)+this.rotation.x;
+    const elevation=Math.max(ORBIT.minElevation,Math.min(ORBIT.maxElevation,Math.asin(offset.y/radius)+this.rotation.y));
+    this.camera.position.set(target.x+radius*Math.cos(elevation)*Math.sin(azimuth),target.y+radius*Math.sin(elevation),target.z+radius*Math.cos(elevation)*Math.cos(azimuth));
+    this.camera.lookAt(target);this.camera.updateMatrixWorld();
+    if(this.shift)this.camera.setViewOffset(this.width,this.height,this.shift[0]*(1-z),this.shift[1]*(1-z),this.width,this.height);
     const fade=1-smooth(Math.min(1,z*1.6));this.fadeMaterials.forEach(({mat,opacity})=>mat.opacity=opacity*fade);this.cell.visible=fade>.001;
     if(this.state)inventoryFills(this.state.positive).forEach((fill,i)=>this.inventoryPositive[i].material.opacity=fill*fade);
     this.galleryGuide.visible=z>.7;this.galleryMarker.visible=z>.7;
-    this.labels.forEach(label=>{const visible=label.view==='cell'?z<.25:z>.85;label.el.hidden=!visible;if(!visible)return;
-      const p=label.point.clone().project(this.camera),x=(p.x*.5+.5)*this.width,y=(-p.y*.5+.5)*this.height;
-      const half=Math.min(mobile?62:80,label.el.offsetWidth/2||70);label.el.style.left=`${Math.max(half+5,Math.min(this.width-half-5,x))}px`;label.el.style.top=`${Math.max(18,Math.min(this.height-48,y))}px`;
-    });
+    if(this.labels.length){this.layoutLabels(z);this.layoutArrows(z);}
     this.renderer.render(this.scene,this.camera);
   }
 }
