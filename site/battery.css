@@ -23,3 +23,35 @@
 
 /* The chart viewBox scales to ~0.58x on phones; keep its labels legible. */
 @media(max-width:520px){.chart-label{font-size:22px}}
+
+/* Callouts: text with a dark halo instead of a box, joined to the object by a hairline and an anchor dot. */
+.scene-annotations{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.scene-annotations .leader{fill:none;stroke:#8d9cc0;stroke-width:1;stroke-linecap:round;opacity:.9}
+.scene-annotations .anchor{fill:#c8d4f0}
+.scene-annotations .leader-negative{stroke:#7f9be0}.scene-annotations .anchor-negative{fill:var(--blue)}
+.scene-annotations .leader-positive{stroke:#9b84d6}.scene-annotations .anchor-positive{fill:var(--purple)}
+.scene-annotations .leader-gallery,.scene-annotations .leader-edge{stroke:#69bfa6}.scene-annotations .anchor-gallery,.scene-annotations .anchor-edge{fill:var(--li)}
+.scene-label{background:transparent;backdrop-filter:none;padding:3px 6px;border-radius:4px;text-shadow:0 0 3px #070a12,0 0 10px #070a12,0 0 18px #070a12;transition:background 180ms ease,color 180ms ease,opacity 160ms linear}
+.scene-label span{font-weight:500;letter-spacing:-.005em}
+.scene-label:hover,.scene-label[aria-pressed=true]{background:#162034e6;text-shadow:none}
+.scene-label[aria-pressed=true] span{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.scene-label.is-swapped small{animation:role-swap .9s var(--fig-ease,ease) both}
+@keyframes role-swap{0%{opacity:0;transform:translateY(-3px)}35%{opacity:1;transform:none;color:#e6ecff}100%{opacity:1}}
+/* Direction arrows share the homepage's hairline-and-notched-head drawing. */
+.flow-arrow .line{fill:none;stroke-width:1.5;stroke-linecap:round}
+.flow-arrow .tag{font-family:var(--fig-font);font-size:13px;font-weight:500;text-anchor:middle;paint-order:stroke;stroke:#070a12;stroke-width:4px;stroke-linejoin:round}
+.flow-ion .line,.flow-gallery .line{stroke:#80f3d0}.flow-ion .head,.flow-gallery .head,.flow-ion .tag,.flow-gallery .tag{fill:#9ff7dc}
+.flow-electron .line{stroke:#c5a0ff}.flow-electron .head,.flow-electron .tag{fill:#d6bcff}
+/* The canvas scrolls the page on vertical swipes and turns the cell on sideways ones. */
+.viewport canvas{touch-action:pan-y;outline:none}
+.viewport canvas.is-dragging{cursor:grabbing}
+.viewport:has(canvas:focus-visible){box-shadow:inset 0 0 0 1px #80f3d066}
+/* The explanation starts on the same line as the view tabs, and the slider row uses the explorer's columns. */
+.explanation{padding-top:11px}
+.transport{grid-template-columns:minmax(0,1fr) 292px;gap:48px;align-items:start}
+.composition-note{padding-top:1px}
+@media(min-width:1450px){.explanation{padding-top:11px}.transport{grid-template-columns:minmax(0,1fr) 320px;gap:70px}}
+@media(max-width:1100px){.explanation{padding-top:11px}.transport{grid-template-columns:minmax(0,1fr) 255px;gap:26px}}
+@media(max-width:800px){.explanation{padding-top:25px}.transport{grid-template-columns:1fr 210px;gap:25px}}
+@media(max-width:520px){.explanation h2 br{display:inline}.transport{grid-template-columns:1fr;gap:12px}.scene-label{max-width:none;padding:2px 4px}.flow-arrow .tag{font-size:12px}}
+.formula .term{white-space:nowrap}
