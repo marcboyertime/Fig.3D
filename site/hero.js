@@ -15,7 +15,7 @@ const FIGURE = {w: 1500, h: 850}, GLYPH = {x: 74, y: 322, w: 275, h: 240};
 // Printed positions of the glyph's actors, in native figure pixels.
 const ANCHORS = {li: [142, 384], b: [262, 388], c: [239, 399], tm: [215, 488], t: [213, 414]};
 const DESCRIPTIONS = {
- li: 'Li⁺ moves between two octahedral sites. Each has six oxygen neighbours.',
+ li: 'Li⁺ moves between two octahedral sites. Each has six oxygen neighbors.',
  oxygen: 'Four oxygen atoms surround the tetrahedral site. Three of them form each window lithium squeezes through.',
  tm: 'One transition-metal ion shares a face with the tetrahedral site. That count of one is the “1-TM” in the figure.',
  sites: 'Dashed rings are empty octahedral sites: the destination and a second vacancy. The small ring is the tetrahedral site.',
