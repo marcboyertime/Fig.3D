@@ -38,7 +38,7 @@ Lithium-ion direction is graphite → oxide on discharge and oxide → graphite 
 
 `battery-model.mjs` exports the exact 3D bounds and paths consumed by `battery-scene.mjs` and the checks. Lithium markers lie between the electrode interfaces, within the electrolyte. Electron markers start and end inside the electrode solids and take a route outside the electrolyte through the upper external circuit. Separator geometry denotes an electrolyte-filled porous insulating region, not pores resolved at scale.
 
-The graphite and oxide solids contain illustrative lithium inventory marks. Electrolyte markers indicate net transport, not an additional inventory of explicitly tracked ions. The electrolyte is a steady-throughput reservoir with zero net lithium accumulation. Real counterions, solvent, SEI, electrode porosity, concentration gradients, double layers and side reactions are omitted.
+The graphite and oxide solids contain illustrative lithium inventory marks. In the oxide they sit at positions between neighbouring grains throughout the block, in an interleaved order so a partial fill is spread through the volume, not swept in from one face; like the graphite marks they encode a fractional mean occupancy, not computed site positions. Electrolyte markers indicate net transport, not an additional inventory of explicitly tracked ions. The electrolyte is a steady-throughput reservoir with zero net lithium accumulation. Real counterions, solvent, SEI, electrode porosity, concentration gradients, double layers and side reactions are omitted.
 
 ## Graphite geometry and its limits
 

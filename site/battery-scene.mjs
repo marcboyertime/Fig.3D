@@ -67,7 +67,7 @@ export class BatteryScene{
     this.addBox(this.cell,[2.4,3,3],[3.25,0,0],posMat,'positive');this.edges([2.4,3,3],[3.25,0,0],COLORS.positive);
     const collectorN=this.material(0xa98063,{metalness:.82,roughness:.21});const collectorP=this.material(0xc2cbdd,{metalness:.9,roughness:.18});
     this.addBox(this.cell,[.1,3.25,3.2],[-4.5,0,0],collectorN,'negative');this.addBox(this.cell,[.1,3.25,3.2],[4.5,0,0],collectorP,'positive');
-    const grainGeo=new T.IcosahedronGeometry(.39,1),grainMat=this.material(0x7960aa,{metalness:.4,roughness:.37});
+    const grainGeo=new T.IcosahedronGeometry(.39,1),grainMat=this.material(0x7960aa,{metalness:.4,roughness:.37,transparent:true,opacity:.62,depthWrite:false});
     for(let i=0;i<3;i++)for(let j=0;j<3;j++)for(let k=0;k<3;k++){const m=new T.Mesh(grainGeo,grainMat);m.position.set(2.48+i*.74,-.93+j*.92,-.94+k*.93);m.rotation.set(i*.7,j*.3,k*.5);m.userData.part='positive';this.pickMeshes.push(m);this.cell.add(m);}
     this.addBox(this.cell,[4.1,3,3],[0,0,0],this.material(0x264e65,{transparent:true,opacity:.055,depthWrite:false}),'electrolyte');
     this.edges([4.1,3,3],[0,0,0],0x427579);
@@ -83,9 +83,16 @@ export class BatteryScene{
     const sphere=new T.SphereGeometry(.075,16,12);
     this.ionMarkers=Array.from({length:9},()=>{const m=new T.Mesh(sphere,this.material(COLORS.lithium,{emissive:COLORS.lithium,emissiveIntensity:.55}));this.cell.add(m);return m;});
     this.electronMarkers=Array.from({length:9},()=>{const m=new T.Mesh(new T.SphereGeometry(.058,14,10),this.material(COLORS.electron,{emissive:COLORS.electron,emissiveIntensity:.7}));this.cell.add(m);return m;});
-    this.inventoryPositive=[];for(let i=0;i<20;i++){
-      const m=new T.Mesh(new T.SphereGeometry(.075,14,10),this.material(COLORS.lithium,{emissive:COLORS.lithium,emissiveIntensity:.38,transparent:true}));m.position.set(2.3+(i%4)*.55,-1.16+Math.floor(i/4)*.57,1.54);this.cell.add(m);this.inventoryPositive.push(m);
+    // Lithium sits between the oxide grains all the way through the block, not on one face. Candidate sites are the
+    // midpoints between neighbouring grains; a stride interleaves them so any partial fill is spread through the volume.
+    const spots=[],at=(i,j,k)=>[2.48+i*.74,-.93+j*.92,-.94+k*.93];
+    for(let i=0;i<3;i++)for(let j=0;j<3;j++)for(let k=0;k<3;k++)for(const [di,dj,dk] of [[1,0,0],[0,1,0],[0,0,1]]){
+      if(i+di>2||j+dj>2||k+dk>2)continue;const p=at(i,j,k),q=at(i+di,j+dj,k+dk);spots.push([(p[0]+q[0])/2,(p[1]+q[1])/2,(p[2]+q[2])/2]);
     }
+    const sites=spots.map((p,i)=>({p,rank:(i*23)%spots.length})).sort((x,y)=>x.rank-y.rank).slice(0,20).map(x=>x.p);
+    this.inventoryPositive=sites.map(p=>{
+      const m=new T.Mesh(new T.SphereGeometry(.075,14,10),this.material(COLORS.lithium,{emissive:COLORS.lithium,emissiveIntensity:.5,transparent:true}));m.position.set(...p);m.renderOrder=2;this.cell.add(m);return m;
+    });
     // Save opacity once so camera transitions do not compound the fade.
     const seen=new Set();this.cell.traverse(m=>{if(m.material&&!seen.has(m.material)){seen.add(m.material);const mat=m.material;this.fadeMaterials.push({mat,opacity:mat.opacity});mat.transparent=true;}});
   }
