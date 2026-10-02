@@ -1,0 +1,118 @@
+{
+  "ase_version": "3.29.0",
+  "method": "Octahedron and distance-based ase.neighborlist.neighbor_list, independent of JavaScript half-space construction",
+  "results": [
+    {
+      "shells": 3,
+      "atoms": 147,
+      "surface_atoms": 92,
+      "coordination": {
+        "5": 12,
+        "7": 48,
+        "8": 24,
+        "9": 8,
+        "12": 55
+      },
+      "coordinate_sets_equal": true,
+      "all_neighbor_sets_equal": true
+    },
+    {
+      "shells": 4,
+      "atoms": 309,
+      "surface_atoms": 162,
+      "coordination": {
+        "5": 12,
+        "7": 72,
+        "8": 54,
+        "9": 24,
+        "12": 147
+      },
+      "coordinate_sets_equal": true,
+      "all_neighbor_sets_equal": true
+    },
+    {
+      "shells": 5,
+      "atoms": 561,
+      "surface_atoms": 252,
+      "coordination": {
+        "5": 12,
+        "7": 96,
+        "8": 96,
+        "9": 48,
+        "12": 309
+      },
+      "coordinate_sets_equal": true,
+      "all_neighbor_sets_equal": true
+    },
+    {
+      "shells": 6,
+      "atoms": 923,
+      "surface_atoms": 362,
+      "coordination": {
+        "5": 12,
+        "7": 120,
+        "8": 150,
+        "9": 80,
+        "12": 561
+      },
+      "coordinate_sets_equal": true,
+      "all_neighbor_sets_equal": true
+    },
+    {
+      "shells": 7,
+      "atoms": 1415,
+      "surface_atoms": 492,
+      "coordination": {
+        "5": 12,
+        "7": 144,
+        "8": 216,
+        "9": 120,
+        "12": 923
+      },
+      "coordinate_sets_equal": true,
+      "all_neighbor_sets_equal": true
+    },
+    {
+      "shells": 8,
+      "atoms": 2057,
+      "surface_atoms": 642,
+      "coordination": {
+        "5": 12,
+        "7": 168,
+        "8": 294,
+        "9": 168,
+        "12": 1415
+      },
+      "coordinate_sets_equal": true,
+      "all_neighbor_sets_equal": true
+    },
+    {
+      "shells": 9,
+      "atoms": 2869,
+      "surface_atoms": 812,
+      "coordination": {
+        "5": 12,
+        "7": 192,
+        "8": 384,
+        "9": 224,
+        "12": 2057
+      },
+      "coordinate_sets_equal": true,
+      "all_neighbor_sets_equal": true
+    },
+    {
+      "shells": 10,
+      "atoms": 3871,
+      "surface_atoms": 1002,
+      "coordination": {
+        "5": 12,
+        "7": 216,
+        "8": 486,
+        "9": 288,
+        "12": 2869
+      },
+      "coordinate_sets_equal": true,
+      "all_neighbor_sets_equal": true
+    }
+  ]
+}

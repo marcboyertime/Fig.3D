@@ -1,0 +1,51 @@
+{
+  "right": {
+    "atomVisible": "true",
+    "drawCalls": "9",
+    "elevation": "0.4732",
+    "fps": "113.4",
+    "frames": "70",
+    "halfHeight": "4.100",
+    "hull": "0",
+    "moving": "false",
+    "pixelRatio": "1.0",
+    "renderHeight": "580",
+    "renderMs": "0.60",
+    "renderWidth": "708",
+    "selectedScreen": "366.3,292.7",
+    "triangles": "879688",
+    "visibleInstances": "923",
+    "yaw": "0.8892"
+  },
+  "down": {
+    "atomVisible": "true",
+    "drawCalls": "9",
+    "elevation": "0.6172",
+    "fps": "110.7",
+    "frames": "72",
+    "halfHeight": "4.100",
+    "hull": "0",
+    "moving": "false",
+    "pixelRatio": "1.0",
+    "renderHeight": "580",
+    "renderMs": "0.60",
+    "renderWidth": "708",
+    "selectedScreen": "366.3,301.4",
+    "triangles": "879688",
+    "visibleInstances": "923",
+    "yaw": "0.8892"
+  },
+  "cut": {
+    "count": "7",
+    "state": {
+      "actions": "|view:neighbors|shortcut:edge|cutaway:",
+      "cutaway": "true",
+      "intro": "false",
+      "lastAction": "cutaway:",
+      "selected": "6,3,3",
+      "shells": "6",
+      "view": "neighbors"
+    }
+  },
+  "restored": "7"
+}

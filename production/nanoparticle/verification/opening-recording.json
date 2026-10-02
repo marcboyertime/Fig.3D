@@ -1,0 +1,20 @@
+{
+  "capture": "Codex in-app browser screenshots sampled during the live opening, encoded to 30 fps MP4 for review; this is not a render-performance benchmark",
+  "viewport": {
+    "width": 1200,
+    "height": 1000
+  },
+  "source_frame_count": 268,
+  "duration_ms": 21024,
+  "video": "opening-review.mp4",
+  "keyframes": [
+    "opening-0s.jpg",
+    "opening-11s.jpg",
+    "opening-14s.jpg",
+    "opening-17-5s.jpg",
+    "opening-20-5s.jpg",
+    "opening-3-5s.jpg",
+    "opening-6-5s.jpg",
+    "opening-9s.jpg"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "method": "gzip level 9 for text/font, existing compressed WebP bytes; cold initial module dependency set",
+  "assets": [
+    {
+      "path": "site/nanoparticle.html",
+      "bytes": 10479,
+      "compressed_bytes": 3916
+    },
+    {
+      "path": "site/nanoparticle.css",
+      "bytes": 11366,
+      "compressed_bytes": 3350
+    },
+    {
+      "path": "site/nanoparticle.js",
+      "bytes": 13771,
+      "compressed_bytes": 5042
+    },
+    {
+      "path": "site/nanoparticle-model.mjs",
+      "bytes": 6101,
+      "compressed_bytes": 2541
+    },
+    {
+      "path": "site/nanoparticle-state.mjs",
+      "bytes": 2252,
+      "compressed_bytes": 887
+    },
+    {
+      "path": "site/nanoparticle-scene.mjs",
+      "bytes": 18178,
+      "compressed_bytes": 6263
+    },
+    {
+      "path": "site/nanoparticle-fallback.mjs",
+      "bytes": 2573,
+      "compressed_bytes": 1249
+    },
+    {
+      "path": "site/visual-language.css",
+      "bytes": 2796,
+      "compressed_bytes": 1056
+    },
+    {
+      "path": "site/navigation-motion.js",
+      "bytes": 740,
+      "compressed_bytes": 370
+    },
+    {
+      "path": "site/assets/battery-three-r128.min.js",
+      "bytes": 603445,
+      "compressed_bytes": 148739
+    },
+    {
+      "path": "site/assets/fonts/Sora-Variable.ttf",
+      "bytes": 111400,
+      "compressed_bytes": 60373
+    },
+    {
+      "path": "site/assets/nanoparticle/kang-panel-a.webp",
+      "bytes": 95426,
+      "compressed_bytes": 95426
+    },
+    {
+      "path": "site/assets/nanoparticle/kang-panel-c.webp",
+      "bytes": 69394,
+      "compressed_bytes": 69394
+    }
+  ],
+  "total_compressed_bytes": 398606
+}

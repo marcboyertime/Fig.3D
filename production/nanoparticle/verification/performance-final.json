@@ -1,0 +1,27 @@
+{
+  "canvas": {
+    "atomVisible": "true",
+    "drawCalls": "9",
+    "elevation": "0.4732",
+    "feedbackMs": "9.2",
+    "fps": "120.0",
+    "frames": "2484",
+    "halfHeight": "4.100",
+    "hull": "0",
+    "moving": "false",
+    "paused": "false",
+    "pixelRatio": "1.0",
+    "renderHeight": "580",
+    "renderMs": "0.40",
+    "renderWidth": "708",
+    "selectedScreen": "358.2,293.2",
+    "triangles": "879688",
+    "visibleInstances": "923",
+    "yaw": "1.0332"
+  },
+  "note": "rAF cadence and input-to-render-submission timing; not GPU completion",
+  "viewport": {
+    "height": 1000,
+    "width": 1200
+  }
+}

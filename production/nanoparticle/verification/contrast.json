@@ -1,0 +1,11 @@
+{
+  "background": "#080a12",
+  "text_contrast_ratios": {
+    "body": 17.41,
+    "caption": 10.34,
+    "muted": 8.84,
+    "blue": 10.88,
+    "gold": 9.34
+  },
+  "scope": "Representative CSS foreground/background pairs, not a full automated accessibility audit."
+}

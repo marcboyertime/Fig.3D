@@ -1,0 +1,13 @@
+/Users/mboyer/Documents/Codex/2026-09-29/realtime-voice-chat-5/work/fig3d-current/production/nanoparticle/build_blender.py:17: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;b=m.node_tree.nodes.get('Principled BSDF')
+/Users/mboyer/Documents/Codex/2026-09-29/realtime-voice-chat-5/work/fig3d-current/production/nanoparticle/build_blender.py:56: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  s.view_settings.view_transform='AgX';s.view_settings.look='AgX - Medium High Contrast';s.world=bpy.data.worlds.new(name+' world');s.world.use_nodes=True;s.world.node_tree.nodes['Background'].inputs[0].default_value=(*linear('263047'),1);s.world.node_tree.nodes['Background'].inputs[1].default_value=.35
+00:05.401  render           | Saved: '/Users/mboyer/Documents/Codex/2026-09-29/realtime-voice-chat-5/work/fig3d-current/production/nanoparticle/renders/opening.png'
+00:09.296  render           | Saved: '/Users/mboyer/Documents/Codex/2026-09-29/realtime-voice-chat-5/work/fig3d-current/production/nanoparticle/renders/face.png'
+00:14.119  render           | Saved: '/Users/mboyer/Documents/Codex/2026-09-29/realtime-voice-chat-5/work/fig3d-current/production/nanoparticle/renders/neighbors.png'
+00:18.616  render           | Saved: '/Users/mboyer/Documents/Codex/2026-09-29/realtime-voice-chat-5/work/fig3d-current/production/nanoparticle/renders/binding.png'
+Info: Saved as "inside-a-nanoparticle.blend"
+Built editable reference scenes and four renders from the verified geometry.
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:49:19)
+
+Blender quit

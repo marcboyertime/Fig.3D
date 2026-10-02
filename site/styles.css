@@ -28,3 +28,5 @@
 .diffusion-radius{fill:#9eabc4;font-family:var(--fig-font);font-size:19px;letter-spacing:.04em}
 
 .percolation-visual{background:#101a26}
+
+.nanoparticle-visual a{display:block;overflow:hidden}.nanoparticle-visual img{transition:transform 650ms cubic-bezier(.22,.75,.2,1)}.nanoparticle-visual a:hover img,.nanoparticle-visual a:focus-visible img{transform:scale(1.025)}@media(prefers-reduced-motion:reduce){.nanoparticle-visual img{transition:none}.nanoparticle-visual a:hover img,.nanoparticle-visual a:focus-visible img{transform:none}}

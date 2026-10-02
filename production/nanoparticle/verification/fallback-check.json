@@ -1,0 +1,7 @@
+{
+  "cameraHidden": true,
+  "caption": "Twelve nearest neighbors surround this interior atom. The cutaway makes them visible; hidden atoms still count.",
+  "count": "12",
+  "help": "Use the view and site controls belowSwipe sideways to turn; scroll vertically.",
+  "staticSVG": true
+}

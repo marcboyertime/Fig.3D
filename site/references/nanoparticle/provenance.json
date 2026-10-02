@@ -1,0 +1,29 @@
+{
+  "source": "https://www.nature.com/articles/s41467-024-47994-y",
+  "doi": "10.1038/s41467-024-47994-y",
+  "figure": 1,
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "authors": "Kang et al.",
+  "year": 2024,
+  "original_size": [
+    1503,
+    1646
+  ],
+  "sha256": "468af5b8937aa66c11d7942c267b47f1dfa24047c28f8592990816dd81693731",
+  "changes": "Lossless native-resolution rectangular crops of complete panels a and c. No resampling, retouching or enhancement. Animated outlines are separate explanatory overlays.",
+  "crop_rectangles": {
+    "a": [
+      0,
+      0,
+      498,
+      494
+    ],
+    "c": [
+      1008,
+      0,
+      1503,
+      494
+    ]
+  }
+}

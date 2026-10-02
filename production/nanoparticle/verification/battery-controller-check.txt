@@ -1,0 +1,1 @@
+PASS: fixed-composition continuous motion, no finite-state autoplay/loop, charge reverses marker velocity, slider couples inventories, preserved composition and reversed roles on mode change, graphite entry/return, reduced-motion static arrival, explicit Resume, preference-change and hidden-tab pause. Real controller with stub 3D renderer; WebGL visual QA is separate.
