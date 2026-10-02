@@ -1,4 +1,4 @@
-import {dot,sub,atomVisible,bindingSites,add,mul} from './nanoparticle-model.mjs?v=20261002-5';
+import {dot,sub,atomVisible,bindingSites,add,mul} from './nanoparticle-model.mjs?v=20261002-6';
 // An SVG view of the same current model: no WebGL, no independent scientific data.
 export function fallbackSVG(state){
  const m=state.model,y=.91,e=.43,right=[Math.cos(y),0,-Math.sin(y)],up=[-Math.sin(y)*Math.sin(e),Math.cos(e),-Math.cos(y)*Math.sin(e)],forward=[Math.sin(y)*Math.cos(e),Math.sin(e),Math.cos(y)*Math.cos(e)],scale=state.view==='size'?12:200/(m.shells*1.8);

@@ -1,4 +1,4 @@
-import {createParticle,representative,bindingSites} from './nanoparticle-model.mjs?v=20261002-5';
+import {createParticle,representative,bindingSites} from './nanoparticle-model.mjs?v=20261002-6';
 export const VIEWS=['surfaces','neighbors','size','binding'];
 export function initialState(reduced=false){return {model:createParticle(6),view:'surfaces',faceId:'100:1,0,0',selected:null,site:'atop',cutaway:false,stacking:false,intro:!reduced,paused:false,reduced};}
 export function reduce(state,action){

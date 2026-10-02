@@ -1,7 +1,15 @@
 import assert from 'node:assert/strict';
-import {createParticle,bindingSites,representative,atomVisible,dot,sub,norm,key} from './nanoparticle-model.mjs?v=20261002-5';
-import {initialState,reduce,orbitDelta} from './nanoparticle-state.mjs?v=20261002-5';
+import {createParticle,bindingSites,representative,atomVisible,dot,sub,norm,key} from './nanoparticle-model.mjs?v=20261002-6';
+import {initialState,reduce,orbitDelta} from './nanoparticle-state.mjs?v=20261002-6';
+import {OPENING_BEATS,OPENING_STARTS,OPENING_END,openingPhase} from './nanoparticle-opening.mjs?v=20261002-6';
 let assertions=0;function check(v,msg){assert.ok(v,msg);assertions++;}
+for(const [i,beat] of OPENING_BEATS.entries()){
+ const words=beat.copy.slice(1).join(' ').trim().split(/\s+/).length;
+ check(beat.duration>=8,'each opening caption holds for at least eight seconds');
+ check(words/(beat.duration-1)*60<=180,'caption allows 180 wpm plus one second to orient');
+ check(openingPhase(OPENING_STARTS[i]+beat.duration-.01)===i,'caption persists throughout its reading interval');
+}
+check(OPENING_END>=54,'full opening retains its reading time');
 for(let n=3;n<=10;n++){
  const m=createParticle(n);check(m.atoms.length===(10*n**3+15*n*n+11*n+3)/3,'magic number');
  check(m.surfaceCount===10*n*n+2,'surface shell');check(m.surfaceFraction===m.surfaceCount/m.atoms.length,'surface fraction');

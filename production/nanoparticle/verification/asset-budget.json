@@ -3,18 +3,18 @@
   "assets": [
     {
       "path": "site/nanoparticle.html",
-      "bytes": 10479,
-      "compressed_bytes": 3916
+      "bytes": 12124,
+      "compressed_bytes": 4248
     },
     {
       "path": "site/nanoparticle.css",
-      "bytes": 11366,
-      "compressed_bytes": 3350
+      "bytes": 13856,
+      "compressed_bytes": 3884
     },
     {
       "path": "site/nanoparticle.js",
-      "bytes": 13771,
-      "compressed_bytes": 5042
+      "bytes": 13657,
+      "compressed_bytes": 4885
     },
     {
       "path": "site/nanoparticle-model.mjs",
@@ -65,7 +65,12 @@
       "path": "site/assets/nanoparticle/kang-panel-c.webp",
       "bytes": 69394,
       "compressed_bytes": 69394
+    },
+    {
+      "path": "site/nanoparticle-opening.mjs",
+      "bytes": 1542,
+      "compressed_bytes": 774
     }
   ],
-  "total_compressed_bytes": 398606
+  "total_compressed_bytes": 400089
 }

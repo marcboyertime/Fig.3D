@@ -1,6 +1,12 @@
 # Inside a nanoparticle — verification report
 
-Local review build, 2 October 2026. Branch `codex/nanoparticle-surfaces`, based on `c0cd7a4c55e607c7646b51bcf858ddd63b510b40`. No public deployment or dependency upgrade.
+Local review build, 2 October 2026. Updated locally for reading pace and source access. Branch `codex/nanoparticle-surfaces`, based on `c0cd7a4c55e607c7646b51bcf858ddd63b510b40`. No public deployment or dependency upgrade.
+
+## Reading-time and source-view update
+
+The opening now holds captions for 8–12 seconds and hands over at about 55 seconds. The persistent **View paper figure** button opens enlarged panels a/c plus a link to complete Figure 1. Browser checks confirmed that source viewing freezes an active opening, Escape restores focus and resumes it, an already paused opening stays paused, and an interior selection/cutaway/camera survives the round trip. The source modal fits a 390px viewport without horizontal overflow. See `verification/pacing-review.json` and `paper-viewer-*.jpg`.
+
+The current pure-model and timing suite passes 286,795 assertions, including a reading budget of at most 180 words/minute plus an orientation second per caption. The original `opening-review.mp4` records the earlier 20-second version and is retained as historical visual evidence, not evidence of the current pacing.
 
 ## Delivered
 
@@ -31,7 +37,7 @@ The browser and Blender compositions were compared for silhouette, spatial landm
 
 On the available Apple M4 Pro desktop, the default particle's final neighbor transition showed about 120 fps requestAnimationFrame cadence at 1200 × 1000 and DPR 1, with 9.2ms input-to-render-submission feedback. A previous maximum-size run measured about 117 fps. These are observed browser scheduling/submission measurements, **not GPU-completion timings or a guarantee for other hardware**. See `verification/performance-final.json`.
 
-The cold initial module dependency set is approximately **399 KB compressed**, including Three.js, Sora and both lossless source crops. This is a gzip estimate; the local Python server itself serves uncompressed text. The full source figure, production data and Blender files are deferred or outside the runtime. See `verification/asset-budget.json`.
+The cold initial module dependency set is approximately **401 KB compressed**, including Three.js, Sora and both lossless source crops. This is a gzip estimate; the local Python server itself serves uncompressed text. The full source figure, production data and Blender files are deferred or outside the runtime. See `verification/asset-budget.json`.
 
 ## Remaining acceptance limits
 

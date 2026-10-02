@@ -1,0 +1,32 @@
+{
+  "observations": [
+    {
+      "milliseconds": 31,
+      "intro": "true",
+      "title": "A surface has its own structure"
+    },
+    {
+      "milliseconds": 8025,
+      "intro": "true",
+      "title": "Squares and triangles"
+    },
+    {
+      "milliseconds": 16004,
+      "intro": "true",
+      "title": "Both faces, one crystal"
+    },
+    {
+      "milliseconds": 47775,
+      "intro": "true",
+      "title": "A corner opens further"
+    },
+    {
+      "milliseconds": 54013,
+      "intro": "false",
+      "title": "Choose an atom"
+    }
+  ],
+  "paperPausedUnchanged": true,
+  "explorationPreserved": true,
+  "note": "Continuous screenshot/DOM sampling except the short tool-call boundary; timestamps are observation times."
+}
