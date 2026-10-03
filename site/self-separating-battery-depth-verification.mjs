@@ -20,3 +20,28 @@ const depth={...state.deep};for(let i=0;i<15;i++){state=reduce(state,{type:'pape
 state=reduce(state,{type:'depth-exit'});assert.deepEqual(state,overview);
 assert.equal(reduceDepth(initialDepth(),{type:'slice',value:200}).slice,40);assert.equal(reduceDepth(initialDepth(),{type:'length',value:.01}).length,.25);
 console.log('PASS: 41 slices agree with independent SciPy fixtures; 3D detour example; length scaling; capacity denominators; advanced/paper/overview state preservation.');
+
+// Verify the circuit that is actually rendered, not just different captions.
+const {formationConfiguration,formationSteps}=await import('./self-separating-battery-depth.mjs');
+const expected=[
+ ['deposited',false,false,null,'none'],['form-sei',true,true,'carbon','external-li'],
+ ['reduce-polymer',true,true,'cathode','external-li'],['charge-device',true,false,'both','charger'],['operate',false,false,'both','load']
+];
+for(let i=0;i<expected.length;i++){
+ const c=formationConfiguration(i);assert.deepEqual([c.key,c.bath,c.externalLi,c.contact,c.circuit],expected[i]);assert.ok(formationSteps[i].copy.length);
+}
+const {createRequire}=await import('node:module');const require=createRequire(import.meta.url);
+globalThis.window={THREE:require('./assets/battery-three-r128.min.js')};
+const {DepthScene}=await import('./self-separating-battery-depth-scene.mjs');
+const host={scene:new window.THREE.Scene(),state:{reduced:true},canvas:{dataset:{}}};
+const rendered=new DepthScene(host);
+for(let i=0;i<5;i++){
+ rendered.update({...initialDepth(),topic:'formation',formation:i});
+ assert.equal(rendered.lithium.visible,expected[i][2]);assert.equal(rendered.liquid.visible,expected[i][1]);
+ assert.equal(rendered.connection.children.length,i===0?0:2);
+ assert.equal(host.canvas.dataset.formation,expected[i][0]);
+ assert.equal(rendered.formSei.visible,i>0);
+ if(i===1||i===2){const p=rendered.connection.children[1].geometry.parameters.path.getPoint(1);assert.ok(Math.abs(p.x-(i===1?.17:2.83))<1e-8);assert.ok(Math.abs(p.y-(i===1?-.55:.46))<1e-8);}
+}
+assert.equal(reduceDepth(initialDepth(),{type:'formation',value:999}).formation,4);
+console.log('PASS: five source-mapped process states; actual 3D wire endpoints move from carbon to polymer; charging disconnects external Li and retains bath; operation removes bath.');

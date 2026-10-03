@@ -1,11 +1,31 @@
-import {updateDepthUI,depthFrame} from './self-separating-battery-depth-ui.mjs?v=1';
+import {PaperLift} from './self-separating-battery-paper-lift.mjs?v=1';
+import {updateDepthUI,depthFrame} from './self-separating-battery-depth-ui.mjs?v=2';
 import {initialState,reduce,caption,PHASES} from './self-separating-battery-model.mjs?v=2';
 const $=id=>document.getElementById(id),all=s=>[...document.querySelectorAll(s)];
 const media=matchMedia('(prefers-reduced-motion: reduce)');let state=initialState(media.matches||new URLSearchParams(location.search).has('reduced')),scene=null,openingStart=0,openingTime=0,lastTime=0,introRAF=0,loaded=false,paperFigure=1,lastCaption='',introLift=false;
 const opening=[{end:10000,title:'A different way\nto arrange a battery',copy:'Figure 1 compares stacked sheets with connected three-dimensional networks. The right-hand structure is the subject of this paper.',kicker:'START WITH THE PAPER',source:true},{end:23000,title:'Those pockets\nare connected',copy:'The apparent islands in a flat picture belong to networks that continue through the volume. Turn the model to reveal the depth the figure cannot show.',kicker:'FIGURE 1c → AN EXPLANATORY MODEL',source:false},{end:35000,title:'The interface\nseparates them',copy:'The blue cathode follows the carbon’s pores. A thin SEI lies between them. Explore each material separately, or see how the researchers form this interface.',kicker:'TWO ELECTRODES · ONE INTERFACE',source:false}];
-function dispatch(action){if((action.type==='view'||action.type==='depth')&&state.paper)leavePaper();const before=state;state=reduce(state,action);if(before.opening&&!state.opening)endOpening();update();scene?.setState(state);}
+const lift=new PaperLift($('scene-stage'),()=>{document.body.classList.toggle('exploring',!state.opening&&!lift.active);scene?.resize();});
+function visiblePaper(){return state.paper?lift.capture($('paper-image'),paperFigure):state.opening&&openingTime<opening[0].end?lift.capture($('source-opening').querySelector('img'),1):null;}
+function reveal(source,{opening=false}={}){if(source&&!document.body.classList.contains('is-fallback'))lift.start(source,state.deep?.topic==='evidence'?$('evidence-view'):$('network'),{reduced:state.reduced,paused:state.paused,duration:opening?2400:1400});}
+function dispatch(action){
+ const source=action.interrupt||action.type==='pause'||action.type==='transport'?null:visiblePaper();
+ if(action.type!=='pause'&&!action.interrupt)lift.cancel();
+ if((action.type==='view'||action.type==='depth')&&state.paper)leavePaper();
+ const before=state;state=reduce(state,action);if(before.opening&&!state.opening)endOpening();
+ if(source&&!state.paper&&!state.opening)reveal(source);
+ update();scene?.setState(state);if(action.type==='pause')lift.hold(state.paused);
+}
+// The opening uses the same display selection as manual comparison.
+// Showing its source figure must not announce the model as selected.
+let selectedDisplay=null;
+function syncDisplaySelection(){
+ const value=state.paper?String(paperFigure):state.opening&&openingTime<opening[0].end?'1':'model';
+ if(value===selectedDisplay)return;
+ selectedDisplay=value;
+ all('[data-display]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.display===value)));
+}
 function setCaption(c){const signature=c.join('|');if(signature===lastCaption)return;lastCaption=signature;$('caption-kicker').textContent=c[0];$('caption-title').textContent=c[1];$('caption-copy').textContent=c[2];$('caption-note').textContent=c[3]||'';}
-function update(){document.body.classList.toggle('exploring',!state.opening);
+function update(){document.body.classList.toggle('exploring',!state.opening&&!lift.active);
  $('explorer').classList.toggle('showing-paper',state.paper);
  $('scene-content').inert=state.paper;
  $('scene-content').setAttribute('aria-hidden',String(state.paper));
@@ -13,7 +33,6 @@ function update(){document.body.classList.toggle('exploring',!state.opening);
  $('figure-tools').hidden=!state.paper;
  $('paper-details').hidden=!state.paper;
  $('controls').hidden=state.paper;
- all('[data-display]').forEach(b=>b.setAttribute('aria-pressed',state.paper?b.dataset.display===String(paperFigure):b.dataset.display==='model'));
  all('[data-view]').forEach(b=>{const on=b.dataset.view===state.view;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;});$('inspection').setAttribute('aria-labelledby','tab-'+state.view);
  all('[data-architecture]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.architecture===state.architecture));all('[data-stage]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.stage===state.stage));all('[data-layer]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.layer===state.layer));all('[data-route]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.route===state.route));
  const network=state.view!=='interface'&&!(state.view==='architecture'&&state.architecture==='layered');
@@ -29,20 +48,22 @@ function update(){document.body.classList.toggle('exploring',!state.opening);
  $('controls').style.opacity=state.opening?'.65':'1';
  updateDepthUI(state,setCaption);
  $('depth-toggle').disabled=!loaded&&!document.body.classList.contains('is-fallback');
- all('[data-display]').forEach(b=>b.setAttribute('aria-pressed',state.paper?b.dataset.display===String(paperFigure):b.dataset.display==='model'));
+ $('source-opening').hidden=!state.opening;
+ syncDisplaySelection();
  $('scene-help').textContent=document.body.classList.contains('is-fallback')?'Original figures and explanations':state.deep?(state.deep.topic==='evidence'?'Published observations':'Drag to turn · arrow keys rotate'):'Drag to turn · select a material';
 }
 function endOpening(){cancelAnimationFrame(introRAF);introRAF=0;$('source-opening').hidden=true;$('source-opening').classList.add('leaving');$('source-opening').setAttribute('aria-hidden','true');$('opening-controls').hidden=true;scene?.wake();}
 function intro(now){
  introRAF=0;if(!state.opening)return;
  const r=$('scene-stage').getBoundingClientRect(),onscreen=r.bottom>0&&r.top<innerHeight;
- if(!state.paused&&!state.paper&&!document.hidden&&onscreen){if(lastTime)openingTime+=Math.min(now-lastTime,80);const beat=opening.find(b=>openingTime<b.end);if(!beat){state={...state,opening:false};endOpening();update();scene?.setState(state);return;}setCaption([beat.kicker,beat.title,beat.copy,beat.source?'Tait et al. · arXiv:2604.26222v1 · 2026':'One illustrative geometry; the original figures are always available above.']);$('source-opening').classList.toggle('leaving',!beat.source);$('source-opening').setAttribute('aria-hidden',!beat.source);
-  $('source-opening').classList.toggle('focused',openingTime>7800);if(openingTime>10000&&!introLift){introLift=true;scene?.moveTo({...scene.pose,yaw:scene.pose.yaw-.12},2000);}if(openingTime>23000&&openingTime<24500){const v=Math.min(.56,(openingTime-23000)/1400*.56);state={...state,cut:v};scene?.setState(state);$('cut').value=Math.round(v*100);$('cut-readout').textContent='Partial cut';}
+ if(!state.paused&&!state.paper&&!document.hidden&&onscreen){if(lastTime)openingTime+=Math.min(now-lastTime,80);const beat=opening.find(b=>openingTime<b.end);if(!beat){state={...state,opening:false};endOpening();update();scene?.setState(state);return;}setCaption([beat.kicker,beat.title,beat.copy,beat.source?'Tait et al. · arXiv:2604.26222v1 · 2026':'One illustrative geometry; the original figures are always available above.']);if(!beat.source&&!introLift){const source=lift.capture($('source-opening').querySelector('img'),1);introLift=true;reveal(source,{opening:true});}
+  $('source-opening').classList.toggle('leaving',!beat.source);$('source-opening').setAttribute('aria-hidden',!beat.source);syncDisplaySelection();
+  if(openingTime>23000&&openingTime<24500){const v=Math.min(.56,(openingTime-23000)/1400*.56);state={...state,cut:v};scene?.setState(state);$('cut').value=Math.round(v*100);$('cut-readout').textContent='Partial cut';}
  }
  lastTime=now;introRAF=requestAnimationFrame(intro);
 }
 function startOpening(){if(state.opening){lastTime=0;introRAF=requestAnimationFrame(intro);}else endOpening();}
-function fallback(error){console.warn('3D fallback:',error?.message||'context lost');state={...state,opening:false};endOpening();scene?.stop();$('loading').hidden=true;$('fallback').hidden=false;document.body.classList.add('is-fallback');$('scene-help').textContent='Original figures and explanations';all('[data-camera],#cut,#depth-slice,[data-route]').forEach(b=>b.disabled=true);update();}
+function fallback(error){lift.cancel();console.warn('3D fallback:',error?.message||'context lost');state={...state,opening:false};endOpening();scene?.stop();$('loading').hidden=true;$('fallback').hidden=false;document.body.classList.add('is-fallback');$('scene-help').textContent='Original figures and explanations';all('[data-camera],#cut,#depth-slice,[data-route]').forEach(b=>b.disabled=true);update();}
 all('[data-view]').forEach(b=>b.addEventListener('click',()=>dispatch({type:'view',value:b.dataset.view})));
 $('explorer').querySelector('[role=tablist]').addEventListener('keydown',e=>{const keys=['ArrowLeft','ArrowRight','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const tabs=all('[data-view]'),index=tabs.indexOf(document.activeElement),n=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[n].focus();tabs[n].click();});
 for(const [attr,type] of [['architecture','architecture'],['stage','stage'],['layer','layer'],['route','route']])all(`[data-${attr}]`).forEach(b=>b.addEventListener('click',()=>dispatch({type,value:b.dataset[attr]})));
@@ -66,6 +87,7 @@ function sizeFigure(){
 }
 function leavePaper(){saveFigure();state=reduce(state,{type:'paper',value:false});lastTime=0;}
 function switchDisplay(value){
+ const source=value==='model'?visiblePaper():null;lift.cancel();
  saveFigure();
  // Choosing a comparison view hands control over without restarting the camera.
  if(state.opening){state={...state,opening:false,paused:false};endOpening();}
@@ -78,6 +100,7 @@ function switchDisplay(value){
   $('paper-original').href=img.src;
   state=reduce(state,{type:'paper',value:true});
  }
+ if(value==='model')reveal(source);
  update();sizeFigure();
  if(state.paper){const v=figureViews[paperFigure];$('paper-viewport').scrollTo(v.x,v.y);}
  scene?.setState(state);if(state.paper)scene?.stop();
@@ -113,6 +136,7 @@ all('[data-depth-topic]').forEach(b=>b.addEventListener('click',()=>dispatch({ty
 $('depth-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=all('[data-depth-topic]'),i=tabs.indexOf(document.activeElement),n=e.key==='Home'?0:e.key==='End'?3:(i+(e.key==='ArrowRight'?1:-1)+4)%4;tabs[n].focus();tabs[n].click();});
 for(const [id,type] of [['depth-slice','slice'],['depth-length-slider','length']])$(id).addEventListener('input',e=>dispatch({type:'depth',action:{type,value:e.target.value}}));
 for(const type of ['formation','evidence'])all(`[data-${type}]`).forEach(b=>b.addEventListener('click',()=>dispatch({type:'depth',action:{type,value:b.dataset[type]}})));
-media.addEventListener('change',()=>{state={...state,reduced:media.matches,transport:!media.matches,opening:false};endOpening();update();scene?.setState(state);});
+media.addEventListener('change',()=>{lift.cancel();state={...state,reduced:media.matches,transport:!media.matches,opening:false};endOpening();update();scene?.setState(state);});
+$('depth-reading-link').addEventListener('click',e=>{e.preventDefault();$('depth-reading').focus({preventScroll:true});$('depth-reading').scrollIntoView({behavior:state.reduced?'instant':'smooth',block:'start'});});
 update();
-try{if(new URLSearchParams(location.search).has('fallback'))throw Error('Requested accessible fallback');const {NetworkScene}=await import('./self-separating-battery-scene.mjs?v=2');scene=new NetworkScene($('network'),{onInterrupt:()=>{if(state.opening)dispatch({type:'explore'});},onSelect:key=>{if(key!=='template'&&state.view!=='fabrication')dispatch({type:'layer',value:key});},onFailure:fallback,onLoading:busy=>{$('loading').hidden=!busy;},onFrame:s=>{depthFrame(s,state);if(!state.deep&&state.view==='interface'){const p=s.project(s.ions[0].position.toArray());$('ion-label').style.left=p.x+'px';$('ion-label').style.top=(p.y-21)+'px';}}});await scene.load();loaded=true;$('loading').hidden=true;update();scene.setState(state);startOpening();}catch(error){fallback(error);}
+try{if(new URLSearchParams(location.search).has('fallback'))throw Error('Requested accessible fallback');const {NetworkScene}=await import('./self-separating-battery-scene.mjs?v=3');scene=new NetworkScene($('network'),{onInterrupt:()=>{lift.settle();if(state.opening)dispatch({type:'explore',interrupt:true});},onSelect:key=>{if(key!=='template'&&state.view!=='fabrication')dispatch({type:'layer',value:key});},onFailure:fallback,onLoading:busy=>{$('loading').hidden=!busy;},onFrame:s=>{depthFrame(s,state);if(!state.deep&&state.view==='interface'){const p=s.project(s.ions[0].position.toArray());$('ion-label').style.left=p.x+'px';$('ion-label').style.top=(p.y-21)+'px';}}});await scene.load();loaded=true;$('loading').hidden=true;update();scene.setState(state);startOpening();}catch(error){fallback(error);}

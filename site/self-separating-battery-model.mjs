@@ -1,4 +1,4 @@
-import {initialDepth,reduceDepth} from './self-separating-battery-depth.mjs?v=1';
+import {initialDepth,reduceDepth} from './self-separating-battery-depth.mjs?v=2';
 // Geometric interpretation of Tait et al. Fig. 1c / Fig. 2; not a transport solver.
 export const PHASES={carbon:{name:'Carbon',role:'Anode · electronic scaffold',color:0x343f51},cathode:{name:'PAQEDOT',role:'Redox-active cathode',color:0x416ce2},sei:{name:'SEI',role:'Ion-permeable interphase',color:0xe9c78b},template:{name:'Template',role:'Removed during pyrolysis',color:0xb6a0d3}};
 export const STAGES=['hybrid','carbon','cathode','sei'];

@@ -1,0 +1,26 @@
+{
+  "initialSelected": "Figure 1",
+  "automaticModelSelected": true,
+  "manualFigureSwitches": [
+    1,
+    2,
+    5,
+    6
+  ],
+  "rapidSwitchRemovesOldOverlay": true,
+  "paperReturnPose": {
+    "before": {
+      "yaw": 0.28,
+      "elevation": 0.132
+    },
+    "after": {
+      "yaw": 0.28,
+      "elevation": 0.132
+    }
+  },
+  "keyboardInterruption": "presentation settles within 180 ms, no overlay remains",
+  "reducedMotion": "no paper-lift animation; correct model selection",
+  "fallback": "Static view selected; figure comparison works without a lift",
+  "readingNavigation": "focuses depth-reading; mobile reading top 20.125px, scene bottom -52.875px",
+  "browserErrors": 0
+}

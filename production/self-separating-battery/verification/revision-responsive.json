@@ -1,0 +1,13 @@
+{
+  "browser": "Codex in-app Chromium",
+  "widths": [
+    390,
+    768,
+    1280,
+    1440,
+    1920
+  ],
+  "horizontalOverflow": false,
+  "correction": "Clip label container and clamp each label by its measured half-width; rapid resize previously exposed stale label positions for one frame.",
+  "physicalPhoneTest": false
+}

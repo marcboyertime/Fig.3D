@@ -5,7 +5,7 @@ export function reduceDepth(s,a){
  if(a.type==='topic'&&TOPICS.includes(a.value))return {...s,topic:a.value};
  if(a.type==='slice')return {...s,slice:Math.max(0,Math.min(40,Math.round(Number(a.value))))};
  if(a.type==='length')return {...s,length:Math.max(.25,Math.min(2,Number(a.value)))};
- if(a.type==='formation')return {...s,formation:Math.max(0,Math.min(3,Number(a.value)))};
+ if(a.type==='formation')return {...s,formation:Math.max(0,Math.min(4,Number(a.value)))};
  if(a.type==='evidence'&&['capacity','voltage'].includes(a.value))return {...s,evidence:a.value};
  return s;
 }
@@ -22,9 +22,19 @@ export function sliceStats(field,n,k){
 export const formationSteps=[
  {name:'Deposit',title:'Make contact first',copy:'Electropolymerization deposits PAQEDOT directly onto conducting carbon. An outer PEDOT layer provides a separate place to attach the cathode lead. The two networks are not yet electronically separated.',note:'Figure 2; pp. 19–23 · Deposition precedes separator formation.',tag:'Direct electronic contact',lead:'Carbon / coating'},
  {name:'Form SEI',title:'Change the interface electrochemically',copy:'The contacted device is immersed in liquid electrolyte and processed against external lithium. At low potential the polymer de-dopes; the authors propose that electrolyte decomposition builds SEI at the carbon–polymer interface.',note:'Figure 5a–b; pp. 23–24 · Proposed mechanism, not a directly filmed growth sequence.',tag:'SEI-forming treatment',lead:'Carbon'},
- {name:'Prepare',title:'Prepare both electrode states',copy:'After the lower-potential treatment and stripping step, the polymer is reduced against external lithium. The full device is then charged in electrolyte using its own two leads, without the external lithium.',note:'Figure 5c–d; p. 24 · The diagram shows the external-Li preparation connection; charging uses the two device leads.',tag:'Lithiate the polymer',lead:'Cathode'},
+ {name:'Reduce polymer',title:'Move the contact to the polymer',copy:'Connect external lithium to the PAQEDOT lead instead of the carbon lead. Reduction lithiates the polymer. The carbon remains oxidized, leaving the device in its discharged state.',note:'Figure 5c; p. 24 · The carbon lead is now disconnected from the processing circuit.',tag:'Polymer reduction',lead:'Cathode'},
+ {name:'Charge',title:'Use the device’s own two leads',copy:'Disconnect external lithium. Connect the carbon and polymer leads to the charger, with the device still in electrolyte. This step also replaces counterions lost from the PEDOT backbone during reduction.',note:'Figure 5d; p. 24 · External lithium is no longer used; the electrolyte bath remains.',tag:'Charge in electrolyte',lead:'Two device leads'},
  {name:'Operate',title:'Now the device is the cell',copy:'After electrochemical preparation, the device is lifted out of the electrolyte bath for full-cell cycling. Electrons use the external circuit; lithium ions must move through the internal ion-conducting phases and interphase.',note:'Figure 6; pp. 25–26 · The liquid processing bath and external lithium are not part of this operating circuit.',tag:'Full-cell operation',lead:'Two device leads'}
 ];
+export function formationConfiguration(index){
+ return [
+  {key:'deposited',bath:false,externalLi:false,interphase:false,contact:null,circuit:'none',emphasis:'cathode'},
+  {key:'form-sei',bath:true,externalLi:true,interphase:true,contact:'carbon',circuit:'external-li',emphasis:'sei'},
+  {key:'reduce-polymer',bath:true,externalLi:true,interphase:true,contact:'cathode',circuit:'external-li',emphasis:'cathode'},
+  {key:'charge-device',bath:true,externalLi:false,interphase:true,contact:'both',circuit:'charger',emphasis:'both'},
+  {key:'operate',bath:false,externalLi:false,interphase:true,contact:'both',circuit:'load',emphasis:'both'}
+ ][index];
+}
 export const depthContent={
  connectivity:{kicker:'FOUNDATION · FIGURE 1c',title:'A slice can hide a connection',copy:'Move the section through the volume. Carbon regions that look separate in one plane can join above or below it. The detached plane shows the same field at the selected depth.',note:'Four-neighbor components are counted in a 41 × 41 sampled slice, not in the continuous specimen.',sections:[
  ['Start with the distinction','An electrode is a region that can exchange electronic charge with its contact. A pore is empty space in the dry scaffold; later processing fills some of that space with polymer and interphase. A 2D image cuts through these volumes. Separate patches in that image need not be separate objects in 3D.'],
@@ -34,7 +44,7 @@ export const depthContent={
  ['Build from current and flux','In a uniform slab with constant ionic conductivity κ and area A, j = κΔV/L and I = jA. Therefore R = ΔV/I = L/(κA). This assumes a homogeneous, ohmic conductor and neglects contact and charge-transfer resistance.'],
  ['Why the square appears','For one-dimensional diffusion with constant D, rescale x by L and time by L²/D in ∂c/∂t = D∂²c/∂x². Geometrically similar problems then share the same dimensionless solution. A particular relaxation time includes a factor set by its initial and boundary conditions, but its ratio still scales as L² if those conditions are unchanged.'],
  ['Return to the real device','The paper proposes short local distances and large interfacial area as architectural advantages. Its 3D network also has tortuous electronic routes, heterogeneous coating, contact resistance and potential-dependent polymer conduction. The pore diameter (~90 nm) is not a measured SEI thickness. This ideal curve cannot predict charging time or resolve the reported impedance.'] ],source:'Architecture motivation: pp. 3–5. Pore size: pp. 17–18. Impedance and limits: pp. 26–31. Equations are a separately derived teaching model.'},
- formation:{kicker:'PROCESS · FIGURES 2 & 5',title:'The separator comes later',copy:'Follow the changes in material contact and electrical connection. Each state is a process explanation, not a simulated movie of interphase growth.',note:'The paper reports a multistep treatment; this visual groups it into four inspectable states.',sections:[
+ formation:{kicker:'PROCESS · FIGURES 2 & 5',title:'The separator comes later',copy:'Follow the changes in material contact and electrical connection. Each state is a process explanation, not a simulated movie of interphase growth.',note:'The paper reports a multistep treatment; this visual groups it into five inspectable states.',sections:[
  ['Two roles in one polymer','PAQEDOT joins a conducting EDOT-derived backbone with redox-active anthraquinone pendants. Electronic conduction along the polymer and redox storage at its pendants are distinct roles. A separate outer PEDOT layer makes the polymer network easier to contact without touching carbon.'],
  ['Why voltage needs a reference','During processing, “below about 1 V” is a carbon-electrode potential relative to external lithium, not the voltage of the final battery. The paper uses an initial discharge, a lower-potential treatment expected to plate lithium, subsequent stripping to 4 V versus Li, polymer reduction, and then full-cell charging in electrolyte.'],
  ['What is proposed, and what is known','The authors propose that polymer de-doping makes it less conducting at the potentials where SEI develops. The lower-potential step may also lift polymer from carbon through lithium plating and further electrolyte decomposition. The visual separates the materials to explain that proposal; it does not assert a measured thickness or atom-by-atom pathway.'],

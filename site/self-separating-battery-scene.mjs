@@ -1,4 +1,4 @@
-import {DepthScene} from './self-separating-battery-depth-scene.mjs?v=1';
+import {DepthScene} from './self-separating-battery-depth-scene.mjs?v=2';
 import {PHASES,orbit,ease,clamp,meshNames,intervals,clipScalar} from './self-separating-battery-model.mjs?v=2';
 const T=window.THREE,BASE='assets/self-separating-battery/';
 const HOME={yaw:.7,elevation:.39,halfHeight:4.7,target:[0,0,0]};
@@ -104,6 +104,7 @@ export class NetworkScene{
   if(this.travel&&!this.state.paused){const p=this.travel,t=p.duration?clamp((now-p.start)/p.duration,0,1):1,u=ease(t);for(const key of ['yaw','elevation','halfHeight'])this.pose[key]=p.from[key]+u*(p.to[key]-p.from[key]);this.pose.target=p.from.target.map((v,i)=>v+u*(p.to.target[i]-v));if(t===1)this.travel=null;else changing=true;}
   if(!this.state?.deep&&this.state?.view==='interface'&&this.state.transport&&!this.state.reduced){this.time+=dt;this.updateMarkers(this.time);changing=true;}
   for(const f of this.fades){const u=clamp((now-f.start)/240,0,1);f.mesh.material.opacity=f.from+(f.to-f.from)*ease(u);if(u===1){f.mesh.visible=f.to>0;f.mesh.material.transparent=false;f.mesh.material.opacity=1;}else changing=true;}this.fades=this.fades.filter(f=>now-f.start<240);
+  if(this.deep?.tick(now))changing=true;
   this.updateCamera();this.renderer.render(this.scene,this.camera);this.canvas.dataset.yaw=this.pose.yaw.toFixed(4);this.canvas.dataset.elevation=this.pose.elevation.toFixed(4);this.canvas.dataset.rendered='true';if(changing&&this.wasChanging&&rawDt>0){this.frameTimes.push(rawDt*1000);if(this.frameTimes.length>180)this.frameTimes.shift();if(this.frameTimes.length>30){this.canvas.dataset.fps=(1000/(this.frameTimes.reduce((a,b)=>a+b,0)/this.frameTimes.length)).toFixed(1);this.canvas.dataset.frameP95=[...this.frameTimes].sort((a,b)=>a-b)[Math.floor(this.frameTimes.length*.95)].toFixed(1);}}this.wasChanging=changing;this.cb.onFrame?.(this);if(changing)this.wake();
  };
  wake(){this.visible=!document.hidden;if(!this.active){const r=this.canvas.getBoundingClientRect();this.active=r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth;}if(!this.raf&&this.active&&this.visible&&!this.state?.paper)this.raf=requestAnimationFrame(this.render);}

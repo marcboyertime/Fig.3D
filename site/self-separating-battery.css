@@ -59,3 +59,19 @@
 @media(max-width:780px){.capacity-chart{margin:0 10px 3px 0}.capacity-unit{font-size:12px;margin-bottom:27px}.capacity-limit span{font-size:11px;top:-24px;right:-26px}.capacity-row{margin-bottom:12px}.capacity-row>div:first-child{font-size:13px;margin-bottom:5px}.capacity-row strong{font-size:18px}.capacity-track{height:21px}.capacity-axis{font-size:11px}.voltage-chart{min-height:190px;margin:0 10px 9px;padding-top:0}.voltage-meter{width:142px;height:142px}.voltage-meter strong{font-size:29px}.voltage-meter span{font-size:13px}.voltage-wire{top:71px;height:77px}.voltage-leads{font-size:12px}.evidence-foot{font-size:12px}}
 #depth-controls .range-heading{font-size:14px}
 @media(max-width:440px){.depth-tabs{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:0 22px}.depth-tabs button{font-size:14px;text-align:left}.depth-tabs button[aria-selected=true]{border-bottom-color:#a18bec}}
+
+/* Keep rigorous reading discoverable beside the live explanation. */
+.depth-reading-link{display:grid;grid-template-columns:1fr auto;gap:4px 20px;margin-top:25px;padding:14px 0;color:#bdcaff;font-size:14px;max-width:420px}
+.depth-reading-link>span:first-child{grid-column:1;font-weight:500}.depth-reading-link strong{grid-column:1;font-size:16px;line-height:1.6;font-weight:400;color:#e0e7f8}.depth-reading-link>span:last-child{grid-column:2;grid-row:1/3;align-self:center;font-size:24px;transition:transform 200ms}.depth-reading-link:hover>span:last-child{transform:translateY(4px)}
+.depth-reading{margin:24px auto 55px;scroll-margin-top:28px}.depth-reading>.eyebrow{margin-bottom:18px}.depth-reading section:first-child h3{margin-top:0}
+/* The paper lays back while the same mounted renderer rises from its anchor. */
+.paper-lift{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;perspective:1100px}.paper-lift-sheet{position:absolute;will-change:transform,opacity;box-shadow:0 28px 65px #0007}.paper-lift-sheet>img{width:100%;height:100%;display:block}.paper-lift-focus{position:absolute;border:2px solid #819df6;border-radius:5px;box-shadow:0 0 0 1600px #080a1233}
+.is-lifting .scene-content{position:relative;z-index:2}.is-lifting #network,.is-lifting #evidence-view{will-change:transform,opacity}.is-lifting .scene-key,.is-lifting .depth-labels,.is-lifting .scene-annotation,.is-lifting .ion-label{visibility:hidden}.is-lifting .source-opening{visibility:hidden}
+@media(max-width:780px){.depth-reading{margin-top:18px;scroll-margin-top:20px}.depth-reading-link{margin-top:14px}.paper-lift-focus{border-width:1.5px}}
+@media(prefers-reduced-motion:reduce){.depth-reading-link>span:last-child{transition:none}}
+
+@media(min-width:781px){.scene-stage.showing-evidence{height:500px;min-height:420px;max-height:65vh}.in-depth .scene-footer{margin-top:4px}}
+
+.scene-stage.is-lifting{overflow:clip}
+
+.depth-labels{overflow:clip}.depth-labels span{max-width:calc(100% - 16px)}

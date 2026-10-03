@@ -1,4 +1,4 @@
-import {depthContent,formationSteps,scaling,capacity} from './self-separating-battery-depth.mjs?v=1';
+import {depthContent,formationSteps,scaling,capacity} from './self-separating-battery-depth.mjs?v=2';
 const $=id=>document.getElementById(id),format=n=>Number(n.toFixed(4)).toString();
 const axes='<path d="M48 16V164H390" fill="none" stroke="#5b6d89"/><g fill="#adbad0" font-size="18"><text x="18" y="23">4×</text><text x="23" y="168">0</text><text x="44" y="185">0</text><text x="212" y="185">1</text><text x="382" y="185">2</text><text x="334" y="208">L / L₀</text></g>';
 function scalePlot(r){const x=q=>48+171*q,y=q=>164-36*q,curve=fn=>Array.from({length:41},(_,i)=>{const q=i/20;return (i?'L':'M')+x(q).toFixed(2)+','+y(fn(q)).toFixed(2);}).join(' ');return `<svg viewBox="0 0 420 220" role="img" aria-label="At thickness ratio ${r.toFixed(2)}, resistance ratio is ${r.toFixed(2)} and diffusion time ratio is ${format(r*r)}. Resistance is linear; diffusion time is quadratic.">${axes}<path d="${curve(q=>q)}" fill="none" stroke="#9dbbff" stroke-width="3"/><path d="${curve(q=>q*q)}" fill="none" stroke="#bc9cff" stroke-width="3" stroke-dasharray="6 4"/><path d="M${x(r)} 18V164" stroke="#8191ae" stroke-dasharray="3 5"/><circle cx="${x(r)}" cy="${y(r)}" r="5" fill="#9dbbff"/><circle cx="${x(r)}" cy="${y(r*r)}" r="5" fill="#bc9cff"/></svg>`;}
@@ -10,6 +10,7 @@ let previousTopic=null,previousEvidence=null;
 export function updateDepthUI(state,setCaption){
  const d=state.deep,active=!!d,paper=state.paper;
  $('overview-tabs').hidden=active;$('depth-tabs').hidden=!active;$('depth-controls').hidden=!active||paper;$('depth-reading').hidden=!active;
+ $('depth-reading-link').hidden=!active;
  $('depth-toggle').textContent=active?'← Back to overview':'Go deeper ↗';$('depth-toggle').setAttribute('aria-expanded',String(active));
  $('depth-labels').hidden=!active||paper||d?.topic==='evidence';
  $('evidence-view').hidden=!active||paper||d?.topic!=='evidence';
@@ -20,13 +21,14 @@ export function updateDepthUI(state,setCaption){
   $('scene-key').replaceChildren(...keys.map(k=>{const span=document.createElement('span'),i=document.createElement('i');i.className=k;span.append(i,document.createTextNode({carbon:'Carbon',sei:'SEI',cathode:'PAQEDOT'}[k]));return span;}));
  }
  $('network').setAttribute('aria-label',active?({connectivity:'A three-dimensional network with a movable cross-section and its detached sampled plane.',length:'An ideal ion-conducting slab with adjustable thickness and fixed area.',formation:'Material layers, external lithium and electrical connections at each processing state.',evidence:'Published observations'})[d.topic]+' Arrow keys rotate; plus and minus zoom.':'Connected carbon, cathode and SEI networks. Drag to rotate. Arrow keys rotate; plus and minus zoom; Home resets.');
- $('display-model').textContent=active?'Visual':'3D model';
+ $('display-model').textContent=document.body.classList.contains('is-fallback')?'Static view':active?'Visual':'3D model';
  const extra=active&&(d.topic==='formation'||d.topic==='evidence'),ref=d?.topic==='evidence'?6:5;
  $('display-reference').hidden=!extra;$('display-reference').dataset.display=String(ref);$('display-reference').textContent='Figure '+ref;
  $('explorer').classList.toggle('in-depth',active);document.body.classList.toggle('reading-depth',active);
  document.querySelector('.paper-context').hidden=active;
  if(!active){previousTopic=null;return;}
  const content=depthContent[d.topic],step=formationSteps[d.formation];
+ $('depth-reading-preview').textContent=content.sections[0][0];
  document.querySelectorAll('[data-depth-topic]').forEach(b=>{const on=b.dataset.depthTopic===d.topic;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
  $('inspection').setAttribute('aria-labelledby','depth-'+d.topic);
  for(const t of ['slice','length','formation','evidence'])$('depth-'+t+'-controls').hidden=(t==='slice'?'connectivity':t)!==d.topic;
@@ -42,6 +44,6 @@ export function updateDepthUI(state,setCaption){
 export function depthFrame(scene,state){
  if(!state.deep||state.paper)return;
  const d=scene.deep;if(!d)return;
- [...$('depth-labels').children].forEach((el,i)=>{const label=d.labels[i];el.hidden=!label;if(label){const p=scene.project(label[1]);el.textContent=label[0];el.style.left=Math.max(60,Math.min(scene.width-60,p.x))+'px';el.style.top=Math.max(20,Math.min(scene.height-28,p.y))+'px';}});
+ [...$('depth-labels').children].forEach((el,i)=>{const label=d.labels[i];el.hidden=!label;if(label){const p=scene.project(label[1]);el.textContent=label[0];const half=Math.min(scene.width/2,el.getBoundingClientRect().width/2+8);el.style.left=Math.max(half,Math.min(scene.width-half,p.x))+'px';el.style.top=Math.max(20,Math.min(scene.height-62,p.y))+'px';}});
  if(state.deep.topic==='connectivity'&&d.stats){const n=d.stats.components;$('slice-stat').textContent=`${n} separate carbon ${n===1?'patch':'patches'} in this sampled plane. Rotate the volume to look beyond the slice.`;}
 }

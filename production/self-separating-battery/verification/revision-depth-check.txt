@@ -1,0 +1,2 @@
+PASS: 41 slices agree with independent SciPy fixtures; 3D detour example; length scaling; capacity denominators; advanced/paper/overview state preservation.
+PASS: five source-mapped process states; actual 3D wire endpoints move from carbon to polymer; charging disconnects external Li and retains bath; operation removes bath.

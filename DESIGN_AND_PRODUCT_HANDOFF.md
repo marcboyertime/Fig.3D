@@ -1,5 +1,22 @@
 # Fig.3D — design and product handoff
 
+## Living preferences — update with each round of feedback
+
+This is the living product/design guide, not only a historical handoff. At the user's explicit request (3 October 2026), record every new critique, preference and improvement here in the same work session. Fold durable principles into the guide, date concrete examples, and distinguish requested work from verified implementation. Read this section before future design or interaction changes. Earlier implementation/status claims below describe their original handoff and may be superseded by current code and verification reports.
+
+### 3 October 2026 — paper companions and depth of explanation
+
+- **Controls must tell the truth about the visible state.** Starting with a source figure is intentional. Figure 1 must be selected while Figure 1 is visible; a “3D model” selection must correspond to the model. Opening timelines, manual selection, reduced motion and interruption all need the same display state. Never hide a second, contradictory state behind an intro overlay.
+- **Let the visual emerge from the paper.** The user specifically loves the homepage rocksalt figure-to-model lift. Carry that visual continuity into companion openings and returns from source figures: maintain a recognizable anchor, reveal depth, then hand over the live scene. A generic crossfade is insufficient. Preserve the camera and inspection state on comparison returns; do not claim a generated geometry reconstructs the photographed specimen. Motion must be interruptible and have a reduced-motion alternative.
+- **Figures must stay one action away in the same viewing area.** Rapid source/model comparison is a core product interaction, not a footer link. Preserve source zoom and pan as well as model state. Do not reset the explanation when consulting the paper.
+- **Going deeper means new explanatory visuals and rigorous reasoning**, from foundations to the paper's actual argument. It cannot be the shallow scene with extra prose. Each distinct scientific step must produce an observable, meaningful change in the scene.
+- **Audit adjacent states side by side.** The user caught “Form SEI” and “Prepare” showing effectively identical bath/circuit visuals. Show the actual difference: which device electrode is connected to external lithium, what the treatment changes, when the external lithium is removed, and when the two device leads are connected. Split compound steps when one image cannot represent their different circuits. Caption changes alone do not meet the requirement.
+- **Deeper text must be discoverable next to the interaction.** “Build the explanation” was buried below a large empty gap. Put a clear contextual entry beside the current controls and bring the explanation closer to its visual. Do not depend on accidental scrolling to reveal essential content; avoid solving this by adding a crowded dashboard.
+- **Pace introductions for reading.** The nanoparticle opening was too fast. Use adequate dwell time, discreet pause, immediate exploration and easy return to the source. Inspect timing at actual reading speed, not only in screenshots.
+- **Craft is an acceptance requirement.** Inspect every distinct state, its scientific meaning, labels, camera, transition, spacing and responsive layout. Exercise rapid switching, keyboard access and reduced motion. Functional buttons and passing unit tests do not demonstrate visual quality or explanatory clarity.
+
+Implemented locally in this revision: correct opening selection; interruptible paper-lift transition; five distinct formation/preparation/operation circuits; contextual access to the closer reading section; bounded mobile labels. The module verification report records browser checks and remaining test limits. This is not a claim of final user approval or public deployment.
+
 ## The whole idea
 
 Fig.3D is intended to become a browsable library/publication of useful interactive scientific visualizations, animations and paper companions across materials science. It helps someone see a difficult structure, mechanism or relationship, manipulate it meaningfully, and return to the underlying science with better understanding. A reader should be able to find the particular visual they need; eventual search belongs to a sufficiently populated library. The user explicitly rejected positioning it as a course, guided curriculum, lesson plan or sequence everyone must follow.
