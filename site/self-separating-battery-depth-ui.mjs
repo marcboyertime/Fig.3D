@@ -1,49 +1,62 @@
-import {depthContent,formationSteps,scaling,capacity} from './self-separating-battery-depth.mjs?v=2';
-const $=id=>document.getElementById(id),format=n=>Number(n.toFixed(4)).toString();
-const axes='<path d="M48 16V164H390" fill="none" stroke="#5b6d89"/><g fill="#adbad0" font-size="18"><text x="18" y="23">4×</text><text x="23" y="168">0</text><text x="44" y="185">0</text><text x="212" y="185">1</text><text x="382" y="185">2</text><text x="334" y="208">L / L₀</text></g>';
-function scalePlot(r){const x=q=>48+171*q,y=q=>164-36*q,curve=fn=>Array.from({length:41},(_,i)=>{const q=i/20;return (i?'L':'M')+x(q).toFixed(2)+','+y(fn(q)).toFixed(2);}).join(' ');return `<svg viewBox="0 0 420 220" role="img" aria-label="At thickness ratio ${r.toFixed(2)}, resistance ratio is ${r.toFixed(2)} and diffusion time ratio is ${format(r*r)}. Resistance is linear; diffusion time is quadratic.">${axes}<path d="${curve(q=>q)}" fill="none" stroke="#9dbbff" stroke-width="3"/><path d="${curve(q=>q*q)}" fill="none" stroke="#bc9cff" stroke-width="3" stroke-dasharray="6 4"/><path d="M${x(r)} 18V164" stroke="#8191ae" stroke-dasharray="3 5"/><circle cx="${x(r)}" cy="${y(r)}" r="5" fill="#9dbbff"/><circle cx="${x(r)}" cy="${y(r*r)}" r="5" fill="#bc9cff"/></svg>`;}
-function evidencePlot(kind){
- if(kind==='voltage')return `<div class="evidence-heading"><p class="eyebrow">FIGURE 6b · REPORTED VOLTAGE HOLD</p><h3>Can the device keep charge separated?</h3></div><div class="voltage-chart" role="img" aria-label="The paper reports more than 3.5 volts after five hours at open circuit."><div class="voltage-wire"></div><div class="voltage-meter"><strong>&gt;3.5 V</strong><span>after 5 hours</span></div><div class="voltage-leads"><span>Carbon lead</span><span>Polymer lead</span></div></div><p class="evidence-foot">No intended external current. A sustained voltage and a repeatable capacity are different measurements.</p>`;
- return `<div class="evidence-heading"><p class="eyebrow">FIGURE 6c · INITIAL BCP-DERIVED DEVICE</p><h3>How much charge comes back?</h3></div><div class="capacity-chart" role="img" aria-label="First discharge 120 milliamp hours per gram of PAQEDOT; third approximately 27.5. Theoretical capacity 132. The third value is calculated from 20.8 percent of theoretical capacity."><div class="capacity-unit">mAh / g PAQEDOT</div><div class="capacity-rows"><div class="capacity-limit"><span>Theory 132</span></div><div class="capacity-row"><div><span>Discharge 1</span><strong>120</strong></div><div class="capacity-track"><i style="width:80%"></i></div></div><div class="capacity-row"><div><span>Discharge 3</span><strong>≈27.5</strong></div><div class="capacity-track"><i style="width:${capacity.third/150*100}%"></i></div></div><div class="capacity-axis"><span>0</span><span>50</span><span>100</span><span>150</span></div></div></div><p class="evidence-foot">Third discharge: 20.8% of the theoretical capacity, or about 22.9% of the first discharge. Both use polymer mass.</p>`;
+import {depthContent,formationSteps,scaling,capacity,SCALE_COMPARISON} from './self-separating-battery-depth.mjs?v=5';
+import {FormationWall} from './self-separating-battery-formation.mjs?v=5';
+const $=id=>document.getElementById(id),format=n=>Number(n.toFixed(3)).toString();
+// Linear axes from 0 to 2 in L/L₀: resistance is a straight line, diffusion time a parabola.
+function scalePlot(r){
+ const x=q=>44+165*q,y=q=>162-36*q,curve=fn=>Array.from({length:41},(_,i)=>{const q=i/20;return (i?'L':'M')+x(q).toFixed(1)+','+y(Math.min(fn(q),4.1)).toFixed(1);}).join(' ');
+ return `<svg viewBox="0 0 400 200" role="img" aria-label="At thickness ratio ${r.toFixed(2)}, resistance is ${format(r)} times and diffusion time ${format(r*r)} times the reference."><path d="M44 14V162H384" fill="none" stroke="#3c4860"/><path d="M${x(1)} 14V162" stroke="#ffe2a8" stroke-opacity=".35" stroke-dasharray="2 4"/><g fill="#9ba9c2" font-size="12"><text x="22" y="20">4×</text><text x="28" y="166">0</text><text x="${x(1)-3}" y="182">1</text><text x="${x(2)-3}" y="182">2</text><text x="384" y="196" text-anchor="end">L / L₀</text></g><path d="${curve(q=>q)}" fill="none" stroke="#9dc0ff" stroke-width="2"/><path d="${curve(q=>q*q)}" fill="none" stroke="#c4adff" stroke-width="2" stroke-dasharray="5 4"/><path d="M${x(r)} 14V162" stroke="#ffe2a8" stroke-width="1"/><circle cx="${x(r)}" cy="${y(r)}" r="4.5" fill="#9dc0ff"/><circle cx="${x(r)}" cy="${y(Math.min(r*r,4.1))}" r="4.5" fill="#c4adff"/><g font-size="12"><text x="${x(2)-8}" y="${y(2)-8}" fill="#9dc0ff" text-anchor="end">R</text><text x="${x(1.9)}" y="22" fill="#c4adff" text-anchor="end">t</text></g></svg>`;
 }
-let previousTopic=null,previousEvidence=null;
-export function updateDepthUI(state,setCaption){
- const d=state.deep,active=!!d,paper=state.paper;
+// Evidence: the original panels with hairline annotations at values stated in the text.
+// Crop rectangles and axis calibrations are in native Figure 6 pixels.
+const PANELS={
+ voltage:{crop:[470,0,480,380],kicker:'FIGURE 6b · ORIGINAL',title:'Open circuit for five hours',
+  marks:()=>{const y=316-63.56*3.5,x0=562.5-470,x1=935-470;return `<path d="M${x0} ${y}H${x1}" stroke="#ffb547" stroke-width="1.6" stroke-dasharray="5 4"/><text x="${x0+12}" y="${y+18}" fill="#c4790b" font-size="15" font-weight="600">3.5 V</text><circle cx="${x1}" cy="${316-63.56*3.45}" r="6" fill="none" stroke="#ffb547" stroke-width="1.6"/><path d="M${845-470} ${118}h-34" stroke="#ffb547" stroke-width="1.2"/><text x="${845-470-38}" y="122" fill="#c4790b" font-size="13" text-anchor="end">inset: device above liquid</text>`;}},
+ capacity:{crop:[940,0,488,380],kicker:'FIGURE 6c · ORIGINAL',title:'Three discharges of the first device',
+  marks:()=>{const X=c=>1041.5+2.875*c-940,top=40,bottom=316;return `<path d="M${X(120)} ${top+150}V${bottom}" stroke="#ffb547" stroke-width="1.4" stroke-dasharray="4 4"/><path d="M${X(capacity.third)} ${top+150}V${bottom}" stroke="#ffb547" stroke-width="1.4" stroke-dasharray="4 4"/><text x="${X(120)-6}" y="${top+142}" fill="#c4790b" font-size="13" text-anchor="end">120 reported</text><text x="${X(capacity.third)+6}" y="${bottom-14}" fill="#c4790b" font-size="13">≈ 27.5</text>`;}}
+};
+function evidencePanel(kind){
+ const p=PANELS[kind],[x,y,w,h]=p.crop;
+ return `<figure class="evidence-figure"><figcaption><span class="eyebrow">${p.kicker}</span>${p.title}</figcaption><div class="evidence-frame" style="aspect-ratio:${w}/${h}"><div class="evidence-crop" style="background-image:url(assets/self-separating-battery/figure-6.jpg);background-size:${1428/w*100}% ${753/h*100}%;background-position:${x/(1428-w)*100}% ${y/(753-h)*100||0}%"></div><svg viewBox="0 0 ${w} ${h}" aria-hidden="true">${p.marks()}</svg></div></figure>`;
+}
+function evidenceReadout(kind){
+ if(kind==='voltage')return '<p><strong>&gt; 3.5 V</strong> after a five-hour open-circuit hold, reported for the charged device.</p><p class="quiet">Supports lasting electronic separation. It says nothing yet about how much charge comes back.</p>';
+ const third=capacity.third,ofFirst=third/capacity.first*100;
+ return `<div class="retention"><p><span>Discharge 1</span><strong>120</strong><i style="--w:${120/132*100}%"></i></p><p><span>Discharge 3</span><strong>≈ 27.5</strong><i style="--w:${third/132*100}%"></i></p><p class="theory"><span>Theoretical</span><strong>132</strong><i style="--w:100%"></i></p></div><p class="unit">mAh per gram of PAQEDOT, not of the whole device</p><p>Third discharge: <strong>20.8%</strong> of theoretical, or <strong>${ofFirst.toFixed(1)}%</strong> of the first discharge.</p>`;
+}
+let wall=null,previousTopic=null,previousEvidence=null,processBuilt=false;
+export function formationWall(){return wall;}
+function buildProcess(dispatch){
+ if(processBuilt)return;processBuilt=true;const host=document.querySelector('#depth-formation-controls .process');
+ formationSteps.forEach((step,i)=>{const b=document.createElement('button');b.dataset.formation=String(i);b.innerHTML=`<span class="step-index">${i+1}</span><span class="step-name">${step.name}</span><span class="step-figure">${step.figure.replace('Figure ','Fig. ')}</span>`;b.addEventListener('click',()=>dispatch({type:'depth',action:{type:'formation',value:i}}));host.append(b);});
+ host.addEventListener('keydown',e=>{if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();const list=[...host.children],i=list.indexOf(document.activeElement),n=(i+(['ArrowDown','ArrowRight'].includes(e.key)?1:-1)+list.length)%list.length;list[n].focus();list[n].click();});
+}
+export function updateDepthUI(state,{setCaption,dispatch,fallback}){
+ const d=state.deep,active=!!d,paper=state.display!=='model';
+ buildProcess(dispatch);
  $('overview-tabs').hidden=active;$('depth-tabs').hidden=!active;$('depth-controls').hidden=!active||paper;$('depth-reading').hidden=!active;
- $('depth-reading-link').hidden=!active;
- $('depth-toggle').textContent=active?'← Back to overview':'Go deeper ↗';$('depth-toggle').setAttribute('aria-expanded',String(active));
- $('depth-labels').hidden=!active||paper||d?.topic==='evidence';
+ $('depth-toggle').innerHTML=active?'<span aria-hidden="true">←</span> Back to the overview':'Go deeper <span aria-hidden="true">↗</span>';$('depth-toggle').setAttribute('aria-expanded',String(active));
  $('evidence-view').hidden=!active||paper||d?.topic!=='evidence';
  $('scene-stage').classList.toggle('showing-evidence',active&&d.topic==='evidence'&&!paper);
- $('scene-key').hidden=active&&!['connectivity','formation'].includes(d.topic);
- if(active&&['connectivity','formation'].includes(d.topic)){
-  const keys=d.topic==='formation'&&d.formation===0?['carbon','cathode']:['carbon','sei','cathode'];
-  $('scene-key').replaceChildren(...keys.map(k=>{const span=document.createElement('span'),i=document.createElement('i');i.className=k;span.append(i,document.createTextNode({carbon:'Carbon',sei:'SEI',cathode:'PAQEDOT'}[k]));return span;}));
- }
- $('network').setAttribute('aria-label',active?({connectivity:'A three-dimensional network with a movable cross-section and its detached sampled plane.',length:'An ideal ion-conducting slab with adjustable thickness and fixed area.',formation:'Material layers, external lithium and electrical connections at each processing state.',evidence:'Published observations'})[d.topic]+' Arrow keys rotate; plus and minus zoom.':'Connected carbon, cathode and SEI networks. Drag to rotate. Arrow keys rotate; plus and minus zoom; Home resets.');
- $('display-model').textContent=document.body.classList.contains('is-fallback')?'Static view':active?'Visual':'3D model';
+ const formation=active&&d.topic==='formation';
+ $('scene-stage').classList.toggle('showing-formation',formation&&!paper);$('formation-wall').hidden=!formation||paper||fallback;
+ $('network').setAttribute('aria-label',active?({connectivity:'A three-dimensional network cut by a movable section, beside the same section flattened. A highlighted route joins two carbon patches outside the plane.',length:'An ideal ion-conducting slab of adjustable thickness between two electrode plates, with fixed area.',formation:'The processing vial, the device, its carbon and polymer leads, an external lithium chip and an instrument, connected as in the selected step.',evidence:'Published observations'})[d.topic]+' Arrow keys rotate; plus and minus zoom.':'Connected carbon, cathode and SEI networks. Drag to rotate. Arrow keys rotate; plus and minus zoom; Home resets.');
  const extra=active&&(d.topic==='formation'||d.topic==='evidence'),ref=d?.topic==='evidence'?6:5;
- $('display-reference').hidden=!extra;$('display-reference').dataset.display=String(ref);$('display-reference').textContent='Figure '+ref;
- $('explorer').classList.toggle('in-depth',active);document.body.classList.toggle('reading-depth',active);
+ $('display-reference').hidden=!extra;$('display-reference').dataset.display=String(ref);$('display-reference').textContent='Figure '+ref;$('display-reference').id;
+ $('explorer').classList.toggle('in-depth',active);
  document.querySelector('.paper-context').hidden=active;
- if(!active){previousTopic=null;return;}
+ if(!active){previousTopic=null;wall?.stop();return;}
  const content=depthContent[d.topic],step=formationSteps[d.formation];
- $('depth-reading-preview').textContent=content.sections[0][0];
  document.querySelectorAll('[data-depth-topic]').forEach(b=>{const on=b.dataset.depthTopic===d.topic;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
  $('inspection').setAttribute('aria-labelledby','depth-'+d.topic);
  for(const t of ['slice','length','formation','evidence'])$('depth-'+t+'-controls').hidden=(t==='slice'?'connectivity':t)!==d.topic;
  $('depth-slice').value=d.slice;$('slice-count').textContent=Math.round(d.slice/40*100)+'% through';
  $('depth-length-slider').value=d.length;$('length-value').textContent=d.length.toFixed(2);
- document.querySelectorAll('[data-formation]').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.formation)===d.formation));
- document.querySelectorAll('[data-evidence]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.evidence===d.evidence));
- if(!paper){setCaption(d.topic==='formation'?[content.kicker,step.title,step.copy,step.note]:[content.kicker,content.title,content.copy,content.note]);$('scene-content').inert=d.topic==='evidence';$('scene-content').setAttribute('aria-hidden',String(d.topic==='evidence'));}
- if(d.topic==='length'){const q=scaling(d.length);$('depth-scaling').innerHTML=`<p><span class="scale-resistance">Resistance R / R₀</span><strong>${format(q.resistance)}×</strong></p><p><span class="scale-diffusion">Diffusion time t / t₀</span><strong>${format(q.diffusion)}×</strong></p>`;$('scaling-plot').innerHTML=scalePlot(d.length);}
- if(d.topic==='evidence'&&previousEvidence!==d.evidence){$('evidence-view').innerHTML=evidencePlot(d.evidence);previousEvidence=d.evidence;}
- if(previousTopic!==d.topic){$('depth-argument').replaceChildren(...content.sections.map(([title,copy])=>{const section=document.createElement('section'),h=document.createElement('h3'),p=document.createElement('p');h.textContent=title;p.textContent=copy;section.append(h,p);return section;}));$('depth-source').textContent=content.source;previousTopic=d.topic;}
+ document.querySelectorAll('[data-formation]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.formation)===d.formation)));
+ document.querySelectorAll('[data-evidence]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.evidence===d.evidence)));
+ if(!paper){setCaption(d.topic==='formation'?[step.figure.toUpperCase()+' · STEP '+(d.formation+1)+' OF '+formationSteps.length,step.title,step.copy,step.note]:[content.kicker,content.title,content.copy,content.note]);$('scene-content').inert=d.topic==='evidence';}
+ if(d.topic==='length'){const q=scaling(d.length);$('ratio-r').textContent=format(q.resistance)+'×';$('ratio-t').textContent=format(q.diffusion)+'×';$('scaling-plot').innerHTML=scalePlot(d.length);}
+ if(d.topic==='evidence'&&previousEvidence!==d.evidence){$('evidence-view').innerHTML=evidencePanel(d.evidence);$('evidence-readout').innerHTML=evidenceReadout(d.evidence);previousEvidence=d.evidence;}
+ if(formation&&!paper){wall??=new FormationWall($('wall-svg'));wall.set(step,{reduced:state.reduced});$('wall-figure').textContent=step.figure+' · magnified wall';$('wall-potential').textContent=step.potential;$('wall-replay').hidden=state.reduced||step.key==='deposited';}else wall?.stop();
+ if(previousTopic!==d.topic){$('depth-argument').replaceChildren(...content.sections.map(([title,copy],i)=>{const item=document.createElement('details'),s=document.createElement('summary'),p=document.createElement('p');item.open=i===0;s.textContent=title;p.textContent=copy;item.append(s,p);return item;}));$('depth-source').textContent=content.source;previousTopic=d.topic;}
 }
-export function depthFrame(scene,state){
- if(!state.deep||state.paper)return;
- const d=scene.deep;if(!d)return;
- [...$('depth-labels').children].forEach((el,i)=>{const label=d.labels[i];el.hidden=!label;if(label){const p=scene.project(label[1]);el.textContent=label[0];const half=Math.min(scene.width/2,el.getBoundingClientRect().width/2+8);el.style.left=Math.max(half,Math.min(scene.width-half,p.x))+'px';el.style.top=Math.max(20,Math.min(scene.height-62,p.y))+'px';}});
- if(state.deep.topic==='connectivity'&&d.stats){const n=d.stats.components;$('slice-stat').textContent=`${n} separate carbon ${n===1?'patch':'patches'} in this sampled plane. Rotate the volume to look beyond the slice.`;}
-}
+export {SCALE_COMPARISON};
