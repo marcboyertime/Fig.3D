@@ -17,6 +17,25 @@ This is the living product/design guide, not only a historical handoff. At the u
 
 Implemented locally in this revision: correct opening selection; interruptible paper-lift transition; five distinct formation/preparation/operation circuits; contextual access to the closer reading section; bounded mobile labels. The module verification report records browser checks and remaining test limits. This is not a claim of final user approval or public deployment.
 
+### 3 October 2026 — interwoven battery redesign brief (Marcky)
+
+Requested in one brief that asked for world-class quality, not suggestions. Durable principles:
+
+- **Art direction.** Near-black backgrounds, blue and dark-violet accents in the interface, purposeful material colours, Sora type. No dashboards, cards, tiny labels, excess dividers, gratuitous glow, cartoonish objects, periods on headlines, “not to scale” captions, or olive/lime colours.
+- **Use the paper's palette.** When a companion is built from a figure, the model's materials take that figure's colours so the reader can compare them at a glance (here grey carbon, blue PAQEDOT, green SEI, red template).
+- **Reading flow.** Every state answers, in order: what am I looking at, what changed, why it matters, what to do next. Essential explanation sits beside the visual, not below the fold.
+- **Paper → feature → depth → exploration.** The original figure comes first, then a recognisable feature is isolated, then depth and mechanism, then live exploration. The model must land *on* the printed object (registration, not a crossfade) and the page must lie back in 3D, not as flat stacked layers.
+- **Openings.** Play automatically with reading time and a discreet pause. Repeated comparisons use shorter transitions. Any reader input on the stage hands control over and it is never taken back. Respect reduced motion.
+- **Source figures.** One action away, in the same viewing area, at native resolution and unaltered. Preserve model orientation, zoom, material, cut and advanced state, and each figure's zoom and pan. The selected button must always match what is visible, including mid-transition and under rapid clicking.
+- **Science.** Verify every statement against the source. Label observation, derivation, illustration and proposed mechanism differently. Never invent kinetics, thicknesses, performance or certainty.
+- **Formation must show the circuit.** Which electrode is addressed, which leads the instrument holds, when external lithium is used, when the device's own leads are used, and why the device is in or above the liquid. Adjacent states must look different, and each must differ in the scene, not only the caption.
+- **Go deeper builds from basics to the paper's argument with new visuals** (Connections, Length scales, Formation, Evidence).
+- **Interaction.** Correct drag sign, bounded elevation, reset, click distinct from drag, keyboard, touch, and phone scrolling that is never trapped.
+- **Verification is part of the deliverable.** Scientific, interaction, visual (390/768/1440/1920 and 200% zoom), performance and regression checks across every page, an “understanding” check with the prose hidden, and precise statements of what could not be tested.
+- **Deployment waits for an explicit instruction.**
+
+Status of this brief (requested → implemented → verified → remaining) is kept in `production/self-separating-battery/verification-report.md`, section “Redesign (3 October 2026, second revision)”. Remaining limits: Safari, Firefox, a real phone, screen readers and a human comprehension study were not available; all browser evidence is headless Chromium with a software (SwiftShader) renderer, so motion timing and frame rates on real GPUs were not measured.
+
 ## The whole idea
 
 Fig.3D is intended to become a browsable library/publication of useful interactive scientific visualizations, animations and paper companions across materials science. It helps someone see a difficult structure, mechanism or relationship, manipulate it meaningfully, and return to the underlying science with better understanding. A reader should be able to find the particular visual they need; eventual search belongs to a sufficiently populated library. The user explicitly rejected positioning it as a course, guided curriculum, lesson plan or sequence everyone must follow.
