@@ -16,32 +16,60 @@ assert.ok(Math.abs(capacity.third-27.456)<1e-10);assert.ok(Math.abs(capacity.thi
 const overview={...initialState(true),view:'fabrication',stage:'cathode',layer:'carbon',cut:.73};
 let state=reduce(overview,{type:'depth-enter'});
 state=reduce(state,{type:'depth',action:{type:'topic',value:'formation'}});state=reduce(state,{type:'depth',action:{type:'formation',value:2}});
-const depth={...state.deep};for(let i=0;i<15;i++){state=reduce(state,{type:'paper',value:true});state=reduce(state,{type:'paper',value:false});}assert.deepEqual(state.deep,depth);
+const depth={...state.deep};for(let i=0;i<15;i++){for(const d of ['1','2','5','6'])state=reduce(state,{type:'display',value:d});state=reduce(state,{type:'display',value:'model'});}assert.deepEqual(state.deep,depth);
 state=reduce(state,{type:'depth-exit'});assert.deepEqual(state,overview);
 assert.equal(reduceDepth(initialDepth(),{type:'slice',value:200}).slice,40);assert.equal(reduceDepth(initialDepth(),{type:'length',value:.01}).length,.25);
-console.log('PASS: 41 slices agree with independent SciPy fixtures; 3D detour example; length scaling; capacity denominators; advanced/paper/overview state preservation.');
+console.log('PASS: 41 slices agree with independent SciPy fixtures; 3D detour example; length scaling; capacity denominators; advanced/figure/overview state preservation.');
+
+// The highlighted route really leaves the plane and joins the two patches through carbon only.
+const {hiddenConnection}=await import('./self-separating-battery-depth.mjs');
+let joined=0;
+for(let k=0;k<meta.n;k++){
+ const link=hiddenConnection(field,meta.n,k);if(!link)continue;joined++;
+ const n=meta.n,[a,b]=[link.path[0],link.path.at(-1)];
+ assert.equal(a[2],k);assert.equal(b[2],k);assert.equal(link.labels[a[0]*n+a[1]],link.from);assert.equal(link.labels[b[0]*n+b[1]],link.to);assert.notEqual(link.from,link.to);
+ for(const p of link.path)assert.ok(field[(p[0]*n+p[1])*n+p[2]]<=0);
+ for(let i=1;i<link.path.length;i++)assert.equal(link.path[i].reduce((d,v,x)=>d+Math.abs(v-link.path[i-1][x]),0),1);
+ assert.ok(link.maxOffset>0);
+}
+assert.ok(joined>10);
+console.log(`PASS: in ${joined} slices the highlighted route steps through 6-neighbour carbon only, leaves the plane and lands on the other patch.`);
 
 // Verify the circuit that is actually rendered, not just different captions.
 const {formationConfiguration,formationSteps}=await import('./self-separating-battery-depth.mjs');
+// [key, vial, immersed, + terminal, − terminal]; sources: Figure 2, Figure 5a–d insets and text, Figure 6b inset.
 const expected=[
- ['deposited',false,false,null,'none'],['form-sei',true,true,'carbon','external-li'],
- ['reduce-polymer',true,true,'cathode','external-li'],['charge-device',true,false,'both','charger'],['operate',false,false,'both','load']
+ ['deposited',false,false,null,null],['form-sei',true,true,'carbon','li'],['plate-strip',true,true,'carbon','li'],
+ ['reduce-polymer',true,true,'polymer','li'],['charge-device',true,true,'polymer','carbon'],['operate',true,false,'polymer','carbon']
 ];
+assert.equal(formationSteps.length,expected.length);
 for(let i=0;i<expected.length;i++){
- const c=formationConfiguration(i);assert.deepEqual([c.key,c.bath,c.externalLi,c.contact,c.circuit],expected[i]);assert.ok(formationSteps[i].copy.length);
+ const c=formationConfiguration(i);assert.deepEqual([c.key,c.vial,c.immersed,c.plus,c.minus],expected[i]);
+ for(const f of ['name','figure','title','copy','note','potential'])assert.ok(c[f].length,c.key+' '+f);
+ assert.ok(!c.title.endsWith('.'));
 }
+// External lithium is used only while one electrode is processed on its own.
+for(const c of formationSteps)assert.equal([c.plus,c.minus].includes('li'),['form-sei','plate-strip','reduce-polymer'].includes(c.key));
 const {createRequire}=await import('node:module');const require=createRequire(import.meta.url);
-globalThis.window={THREE:require('./assets/battery-three-r128.min.js')};
+globalThis.window={THREE:require('./assets/battery-three-r128.min.js')};globalThis.matchMedia=()=>({matches:false});
+const T=window.THREE,box=new T.BoxGeometry(6,6,6);
 const {DepthScene}=await import('./self-separating-battery-depth-scene.mjs');
-const host={scene:new window.THREE.Scene(),state:{reduced:true},canvas:{dataset:{}}};
+const {BENCH}=await import('./self-separating-battery-formation.mjs?v=5');
+const host={scene:new T.Scene(),state:{reduced:true},canvas:{dataset:{}},meshes:{carbon:{geometry:box},sei:{geometry:box},cathode:{geometry:box}},width:900,height:700};
 const rendered=new DepthScene(host);
-for(let i=0;i<5;i++){
- rendered.update({...initialDepth(),topic:'formation',formation:i});
- assert.equal(rendered.lithium.visible,expected[i][2]);assert.equal(rendered.liquid.visible,expected[i][1]);
- assert.equal(rendered.connection.children.length,i===0?0:2);
- assert.equal(host.canvas.dataset.formation,expected[i][0]);
- assert.equal(rendered.formSei.visible,i>0);
- if(i===1||i===2){const p=rendered.connection.children[1].geometry.parameters.path.getPoint(1);assert.ok(Math.abs(p.x-(i===1?.17:2.83))<1e-8);assert.ok(Math.abs(p.y-(i===1?-.55:.46))<1e-8);}
+for(let i=0;i<expected.length;i++){
+ rendered.update({...initialDepth(),topic:'formation',formation:i});const bench=rendered.bench,[key,vial,immersed,plus,minus]=expected[i];
+ assert.equal(host.canvas.dataset.formation,key);assert.equal(host.canvas.dataset.plus,plus||'none');assert.equal(host.canvas.dataset.minus,minus||'none');
+ assert.equal(bench.vial.visible,vial);assert.equal(bench.chip.visible,vial);
+ assert.ok(Math.abs(bench.device.position.y-(immersed?BENCH.immersedY:BENCH.raisedY))<1e-9);
+ // Cables that are actually drawn: one per used terminal, ending on the named lead.
+ const cables=bench.wires.children.filter(o=>o.userData.terminal);
+ assert.deepEqual(cables.map(c=>c.userData.terminal+':'+c.userData.lead).sort(),[plus&&'plus:'+plus,minus&&'minus:'+minus].filter(Boolean).sort());
+ for(const c of cables){const end=c.userData.curve.getPoint(1),start=c.userData.curve.getPoint(0),lead=BENCH.lead[c.userData.lead],term=BENCH.terminal[c.userData.terminal];
+  assert.ok(end.distanceTo(new T.Vector3(...lead))<1e-9);assert.ok(Math.abs(start.x-term[0])<1e-9&&Math.abs(start.z-term[2])<1e-9);}
+ // The lithium lead exists only while the chip is in the vial.
+ assert.equal(bench.wires.children.some(o=>o.userData.lead==='li'),vial);
+ const labels=bench.anchors().map(l=>l.id);assert.equal(labels.includes('li'),vial);
 }
-assert.equal(reduceDepth(initialDepth(),{type:'formation',value:999}).formation,4);
-console.log('PASS: five source-mapped process states; actual 3D wire endpoints move from carbon to polymer; charging disconnects external Li and retains bath; operation removes bath.');
+assert.equal(reduceDepth(initialDepth(),{type:'formation',value:999}).formation,5);
+console.log('PASS: six source-mapped processing states; rendered cables join the named terminals and leads; external Li only in half-cell steps; device immersed until Operate, raised there.');

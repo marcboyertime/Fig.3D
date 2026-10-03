@@ -1,0 +1,33 @@
+ok   opening starts on Figure 1
+ok   selected button matched visible content in 60 samples over 15 s of opening (displays seen: 1)
+ok   pause holds the opening
+ok   a drag ends the opening
+ok   control is not taken back
+ok   no page errors: 
+ok   dragging right turns the model so its front follows the pointer (yaw decreases)
+ok   elevation stays bounded after large drags (-1.08)
+ok   arrow keys rotate the focused model
+ok   reset returns to the home pose
+ok   arrow keys move between tabs
+ok   a click on the model isolates the material under the pointer (carbon)
+ok   no page errors: 
+ok   Figure 2 keeps its zoom after visiting Figure 1
+ok   cut, isolated material and view survive figure visits
+ok   orientation and zoom return exactly
+ok   Figure 5 selected and shown inside Formation
+ok   Formation step survives a figure visit
+ok   leaving Go deeper restores the overview state
+ok   and its camera
+ok   arrow key on the display switch opens a figure with matching selection
+ok   Escape returns to the model
+ok   no page errors: 
+ok   18 rapid switches settle on the last choice with no leftover transit ({"display":"model","pressed":["model"],"paper":false,"emerging":false,"ok":true})
+ok   selection stays truthful through the Figure 2 → model emergence
+ok   fabrication stage kept through the return
+ok   no page errors: 
+ok   reduced motion: no opening, model shown, motion off
+ok   fallback: message shown, 3D button hidden, an original figure shown (1)
+ok   fallback: Go deeper explanations still reachable (Touching, so not yet a battery)
+ok   no page errors: 
+info frame interval in SwiftShader: median 16.7 ms, p95 802.1 ms
+ALL PASSED

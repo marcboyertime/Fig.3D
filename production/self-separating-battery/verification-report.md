@@ -1,6 +1,6 @@
 # Verification — An interwoven battery
 
-Local implementation, 3 October 2026. Branch: `codex/self-separating-battery`. No push or public deployment.
+Local implementation, 3 October 2026. Earlier sections describe the first Codex revisions; the latest section, “Redesign (3 October 2026, second revision)”, supersedes them where they differ.
 
 ## Scientific and geometric checks
 
@@ -95,3 +95,37 @@ Verification for this revision:
 - Source/scene transitions preserve live state and original image pixels; the CSS paper/canvas presentation is not a reconstruction of the specimen. This revision did not re-run a physical-phone performance benchmark, screen-reader study, 200% zoom audit or comprehension study. Prior review limits still apply.
 
 Persistent instructions: `AGENTS.md` now points future agents to the living preferences section in `DESIGN_AND_PRODUCT_HANDOFF.md` and requires updating it with new feedback in the same session. No public deployment.
+
+## Redesign (3 October 2026, second revision)
+
+Branch `claude/project-thread-2hyatd`. Not merged or deployed. All browser evidence is headless Chromium 1440×1000 unless stated, with the SwiftShader software renderer; there was no GPU, Safari, Firefox, real phone or screen reader in this environment.
+
+### Requested → implemented
+
+| Requested | Implemented |
+|---|---|
+| Paper → feature → depth → live exploration, spatially coherent | The printed cube of Figure 1c is measured and the model is posed to match it; the figure zooms until that cube matches the model's box (capped at about 1.35× native pixels), hands over to the same pixels as a textured page inside the 3D scene, a front copy of the printed cube dissolves to reveal the shaded model in place, and the page tips back about the cube's base while the camera turns. Figure 2's four cubes register the same way for Fabrication. |
+| Opening with reading time, pause, hand-over | Four beats timed at ≥ 15 characters per second (about 41 s). Pause holds the clock and the emergence. Any pointer, wheel or key input on the stage ends it, and it never resumes. |
+| Truthful selection, state preserved | One `display` value drives the buttons and the stage. Model camera, material, cut, advanced topic/step and each figure's zoom and pan survive comparisons. |
+| Paper palette, art direction | Materials take the paper's colours; neutral lighting; Sora; no cards or headline periods. Labels sit in the scene with leaders where needed. |
+| Formation shows the circuit | Six states (Deposit, Form SEI, Plate & strip, Reduce polymer, Charge, Operate). A bench with vial, liquid, Li chip, both device leads, instrument terminals and cables to the leads in use, plus a magnified wall showing SEI, plating, de-doping, filled or emptied pendants and anion return. The device is raised above the liquid in Operate. |
+| Go deeper builds from basics | Connections (volume + flattened section + joining route), Length scales (ideal slab, R ∝ L, t ∝ L²), Formation, Evidence (original Figure 6 panels with marks). Each has a reading accordion with sources. |
+| Science labelled | Claim ledger in `site/references/self-separating-battery/scientific-notes.md`, section “Redesign — claim mapping”. |
+
+### Verified
+
+- `node site/self-separating-battery-verification.mjs`: deposition→SEI order, cut invariance, figure/model display truth and exact return, registration anchors per state, opening beats ≥ reading time, hand-over not retaken, reduced motion, 90 screen-space drag cases, 100 cut-face partitions. **Pass.**
+- `node site/self-separating-battery-depth-verification.mjs`: 41 slices against SciPy fixtures; in 30 slices the joining route steps only through 6-neighbour carbon, leaves the plane and lands on the other patch; six Formation rows; the cables actually built in Three.js join the named terminal and lead; external Li only in half-cell steps; device immersed until Operate. **Pass.**
+- Regressions: hop, hero controller, battery, battery controller, nanoparticle. **All pass**; those pages' files are unchanged.
+- Browser interaction suite (`verification/browser/interaction.mjs`, log `interaction.log`), 27 checks, **all pass**: the selected button matched the visible content in 60 samples across the opening; pause holds; a drag at 3 s, 12 s and 17 s into the opening hands over and is not taken back; dragging right decreases yaw; elevation stops at ±1.08; arrow keys rotate and move tabs; click (without drag) isolates a material; reset; Figure 2 keeps its zoom after visiting Figure 1; cut, material, view, yaw, elevation and zoom return exactly; Formation step survives Figure 5; leaving Go deeper restores the overview and camera; Escape returns; 18 rapid display switches settle on the last choice with no leftover transition; selection stays truthful through a Figure 2 → model emergence; reduced-motion preference; renderer fallback keeps figures and all Go deeper text.
+- Layout audit (`verification/browser/layout.mjs`) at 390×844, 600×900, 768×1024, 1440×1000 and 1920×1080 across 25 states each: no label collisions, no labels outside the stage or under the magnified wall, no horizontal overflow. 200% zoom was approximated as a 720×500 CSS viewport at device scale 2 and inspected visually.
+- Prose-hidden pass: stage captures with all explanatory text hidden (`verification/browser/prose-hidden.jpg`). Judged by the author, not by independent readers. It led to a carrier key (Li⁺ ion, Electron) in the Interface and Length views, because the moving dots were otherwise unnamed without the caption.
+- Bugs found and fixed by these checks: a second figure-to-model return crashed (a field shadowed the texture loader), Escape only worked with focus inside the figure, a drag during the zoom phase of the opening did not reach the stage, phone Formation hid the bench under the magnified wall, and several label overlaps.
+
+### Performance
+
+Frame intervals in SwiftShader are not representative of a GPU: idle frames are 16.7 ms, but a full WebGL redraw at 1440 px costs roughly 0.6–1.2 s on this CPU, so emergences run slower in wall-clock time here. The emergence clock caps each step at 250 ms so motion never jumps. Review videos were therefore recorded on a virtual clock (the page's `requestAnimationFrame` and `performance.now` stepped at 1/24 s per captured frame), which shows motion at its authored speed. GPU frame rates on real devices were **not measured**.
+
+### Not verified
+
+Safari, Firefox, physical phones and touch gestures (vertical touch scrolling is implemented by releasing vertical touch drags to the page but was not exercised with a real finger), screen readers, real browser zoom, GPU performance, and comprehension by independent readers. Public reproduction rights for the original figures remain as stated above.
