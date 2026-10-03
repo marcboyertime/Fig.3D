@@ -1,0 +1,16 @@
+{
+  "before": {
+    "cut": "100",
+    "elevation": "0.3900",
+    "layer": "carbon",
+    "yaw": "0.5080"
+  },
+  "after": {
+    "cut": "100",
+    "elevation": "0.3900",
+    "layer": "carbon",
+    "yaw": "0.5080"
+  },
+  "sliceZero": "4 separate carbon patches in this sampled plane. Rotate the volume to look beyond the slice.",
+  "sliceEnd": "1 separate carbon patch in this sampled plane. Rotate the volume to look beyond the slice."
+}

@@ -1,12 +1,16 @@
+import {initialDepth,reduceDepth} from './self-separating-battery-depth.mjs?v=1';
 // Geometric interpretation of Tait et al. Fig. 1c / Fig. 2; not a transport solver.
 export const PHASES={carbon:{name:'Carbon',role:'Anode · electronic scaffold',color:0x343f51},cathode:{name:'PAQEDOT',role:'Redox-active cathode',color:0x416ce2},sei:{name:'SEI',role:'Ion-permeable interphase',color:0xe9c78b},template:{name:'Template',role:'Removed during pyrolysis',color:0xb6a0d3}};
 export const STAGES=['hybrid','carbon','cathode','sei'];
 export const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const ease=t=>t*t*(3-2*t);
 export function orbit(p,dx,dy){return {...p,yaw:p.yaw-dx*.006,elevation:clamp(p.elevation+dy*.006,-1.08,1.08)};}
-export function initialState(reduced=false){return {view:'architecture',architecture:'network',stage:'hybrid',layer:'all',cut:0,route:null,transport:!reduced,reduced,opening:!reduced,paused:false,paper:false};}
+export function initialState(reduced=false){return {view:'architecture',architecture:'network',stage:'hybrid',layer:'all',cut:0,route:null,transport:!reduced,reduced,opening:!reduced,paused:false,paper:false,deep:null};}
 export function reduce(s,action){
  switch(action.type){
+ case 'depth-enter':return {...s,deep:initialDepth(),opening:false,paused:false,paper:false};
+ case 'depth-exit':return {...s,deep:null,paper:false};
+ case 'depth':return s.deep?{...s,deep:reduceDepth(s.deep,action.action)}:s;
  case 'view':return {...s,view:action.value,layer:'all',route:null,opening:false,cut:action.value==='interface'?0:s.cut};
  case 'stage':return {...s,stage:action.value,layer:'all',route:null,opening:false};
  case 'architecture':return {...s,architecture:action.value,layer:'all',route:null,opening:false};

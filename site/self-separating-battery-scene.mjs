@@ -1,4 +1,5 @@
-import {PHASES,orbit,ease,clamp,meshNames,intervals,clipScalar} from './self-separating-battery-model.mjs?v=1';
+import {DepthScene} from './self-separating-battery-depth-scene.mjs?v=1';
+import {PHASES,orbit,ease,clamp,meshNames,intervals,clipScalar} from './self-separating-battery-model.mjs?v=2';
 const T=window.THREE,BASE='assets/self-separating-battery/';
 const HOME={yaw:.7,elevation:.39,halfHeight:4.7,target:[0,0,0]};
 function fromBinary(buffer){const h=new Uint32Array(buffer,0,2),n=h[0],f=h[1],g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(new Float32Array(buffer,8,n*3),3));g.setAttribute('normal',new T.BufferAttribute(new Float32Array(buffer,8+n*12,n*3),3));g.setIndex(new T.BufferAttribute(new Uint32Array(buffer,8+n*24,f*3),1));g.computeBoundingSphere();return g;}
@@ -48,7 +49,7 @@ export class NetworkScene{
  updateCamera(){const p=this.pose,a=this.width/this.height,h=p.halfHeight*Math.max(1,.98/a);Object.assign(this.camera,{left:-h*a,right:h*a,top:h,bottom:-h});this.camera.updateProjectionMatrix();this.camera.position.set(p.target[0]+30*Math.sin(p.yaw)*Math.cos(p.elevation),p.target[1]+30*Math.sin(p.elevation),p.target[2]+30*Math.cos(p.yaw)*Math.cos(p.elevation));this.camera.lookAt(...p.target);this.camera.updateMatrixWorld();}
  project(p){const v=new T.Vector3(...p).project(this.camera);return {x:(v.x+1)*this.width/2,y:(1-v.y)*this.height/2,z:v.z};}
  moveTo(pose,duration=900){let yaw=pose.yaw;while(yaw-this.pose.yaw>Math.PI)yaw-=Math.PI*2;while(yaw-this.pose.yaw< -Math.PI)yaw+=Math.PI*2;this.travel={from:structuredClone(this.pose),to:{...pose,yaw},start:performance.now(),duration:this.state?.reduced?0:duration};this.wake();}
- home(){this.moveTo(this.state?.view==='interface'?{yaw:.65,elevation:.36,halfHeight:3.45,target:[0,-.1,0]}:this.state?.architecture==='layered'?{yaw:.65,elevation:.45,halfHeight:3.6,target:[0,0,0]}:structuredClone(HOME));}
+ home(){if(this.state?.deep){this.moveTo(this.deep.home(this.state.deep.topic));return;}this.moveTo(this.state?.view==='interface'?{yaw:.65,elevation:.36,halfHeight:3.45,target:[0,-.1,0]}:this.state?.architecture==='layered'?{yaw:.65,elevation:.45,halfHeight:3.6,target:[0,0,0]}:structuredClone(HOME));}
  async ensureMesh(name){
   this.pending??={};if(this.meshes[name])return;if(this.pending[name])return this.pending[name];
   this.cb.onLoading?.(true);this.pending[name]=(async()=>{const r=await fetch(BASE+name+'.bin');if(!r.ok)throw Error('Missing '+name);const g=fromBinary(await r.arrayBuffer()),m=new T.Mesh(g,this.materials[name==='deposited'?'cathode':name].clone());m.material.clippingPlanes=[this.clip];m.userData.phase=name==='deposited'?'cathode':name;m.castShadow=true;m.receiveShadow=true;this.meshes[name]=m;this.network.add(m);})();
@@ -57,14 +58,18 @@ export class NetworkScene{
  setState(s){const previous=this.state;this.state=s;if(!this.ready)return;
   if((s.paper||s.paused)&&!(previous?.paper||previous?.paused))this.holdAt=performance.now();if(!(s.paper||s.paused)&&(previous?.paper||previous?.paused)){const delay=performance.now()-this.holdAt;if(this.travel)this.travel.start+=delay;for(const f of this.fades)f.start+=delay;}
 
-  const local=s.view==='interface',slab=s.view==='architecture'&&s.architecture==='layered';this.network.visible=!local&&!slab;this.local.visible=local;this.slab.visible=slab;
+  const real=s,prior=previous;this.deep??=real.deep?new DepthScene(this):null;this.deep?.update(real.deep);
+  s=this.geometryState(s);const previousGeometry=previous?this.geometryState(previous):previous;
+  this.network.position.x=real.deep?.topic==='connectivity'?-2.15:0;this.network.scale.setScalar(real.deep?.topic==='connectivity'?.66:1);
+  const local=!real.deep&&s.view==='interface',slab=!real.deep&&s.view==='architecture'&&s.architecture==='layered';this.network.visible=(!real.deep||real.deep.topic==='connectivity')&&!local&&!slab;this.local.visible=local;this.slab.visible=slab;
   const names=meshNames(s),show=k=>s.layer==='all'||s.layer===k;for(const name of names)if(!this.meshes[name])this.ensureMesh(name);
   for(const [name,m] of Object.entries(this.meshes))this.visibility(m,names.includes(name)&&show(m.userData.phase),previous);
   for(const [k,m] of Object.entries(this.localMeshes))m.visible=show(k);
   for(const [k,m] of Object.entries(this.slabMeshes))m.visible=show(k);
-  this.clip.constant=3.005-s.cut*3;if(!previous||previous.cut!==s.cut||previous.stage!==s.stage||previous.view!==s.view||previous.architecture!==s.architecture)this.makeCap();else for(const [k,m] of Object.entries(this.capMeshes))m.visible=s.cut>0&&show(k);
-  if(s.route!==previous?.route)this.makeRoute();
-  if(previous&&(s.view!==previous.view||s.architecture!==previous.architecture))this.home();
+  this.clip.constant=(3.005-s.cut*3)*this.network.scale.x;if(!previousGeometry||previousGeometry.cut!==s.cut||previousGeometry.stage!==s.stage||previousGeometry.view!==s.view||previousGeometry.architecture!==s.architecture||!!real.deep!==!!prior?.deep)this.makeCap();else for(const [k,m] of Object.entries(this.capMeshes))m.visible=s.cut>0&&show(k);
+  if(real.route!==previous?.route)this.makeRoute();
+  if(this.routeMesh)this.routeMesh.visible=!real.deep;
+  if(previous&&(real.view!==previous.view||real.architecture!==previous.architecture||real.deep?.topic!==previous.deep?.topic))this.home();
   this.updateMarkers(this.time);
   this.wake();
  }
@@ -74,8 +79,9 @@ export class NetworkScene{
   if(!previous||this.state.reduced){mesh.visible=on;mesh.material.opacity=1;mesh.material.transparent=false;return;}
   const from=mesh.visible?mesh.material.opacity:0;mesh.visible=true;mesh.material.transparent=true;this.fades.push({mesh,from,to:on?1:0,start:performance.now()});
  }
+ geometryState(s=this.state){return s.deep?{...s,view:'architecture',architecture:'network',layer:'all',route:null,cut:s.deep.topic==='connectivity'?2*(1-s.deep.slice/40):0}:s;}
  makeCap(){
-  const s=this.state,m=this.meta,n=m.n,z=3-s.cut*3;const kz=(z+3)/m.step,k0=clamp(Math.floor(kz),0,n-2),alpha=clamp(kz-k0,0,1),sample=(i,j)=>this.field[(i*n+j)*n+k0]*(1-alpha)+this.field[(i*n+j)*n+k0+1]*alpha;
+  const s=this.geometryState(),m=this.meta,n=m.n,z=3-s.cut*3;const kz=(z+3)/m.step,k0=clamp(Math.floor(kz),0,n-2),alpha=clamp(kz-k0,0,1),sample=(i,j)=>this.field[(i*n+j)*n+k0]*(1-alpha)+this.field[(i*n+j)*n+k0+1]*alpha;
   const arrays=Object.fromEntries(Object.keys(PHASES).map(k=>[k,[]]));
   if(s.cut>0&&this.network.visible){const regions=intervals(s,m);for(let i=0;i<n-1;i++)for(let j=0;j<n-1;j++){
    const xy=(a,b)=>[-3+a*m.step,-3+b*m.step,sample(a,b)],p=[xy(i,j),xy(i+1,j),xy(i+1,j+1),xy(i,j+1)];
@@ -91,12 +97,12 @@ export class NetworkScene{
  interrupt(){this.travel=null;this.cb.onInterrupt();}
  turn(dx,dy){this.interrupt();this.pose=orbit(this.pose,dx,dy);this.updateCamera();this.wake();}
  zoom(f){this.interrupt();this.moveTo({...this.pose,halfHeight:clamp(this.pose.halfHeight*f,2,7)},220);}
- pick(x,y){if(!this.ready)return;const r=this.canvas.getBoundingClientRect();this.pointer.set((x-r.left)/r.width*2-1,-(y-r.top)/r.height*2+1);this.ray.setFromCamera(this.pointer,this.camera);const targets=this.state.view==='interface'?Object.values(this.localMeshes):this.state.architecture==='layered'&&this.state.view==='architecture'?Object.values(this.slabMeshes):[...Object.values(this.meshes),...Object.values(this.capMeshes)];const hit=this.ray.intersectObjects(targets.filter(m=>m.visible)).find(h=>!this.network.visible||h.point.z<=this.clip.constant+.003);if(hit)this.cb.onSelect(hit.object.userData.phase);}
+ pick(x,y){if(!this.ready||this.state.deep)return;const r=this.canvas.getBoundingClientRect();this.pointer.set((x-r.left)/r.width*2-1,-(y-r.top)/r.height*2+1);this.ray.setFromCamera(this.pointer,this.camera);const targets=this.state.view==='interface'?Object.values(this.localMeshes):this.state.architecture==='layered'&&this.state.view==='architecture'?Object.values(this.slabMeshes):[...Object.values(this.meshes),...Object.values(this.capMeshes)];const hit=this.ray.intersectObjects(targets.filter(m=>m.visible)).find(h=>!this.network.visible||h.point.z<=this.clip.constant+.003);if(hit)this.cb.onSelect(hit.object.userData.phase);}
  installEvents(){const c=this.canvas;c.addEventListener('pointerdown',e=>{if(e.button!==0||!e.isPrimary)return;this.drag={id:e.pointerId,x:e.clientX,y:e.clientY,lx:e.clientX,ly:e.clientY,moved:false,locked:false,touch:e.pointerType==='touch'};if(e.pointerType!=='touch')c.setPointerCapture(e.pointerId);});c.addEventListener('pointermove',e=>{const d=this.drag;if(!d||d.id!==e.pointerId)return;const dx=e.clientX-d.x,dy=e.clientY-d.y;if(!d.moved&&Math.hypot(dx,dy)>6){d.moved=true;if(d.touch&&Math.abs(dy)>Math.abs(dx)){this.drag=null;return;}d.locked=true;c.setPointerCapture(e.pointerId);this.interrupt();}if(d.locked){this.turn(e.clientX-d.lx,d.touch?0:e.clientY-d.ly);c.style.cursor='grabbing';}d.lx=e.clientX;d.ly=e.clientY;});const end=e=>{const d=this.drag;if(!d||d.id!==e.pointerId)return;this.drag=null;c.style.cursor='grab';if(c.hasPointerCapture(e.pointerId))c.releasePointerCapture(e.pointerId);if(e.type==='pointerup'&&!d.moved){this.interrupt();this.pick(e.clientX,e.clientY);}};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);c.addEventListener('lostpointercapture',()=>{this.drag=null;c.style.cursor='grab';});c.addEventListener('keydown',e=>{const actions={ArrowLeft:()=>this.turn(-28,0),ArrowRight:()=>this.turn(28,0),ArrowUp:()=>this.turn(0,-28),ArrowDown:()=>this.turn(0,28),'+':()=>this.zoom(.85),'=':()=>this.zoom(.85),'-':()=>this.zoom(1.18),Home:()=>{this.interrupt();this.home();}};if(actions[e.key]){e.preventDefault();actions[e.key]();}});}
  render=(now)=>{
   this.raf=0;if(!this.active||!this.visible||!this.ready||this.state?.paper)return;const rawDt=this.last?(now-this.last)/1000:0,dt=Math.min(.05,rawDt);this.last=now;let changing=false;
   if(this.travel&&!this.state.paused){const p=this.travel,t=p.duration?clamp((now-p.start)/p.duration,0,1):1,u=ease(t);for(const key of ['yaw','elevation','halfHeight'])this.pose[key]=p.from[key]+u*(p.to[key]-p.from[key]);this.pose.target=p.from.target.map((v,i)=>v+u*(p.to.target[i]-v));if(t===1)this.travel=null;else changing=true;}
-  if(this.state?.view==='interface'&&this.state.transport&&!this.state.reduced){this.time+=dt;this.updateMarkers(this.time);changing=true;}
+  if(!this.state?.deep&&this.state?.view==='interface'&&this.state.transport&&!this.state.reduced){this.time+=dt;this.updateMarkers(this.time);changing=true;}
   for(const f of this.fades){const u=clamp((now-f.start)/240,0,1);f.mesh.material.opacity=f.from+(f.to-f.from)*ease(u);if(u===1){f.mesh.visible=f.to>0;f.mesh.material.transparent=false;f.mesh.material.opacity=1;}else changing=true;}this.fades=this.fades.filter(f=>now-f.start<240);
   this.updateCamera();this.renderer.render(this.scene,this.camera);this.canvas.dataset.yaw=this.pose.yaw.toFixed(4);this.canvas.dataset.elevation=this.pose.elevation.toFixed(4);this.canvas.dataset.rendered='true';if(changing&&this.wasChanging&&rawDt>0){this.frameTimes.push(rawDt*1000);if(this.frameTimes.length>180)this.frameTimes.shift();if(this.frameTimes.length>30){this.canvas.dataset.fps=(1000/(this.frameTimes.reduce((a,b)=>a+b,0)/this.frameTimes.length)).toFixed(1);this.canvas.dataset.frameP95=[...this.frameTimes].sort((a,b)=>a-b)[Math.floor(this.frameTimes.length*.95)].toFixed(1);}}this.wasChanging=changing;this.cb.onFrame?.(this);if(changing)this.wake();
  };

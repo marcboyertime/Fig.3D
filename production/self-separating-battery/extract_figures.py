@@ -6,7 +6,7 @@ import sys,hashlib,json
 from pathlib import Path
 from pypdf import PdfReader
 source=Path(sys.argv[1]);root=Path(__file__).resolve().parents[2];out=root/'site/assets/self-separating-battery';reader=PdfReader(source)
-for number,page in [(1,13),(2,15)]:
+for number,page in [(1,13),(2,15),(5,23),(6,24)]:
     image=reader.pages[page].images[0]
     assert image.data[:2]==b'\xff\xd8','Expected native JPEG'
     (out/f'figure-{number}.jpg').write_bytes(image.data)

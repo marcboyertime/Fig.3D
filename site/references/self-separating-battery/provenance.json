@@ -24,6 +24,28 @@
       ],
       "sha256": "f707c6d9f7e85ee486b3e58484177b78accd63f28745df9362dc9084c005f56b",
       "extraction": "Original embedded JPEG; no resampling or repainting"
+    },
+    {
+      "figure": 5,
+      "pdf_page": 24,
+      "asset": "figure-5.jpg",
+      "native_pixels": [
+        1125,
+        794
+      ],
+      "sha256": "f7ef778eed91ae154d9187c773a7a73482863bebbbb97a43c7713c9d5bcaa855",
+      "extraction": "Original embedded JPEG; no resampling or repainting"
+    },
+    {
+      "figure": 6,
+      "pdf_page": 25,
+      "asset": "figure-6.jpg",
+      "native_pixels": [
+        1428,
+        753
+      ],
+      "sha256": "a24379736057016ba049959c212bbee73e9787cff6ba9bb9aeaa3d5ef1f1b7fd",
+      "extraction": "Original embedded JPEG; no resampling or repainting"
     }
   ]
 }

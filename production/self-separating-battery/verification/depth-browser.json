@@ -1,0 +1,68 @@
+{
+  "layouts": [
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "overflow": false
+    },
+    {
+      "height": 1024,
+      "overflow": false,
+      "ratio": "2.00",
+      "scaling": "Resistance R / R₀\n2×\n\nDiffusion time t / t₀\n4×",
+      "width": 768
+    },
+    {
+      "height": 1080,
+      "overflow": false,
+      "width": 1920
+    }
+  ],
+  "overviewReturn": {
+    "before": {
+      "cut": "100",
+      "elevation": "0.3900",
+      "layer": "carbon",
+      "yaw": "0.5080"
+    },
+    "after": {
+      "cut": "100",
+      "elevation": "0.3900",
+      "layer": "carbon",
+      "yaw": "0.5080"
+    }
+  },
+  "figureZoom": {
+    "before": {
+      "overflow": false,
+      "width": 390,
+      "x": 270,
+      "y": 98.5,
+      "zoom": "Scroll to inspect · 256%"
+    },
+    "after": {
+      "x": 270,
+      "y": 98.5,
+      "zoom": "Scroll to inspect · 256%"
+    }
+  },
+  "checked": [
+    "All four advanced topics",
+    "All four process states",
+    "Figure 1/2/5/6 comparison",
+    "Slice endpoints",
+    "Thickness endpoints and half-thickness",
+    "Capacity and voltage evidence",
+    "Keyboard topic navigation and Escape",
+    "Fallback and reduced-motion initialization"
+  ],
+  "limits": [
+    "Viewport emulation, not physical phone hardware",
+    "No human comprehension or full screen-reader study"
+  ]
+}

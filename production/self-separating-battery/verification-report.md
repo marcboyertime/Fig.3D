@@ -57,3 +57,21 @@ Reports are in `verification/*regression.txt`.
 No physical phone/touch-device test, full screen-reader audit, measured 200% browser-zoom pass, independent human comprehension study or external scientific expert review was performed. Viewport tests do not substitute for those checks. The reduced-motion development query exercises the same initial state without changing the user’s OS preference.
 
 The module explains geometry and intended transport roles. It does not calculate conductivity, physical trajectories, electrochemical kinetics, capacity, current or battery performance. The paper’s capacity-fading limitation is retained. Public reproduction rights for the original figures require separate consideration before deployment; the arXiv non-exclusive distribution license is not a Creative Commons reuse grant.
+
+## Follow-up: in-place figures and Go deeper (3 October 2026)
+
+The modal paper viewer is replaced by a persistent same-stage switch. Comparing figures leaves the renderer mounted, suspends its motion, and preserves camera/selection/cut. Each figure retains zoom and pan. Deliberate comparison ends the optional opening without resetting the camera. The advanced mode returns to the original overview pose and scientific state.
+
+Added three advanced 3D compositions (linked volume/section, adjustable ionic slab, and processing/operating connections), a normalized scaling graph, accessible HTML evidence charts, and a sourced reading layer. Figures 5 and 6 are native extractions and appear contextually; they are not initial image requests.
+
+Checks completed:
+
+- All 41 slice masks and four-neighbor component counts match an independent SciPy reference generated from the shipped binary field. A synthetic detour fixture demonstrates separate 2D patches joined outside the plane.
+- Resistance/diffusion scaling, capacity denominator arithmetic, repeated paper comparison and advanced-to-overview state preservation pass the new pure-model verification.
+- Browser round trip through advanced topics and figures restored camera yaw 0.5080, elevation 0.3900, carbon selection and a 100% cut. Processing state and evidence selection survive paper comparison. Phone figure magnification (256%) and pan return exactly.
+- Exercised all processing stages, slice endpoints, thickness extremes, evidence modes, Figure 1/2/5/6 switching, figure enlargement, Escape return, arrow-key topic navigation, and the fallback/reduced-motion paths.
+- Existing interwoven model checks, homepage hero, battery controller, hop and nanoparticle regressions pass. No library upgrade or changes to their pages were required.
+- Corrected narrow-desktop camera framing so the paired volume and section fit inside the stage; final evidence is `verification/depth-final.png`.
+- Desktop and phone-sized browser layouts were inspected; actual tested widths and further evidence are saved in `verification/depth-browser.json` and screenshots. No new physical-phone, screen-reader or human-comprehension study is claimed.
+
+The new mathematics is explicitly an ideal comparison, not a fit to this device. The evidence view is based on discrete reported values; it does not invent intermediate cycles or a voltage-time trace. The source ledger documents the distinction between observation, derivation and proposed mechanism.

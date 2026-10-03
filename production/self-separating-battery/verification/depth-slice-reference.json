@@ -1,0 +1,251 @@
+{
+  "method": "Independent scipy.ndimage.label, 2D four-neighbor connectivity; little-endian field reread from disk",
+  "checks": [
+    {
+      "slice": 0,
+      "components": 4,
+      "occupied": 679,
+      "samples": 1681
+    },
+    {
+      "slice": 1,
+      "components": 3,
+      "occupied": 644,
+      "samples": 1681
+    },
+    {
+      "slice": 2,
+      "components": 2,
+      "occupied": 623,
+      "samples": 1681
+    },
+    {
+      "slice": 3,
+      "components": 2,
+      "occupied": 591,
+      "samples": 1681
+    },
+    {
+      "slice": 4,
+      "components": 2,
+      "occupied": 553,
+      "samples": 1681
+    },
+    {
+      "slice": 5,
+      "components": 5,
+      "occupied": 528,
+      "samples": 1681
+    },
+    {
+      "slice": 6,
+      "components": 4,
+      "occupied": 588,
+      "samples": 1681
+    },
+    {
+      "slice": 7,
+      "components": 4,
+      "occupied": 612,
+      "samples": 1681
+    },
+    {
+      "slice": 8,
+      "components": 4,
+      "occupied": 592,
+      "samples": 1681
+    },
+    {
+      "slice": 9,
+      "components": 4,
+      "occupied": 573,
+      "samples": 1681
+    },
+    {
+      "slice": 10,
+      "components": 4,
+      "occupied": 536,
+      "samples": 1681
+    },
+    {
+      "slice": 11,
+      "components": 4,
+      "occupied": 514,
+      "samples": 1681
+    },
+    {
+      "slice": 12,
+      "components": 4,
+      "occupied": 504,
+      "samples": 1681
+    },
+    {
+      "slice": 13,
+      "components": 3,
+      "occupied": 512,
+      "samples": 1681
+    },
+    {
+      "slice": 14,
+      "components": 3,
+      "occupied": 537,
+      "samples": 1681
+    },
+    {
+      "slice": 15,
+      "components": 3,
+      "occupied": 571,
+      "samples": 1681
+    },
+    {
+      "slice": 16,
+      "components": 4,
+      "occupied": 624,
+      "samples": 1681
+    },
+    {
+      "slice": 17,
+      "components": 3,
+      "occupied": 697,
+      "samples": 1681
+    },
+    {
+      "slice": 18,
+      "components": 3,
+      "occupied": 757,
+      "samples": 1681
+    },
+    {
+      "slice": 19,
+      "components": 3,
+      "occupied": 819,
+      "samples": 1681
+    },
+    {
+      "slice": 20,
+      "components": 2,
+      "occupied": 878,
+      "samples": 1681
+    },
+    {
+      "slice": 21,
+      "components": 2,
+      "occupied": 925,
+      "samples": 1681
+    },
+    {
+      "slice": 22,
+      "components": 2,
+      "occupied": 967,
+      "samples": 1681
+    },
+    {
+      "slice": 23,
+      "components": 2,
+      "occupied": 1003,
+      "samples": 1681
+    },
+    {
+      "slice": 24,
+      "components": 1,
+      "occupied": 1060,
+      "samples": 1681
+    },
+    {
+      "slice": 25,
+      "components": 1,
+      "occupied": 1066,
+      "samples": 1681
+    },
+    {
+      "slice": 26,
+      "components": 2,
+      "occupied": 1067,
+      "samples": 1681
+    },
+    {
+      "slice": 27,
+      "components": 2,
+      "occupied": 1065,
+      "samples": 1681
+    },
+    {
+      "slice": 28,
+      "components": 2,
+      "occupied": 1066,
+      "samples": 1681
+    },
+    {
+      "slice": 29,
+      "components": 2,
+      "occupied": 1051,
+      "samples": 1681
+    },
+    {
+      "slice": 30,
+      "components": 1,
+      "occupied": 1051,
+      "samples": 1681
+    },
+    {
+      "slice": 31,
+      "components": 1,
+      "occupied": 1038,
+      "samples": 1681
+    },
+    {
+      "slice": 32,
+      "components": 2,
+      "occupied": 1015,
+      "samples": 1681
+    },
+    {
+      "slice": 33,
+      "components": 1,
+      "occupied": 1033,
+      "samples": 1681
+    },
+    {
+      "slice": 34,
+      "components": 2,
+      "occupied": 1042,
+      "samples": 1681
+    },
+    {
+      "slice": 35,
+      "components": 1,
+      "occupied": 1080,
+      "samples": 1681
+    },
+    {
+      "slice": 36,
+      "components": 1,
+      "occupied": 1095,
+      "samples": 1681
+    },
+    {
+      "slice": 37,
+      "components": 1,
+      "occupied": 1113,
+      "samples": 1681
+    },
+    {
+      "slice": 38,
+      "components": 1,
+      "occupied": 1129,
+      "samples": 1681
+    },
+    {
+      "slice": 39,
+      "components": 1,
+      "occupied": 1145,
+      "samples": 1681
+    },
+    {
+      "slice": 40,
+      "components": 1,
+      "occupied": 1175,
+      "samples": 1681
+    }
+  ]
+}

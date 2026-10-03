@@ -16,18 +16,30 @@ No bundler, account, backend or external runtime request is needed. Three.js r12
 
 ## Experience
 
-- The optional 35-second opening starts on the native Figure 1, concentrates on its right-hand architecture, then reveals the 3D model and cuts it open. Captions hold for 10, 13 and 12 seconds. Explore, selection or dragging interrupts the sequence. Pause and the source viewer suspend its clock.
+- The optional 35-second opening starts on the native Figure 1, concentrates on its right-hand architecture, then reveals the 3D model and cuts it open. Captions hold for 10, 13 and 12 seconds. Explore, selection or dragging interrupts the sequence. Pause suspends its clock. Choosing an in-place comparison view hands control to the reader without restarting the camera.
 - Architecture compares a layered stack with the nonperiodic network. Isolate phases, change the cut depth or reveal a checked route inside an electrode network.
 - Fabrication keeps four directly selectable stages: Template, Carbon, Coating and Separation. It does not advance while the reader is inspecting the text.
 - Interface enlarges a local carbon–SEI–polymer patch. One labeled Li⁺ marker traverses the interphase; smaller electron markers remain in their electrode layers. Motion is illustrative.
-- Both paper figures are always accessible. Closing the viewer preserves camera, material selection and cut. Full-resolution originals have separate image links.
+- A persistent Visual / Figure 1 / Figure 2 switch uses the same stage. Camera, material selection, cut, advanced topic and process choice survive paper comparison. Each figure remembers its own magnification and pan. Figures 5 and 6 appear contextually in the deeper processing/evidence views; full-resolution originals remain linked.
 - Phone layouts keep the scene visible while the reader uses its controls. Horizontal touch gestures rotate; vertical gestures retain page scrolling. Keyboard and explicit camera buttons are provided.
+
+## Go deeper
+
+An optional mode in the same module adds four directly accessible investigations:
+
+- **Connections:** a moving 3D cut linked to a detached sampled plane, with independently checked 2D carbon component counts. The same scalar field drives both.
+- **Length scales:** a fixed-area, variable-thickness 3D slab linked to normalized resistance and diffusion-time curves. The underlying assumptions and nondimensionalization are explained below the scene.
+- **Formation:** separate material/contact and external-circuit diagrams for deposition, SEI-forming treatment, preparation and full-cell operation. External lithium and the processing bath are distinguished from the operating full cell.
+- **Evidence:** native-size HTML charts compare the initial device’s first and third discharge and explain the reported open-circuit hold. The mass denominator and distinction between 20.8% of theoretical versus 22.9% of initial capacity remain explicit.
+
+The overview state and camera are restored on return. Advanced prose builds from definitions to mechanism, equations, interpretation and unresolved limitations. These are explanatory models and sourced observations, not a numerical electrochemical solver or a reconstructed specimen. No extra account, backend or library is used.
 
 ## Files
 
+- `site/self-separating-battery-depth*.mjs`: advanced pure model, separate 3D compositions, UI/copy/charts, and independent-reference checks.
 - `site/self-separating-battery-model.mjs`: pure state, phase intervals, captions, orbit convention and cross-section clipping.
 - `site/self-separating-battery-scene.mjs`: renderer, lighting, camera, picking, phase meshes, cut caps and illustrative transport.
-- `site/self-separating-battery.js`: controller, reading-paced opening, controls, paper dialog and reduced-motion handling.
+- `site/self-separating-battery.js`: controller, reading-paced opening, controls, in-place paper comparison and reduced-motion handling.
 - `site/assets/self-separating-battery`: native figures, generated geometry, scalar field and the composed collection image.
 - `site/references/self-separating-battery/scientific-notes.md`: claim ledger, chemistry context, mathematical assumptions, topology limits and image rights.
 - `interwoven-battery.blend`: editable Blender 5.2 reference studio; the same generated mesh buffers supply Blender and the browser.
@@ -41,7 +53,9 @@ Install NumPy, SciPy and scikit-image in an isolated Python environment. The imp
 ```sh
 python production/self-separating-battery/generate_geometry.py
 python production/self-separating-battery/verify_geometry.py
+python production/self-separating-battery/verify_depth_slices.py
 node site/self-separating-battery-verification.mjs
+node site/self-separating-battery-depth-verification.mjs
 ```
 
 For native figure extraction, install pypdf and run `extract_figures.py` with the original PDF path. The exact input/output hashes are in the provenance packet. The supplied PDF remains external to the repository.

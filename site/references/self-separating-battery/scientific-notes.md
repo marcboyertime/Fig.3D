@@ -2,7 +2,7 @@
 
 Primary source: Tait et al., *All-organic self-separating three-dimensionally nanoarchitected electrochemical energy storage devices*, arXiv:2604.26222v1, submitted 29 April 2026. https://arxiv.org/abs/2604.26222
 
-This companion interprets Figures 1 and 2. It is a geometric explanation, not a reconstructed specimen, transport calculation, or independent confirmation of the experimental mechanism.
+This companion focuses on Figures 1 and 2, with advanced processing and evidence views drawing on Figures 5 and 6. It uses geometric explanations and an explicitly separate ideal scaling model; it is not a reconstructed specimen, fitted device simulation, or independent confirmation of the experimental mechanism.
 
 ## Claim ledger
 
@@ -59,3 +59,22 @@ The arXiv record uses the **arXiv non-exclusive distribution license**, not a Cr
 ## Deliberate exclusions
 
 No polymer molecular dynamics, electrochemical kinetics, full reaction mechanism, rate/capacity prediction, lithium conservation model or reconstruction from tomography is claimed. The prior ordered double-gyroid example remains in the source comparison but is not mislabeled as this paper’s nonperiodic architecture.
+
+## Advanced exploration: figures, derivations and limits
+
+The optional “Go deeper” mode adds original explanatory visuals and a foundations-to-interpretation reading layer. Its additional native figures are Figure 5 (PDF p.24; 1125 × 794) and Figure 6 (p.25; 1428 × 753), extracted without resampling. Their hashes are in the provenance packet; the same rights statement above applies.
+
+| Advanced content | Basis | Limits |
+|---|---|---|
+| A detached sampled plane and clipped 3D volume show one field at the same section depth | Existing deterministic field; scalar masks and renderer cut geometry | A 41×41 grid is a sampling device, not a micrograph. Four-neighbor 2D components are not continuous-domain or 3D components. All 41 slices are independently compared with SciPy labeling. |
+| Uniform ionic slab resistance R = L/(κA); at fixed κ and A, R/R₀ = L/L₀ | Algebra from j = κΔV/L, I = jA and R = ΔV/I | Constant conductivity, uniform cross-section, ohmic response; excludes contact, charge-transfer and other polarization losses. No device fit. |
+| Diffusion timescale ratio t/t₀ = (L/L₀)² | Nondimensionalization of ∂c/∂t = D∂²c/∂x² | Constant D and geometrically similar initial/boundary conditions. No absolute time, inferred D or charging-rate prediction. |
+| PAQEDOT has conducting-backbone and redox-pendant functions; outer PEDOT enables contacting | pp.19–22, Figure 4 | The enlarged layered processing diagram is explanatory; it does not show the exact porous specimen or molecular orbitals. |
+| Low-potential treatment vs external lithium, subsequent stripping, polymer reduction, then full-cell charging | Figure 5a–d, pp.23–25 | Four visual states group several experimental steps. The intermediate Prepare scene shows the external-Li connection for polymer reduction; the text explains the subsequent full-cell charge. The preceding Deposit state shows material contact, not the electropolymerization apparatus. |
+| De-doping, SEI generation and possible lifting of polymer from carbon | pp.23–24 | Authors’ proposed interpretation. The placement of a visible interphase is not a measured growth trajectory. |
+| Full-cell cycling occurs after lifting the device from the external bath | pp.25–26 | The final circuit omits external lithium and bath. Intended operation is illustrated; no charge-balanced transport animation is claimed. |
+| Initial device: first discharge 120 mAh/g; third discharge 20.8% of theoretical 132 mAh/g | p.26; Figure 6c | PAQEDOT mass basis, not whole-device mass. Third bar is computed: 0.208×132=27.456≈27.5. Ratio to the initial discharge: 27.456/120=22.88%. No second-cycle value is invented or interpolated. |
+| Authors report OCP above 3.5 V after a five-hour hold | pp.25–26; Figure 6b/d | Displayed as a reported observation, not a digitized voltage trace, perfect-insulation test or power measurement. |
+| Possible conduction/redox mismatch, trapped semiquinones and irreversible contributions | pp.28,30–31 | Candidate mechanisms and unresolved limitations, not proven unique causes. Later optimized cells are not combined with the initial device’s capacity bars. |
+
+The length-scale outline marks L₀; only the current slab thickness changes. The cross-sectional area stays fixed. The illustrative material colors help locate the slab and its boundaries, but κ and D are never taken from the original paper. The network slice uses the same coordinate frame and plane index for the clipped surface, section outline and sampled plane; the plane’s displayed pixelization is intentional and labeled.

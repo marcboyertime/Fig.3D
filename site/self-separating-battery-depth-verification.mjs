@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {initialState,reduce} from './self-separating-battery-model.mjs';
+import {scaling,capacity,sliceStats,initialDepth,reduceDepth} from './self-separating-battery-depth.mjs';
+const meta=JSON.parse(fs.readFileSync(new URL('./assets/self-separating-battery/geometry.json',import.meta.url)));
+const bytes=fs.readFileSync(new URL('./assets/self-separating-battery/field.bin',import.meta.url));
+const field=new Float32Array(bytes.buffer,bytes.byteOffset,bytes.byteLength/4);
+const references=JSON.parse(fs.readFileSync(new URL('../production/self-separating-battery/verification/depth-slice-reference.json',import.meta.url)));
+for(const r of references.checks)assert.deepEqual(sliceStats(field,meta.n,r.slice),{components:r.components,occupied:r.occupied,samples:r.samples});
+// Connection around a third-dimensional detour: separate in a plane, joined elsewhere.
+const synthetic=new Float32Array(27).fill(1);
+for(const [i,j,k] of [[0,1,0],[2,1,0],[0,1,1],[1,1,1],[2,1,1]])synthetic[(i*3+j)*3+k]=-1;
+assert.equal(sliceStats(synthetic,3,0).components,2);assert.equal(sliceStats(synthetic,3,1).components,1);
+assert.deepEqual(scaling(.5),{resistance:.5,diffusion:.25});assert.deepEqual(scaling(2),{resistance:2,diffusion:4});
+assert.ok(Math.abs(capacity.third-27.456)<1e-10);assert.ok(Math.abs(capacity.third/capacity.first-.2288)<1e-10);
+const overview={...initialState(true),view:'fabrication',stage:'cathode',layer:'carbon',cut:.73};
+let state=reduce(overview,{type:'depth-enter'});
+state=reduce(state,{type:'depth',action:{type:'topic',value:'formation'}});state=reduce(state,{type:'depth',action:{type:'formation',value:2}});
+const depth={...state.deep};for(let i=0;i<15;i++){state=reduce(state,{type:'paper',value:true});state=reduce(state,{type:'paper',value:false});}assert.deepEqual(state.deep,depth);
+state=reduce(state,{type:'depth-exit'});assert.deepEqual(state,overview);
+assert.equal(reduceDepth(initialDepth(),{type:'slice',value:200}).slice,40);assert.equal(reduceDepth(initialDepth(),{type:'length',value:.01}).length,.25);
+console.log('PASS: 41 slices agree with independent SciPy fixtures; 3D detour example; length scaling; capacity denominators; advanced/paper/overview state preservation.');
