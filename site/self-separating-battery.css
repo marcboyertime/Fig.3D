@@ -191,6 +191,7 @@ noscript{display:block;margin:30px 5vw;color:#b6c3d9}
  .depth-tabs{gap:14px}.depth-tabs button{font-size:13px}
  .display-switch button{font-size:13px;min-height:40px}
  .stage-bar{padding:4px 8px}.scene-help{font-size:11px;max-width:60%}
+ body:not(.exploring) .scene-help{display:none}
  .scene-labels .label{font-size:11px;line-height:19px;padding:0 5px}
  .caption h2{font-size:28px}.caption>p:last-child{font-size:16px}
  .opening-progress{width:56px}
