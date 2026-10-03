@@ -1,0 +1,1 @@
+PASS: 286,795 geometry, adsorption, visibility, state and screen-space orbit assertions.

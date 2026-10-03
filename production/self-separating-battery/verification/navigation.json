@@ -1,0 +1,6 @@
+{
+  "collection": "http://127.0.0.1:8780/index.html#collection",
+  "forwardSettled": "http://127.0.0.1:8780/self-separating-battery.html",
+  "backForward": "passed after page settled",
+  "keyboardTabs": "ArrowRight selected Fabrication"
+}

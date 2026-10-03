@@ -1,0 +1,2 @@
+seed 16 {'carbon': {'components': 2, 'largestFraction': 0.9999413799167595, 'voxels': 34118, 'spansXYZ': [True, True, True]}, 'sei': {'components': 2, 'largestFraction': 0.9976823238566132, 'voxels': 6472, 'spansXYZ': [True, True, True]}, 'cathode': {'components': 1, 'largestFraction': 1.0, 'voxels': 15731, 'spansXYZ': [True, True, True]}, 'pore': {'components': 1, 'largestFraction': 1.0, 'voxels': 12600, 'spansXYZ': [True, True, True]}, 'deposited': {'components': 1, 'largestFraction': 1.0, 'voxels': 22203, 'spansXYZ': [True, True, True]}}
+Total gzip bytes 2327630

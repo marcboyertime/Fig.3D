@@ -1,0 +1,13 @@
+{
+  "paperBefore": {
+    "cut": "100",
+    "selected": "cathode",
+    "yaw": "0.5800"
+  },
+  "paperAfter": {
+    "cut": "100",
+    "focus": "paper-open",
+    "selected": "cathode",
+    "yaw": "0.5800"
+  }
+}

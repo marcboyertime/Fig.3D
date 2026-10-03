@@ -1,0 +1,17 @@
+{
+  "backing": [
+    931,
+    670
+  ],
+  "canvas": {
+    "elevation": "0.3600",
+    "fps": "120.0",
+    "frameP95": "9.3",
+    "rendered": "true",
+    "yaw": "0.6500"
+  },
+  "viewport": [
+    1920,
+    1080
+  ]
+}

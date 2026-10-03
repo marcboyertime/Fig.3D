@@ -1,0 +1,99 @@
+{
+  "phasePartition": "exhaustive and non-overlapping",
+  "coatingBeforeSeparation": "same volume as final cathode + SEI",
+  "topology": {
+    "carbon": {
+      "components": 2,
+      "largestFraction": 0.9999413799167595,
+      "spansXYZ": [
+        true,
+        true,
+        true
+      ]
+    },
+    "sei": {
+      "components": 2,
+      "largestFraction": 0.9976823238566132,
+      "spansXYZ": [
+        true,
+        true,
+        true
+      ]
+    },
+    "cathode": {
+      "components": 1,
+      "largestFraction": 1.0,
+      "spansXYZ": [
+        true,
+        true,
+        true
+      ]
+    },
+    "pore": {
+      "components": 1,
+      "largestFraction": 1.0,
+      "spansXYZ": [
+        true,
+        true,
+        true
+      ]
+    },
+    "deposited": {
+      "components": 1,
+      "largestFraction": 1.0,
+      "spansXYZ": [
+        true,
+        true,
+        true
+      ]
+    }
+  },
+  "meshes": {
+    "carbon": {
+      "vertices": 17089,
+      "triangles": 31355,
+      "normalAgreement": 0.9999681071599426,
+      "positiveSignedVolume": 105.64617919921875
+    },
+    "template": {
+      "vertices": 15629,
+      "triangles": 28571,
+      "normalAgreement": 0.9999299989499842,
+      "positiveSignedVolume": 110.35379028320312
+    },
+    "deposited": {
+      "vertices": 21828,
+      "triangles": 39760,
+      "normalAgreement": 0.9999496981891348,
+      "positiveSignedVolume": 71.0628433227539
+    },
+    "cathode": {
+      "vertices": 20587,
+      "triangles": 37469,
+      "normalAgreement": 1.0,
+      "positiveSignedVolume": 50.457733154296875
+    },
+    "sei": {
+      "vertices": 23001,
+      "triangles": 41503,
+      "normalAgreement": 0.9999518107124786,
+      "positiveSignedVolume": 20.60511016845703
+    }
+  },
+  "paths": {
+    "carbon": {
+      "rawVoxels": 50,
+      "displayPoints": 32,
+      "insidePhase": true,
+      "spansX": true,
+      "displayRouteRecheckedAtStep": 0.009
+    },
+    "cathode": {
+      "rawVoxels": 63,
+      "displayPoints": 24,
+      "insidePhase": true,
+      "spansX": true,
+      "displayRouteRecheckedAtStep": 0.009
+    }
+  }
+}

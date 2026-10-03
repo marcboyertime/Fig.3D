@@ -1,0 +1,1 @@
+PASS: deposition→SEI order, cutaway invariance, source return, selection state, reduced motion, 90 screen-space drag cases, 100 cut-face partitions.

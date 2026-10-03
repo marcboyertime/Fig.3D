@@ -1,0 +1,29 @@
+{
+  "paper": "Tait et al. (2026), arXiv:2604.26222v1",
+  "source_pdf_sha256": "159163d525cc1b7b1040ff6d29441cc74b93bf91846feeaad575def3fbc8a69e",
+  "license": "arXiv non-exclusive distribution license; no Creative Commons reuse grant asserted. User-supplied figures used in this local companion.",
+  "figures": [
+    {
+      "figure": 1,
+      "pdf_page": 14,
+      "asset": "figure-1.jpg",
+      "native_pixels": [
+        1276,
+        414
+      ],
+      "sha256": "028c86728fd14a1ce2c47f2595b0c7a0b70707dc11fbf343dce5663f427c6f9f",
+      "extraction": "Original embedded JPEG; no resampling or repainting"
+    },
+    {
+      "figure": 2,
+      "pdf_page": 16,
+      "asset": "figure-2.jpg",
+      "native_pixels": [
+        1431,
+        702
+      ],
+      "sha256": "f707c6d9f7e85ee486b3e58484177b78accd63f28745df9362dc9084c005f56b",
+      "extraction": "Original embedded JPEG; no resampling or repainting"
+    }
+  ]
+}

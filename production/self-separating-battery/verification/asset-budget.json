@@ -1,0 +1,71 @@
+{
+  "files": {
+    "self-separating-battery.html": {
+      "raw": 11431,
+      "gzip": 4160
+    },
+    "self-separating-battery.css": {
+      "raw": 12575,
+      "gzip": 3672
+    },
+    "self-separating-battery.js": {
+      "raw": 10704,
+      "gzip": 4006
+    },
+    "self-separating-battery-scene.mjs": {
+      "raw": 17326,
+      "gzip": 5963
+    },
+    "self-separating-battery-model.mjs": {
+      "raw": 7022,
+      "gzip": 2920
+    },
+    "visual-language.css": {
+      "raw": 2796,
+      "gzip": 1056
+    },
+    "navigation-motion.js": {
+      "raw": 740,
+      "gzip": 370
+    },
+    "assets/battery-three-r128.min.js": {
+      "raw": 603445,
+      "gzip": 148739
+    },
+    "assets/fonts/Sora-Variable.ttf": {
+      "raw": 111400,
+      "gzip": 60373
+    },
+    "assets/self-separating-battery/geometry.json": {
+      "raw": 5945,
+      "gzip": 1791
+    },
+    "assets/self-separating-battery/sei.bin": {
+      "raw": 1050068,
+      "gzip": 517676
+    },
+    "assets/self-separating-battery/field.bin": {
+      "raw": 275684,
+      "gzip": 255017
+    },
+    "assets/self-separating-battery/figure-1.jpg": {
+      "raw": 45985,
+      "gzip": 40821
+    },
+    "assets/self-separating-battery/carbon.bin": {
+      "raw": 786404,
+      "gzip": 320416
+    },
+    "assets/self-separating-battery/cathode.bin": {
+      "raw": 943724,
+      "gzip": 454753
+    },
+    "assets/self-separating-battery/figure-2.jpg": {
+      "raw": 86883,
+      "gzip": 73081
+    }
+  },
+  "note": "Conservative sum of independently gzip-compressed assets, including both original figures. The local Python preview serves uncompressed. Template and pre-SEI coating meshes load only on first use.",
+  "initialRawBytes": 3972132,
+  "initialGzipBytes": 1894814
+}

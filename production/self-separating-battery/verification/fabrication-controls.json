@@ -1,0 +1,26 @@
+[
+  {
+    "loading": false,
+    "process": "Block copolymer + resols → co-assembly",
+    "stage": "hybrid",
+    "title": "First, build the template"
+  },
+  {
+    "loading": false,
+    "process": "Nitrogen + heat → porous carbon",
+    "stage": "carbon",
+    "title": "Leave the pathways open"
+  },
+  {
+    "loading": false,
+    "process": "AQEDOT → electropolymerized PAQEDOT",
+    "stage": "cathode",
+    "title": "Coat the carbon directly"
+  },
+  {
+    "loading": false,
+    "process": "External Li + electrolyte → electrochemical processing",
+    "stage": "sei",
+    "title": "Separate from within"
+  }
+]

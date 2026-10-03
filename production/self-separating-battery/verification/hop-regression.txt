@@ -1,0 +1,1 @@
+PASS: model parity, six/four coordination, 10 unique O, face-sharing geometry, one face-sharing TM, divacancy layer, endpoints and face crossings; 8 beats readable at ≤15 chars/s (entry face 15.43 s, T 16.80 s, exit face 23.51 s, arrival 25.00 s); 2,001 storyboard fixtures.

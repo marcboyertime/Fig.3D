@@ -1,0 +1,10 @@
+/Users/mboyer/Documents/Codex/2026-09-29/realtime-voice-chat-5/work/fig3d-current/production/self-separating-battery/build_blender.py:13: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF');p.inputs['Base Color'].default_value=(*linear(h),1);p.inputs['Metallic'].default_value=metal;p.inputs['Roughness'].default_value=rough;return m
+/Users/mboyer/Documents/Codex/2026-09-29/realtime-voice-chat-5/work/fig3d-current/production/self-separating-battery/build_blender.py:31: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  s.world=bpy.data.worlds.new(title+' world');s.world.use_nodes=True;s.world.node_tree.nodes['Background'].inputs[0].default_value=(*linear('52627e'),1);s.world.node_tree.nodes['Background'].inputs[1].default_value=.25
+00:06.712  render           | Saved: '/Users/mboyer/Documents/Codex/2026-09-29/realtime-voice-chat-5/work/fig3d-current/production/self-separating-battery/renders/architecture.png'
+00:10.073  render           | Saved: '/Users/mboyer/Documents/Codex/2026-09-29/realtime-voice-chat-5/work/fig3d-current/production/self-separating-battery/renders/carbon.png'
+Info: Saved as "interwoven-battery.blend"
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:49:19)
+
+Blender quit

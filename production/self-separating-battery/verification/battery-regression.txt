@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "progressStates": 2002,
+  "maximumConservationResidual": 3.552713678800501e-15,
+  "graphite": {
+    "atomsPerSheet": 96,
+    "bondsPerSheet": 132,
+    "hexagonsPerSheet": 37,
+    "sheets": 4,
+    "interlayerSites": 39,
+    "bondRange": [
+      0.6499999999999995,
+      0.6500000000000006
+    ]
+  },
+  "checks": [
+    "independent charge/discharge inventories",
+    "mode-switch composition continuity",
+    "Li/electron and half-reaction atom/charge balance",
+    "role and source/load reversal",
+    "deterministic scrub",
+    "3D route domains and solid endpoints",
+    "honeycomb ring/bond geometry",
+    "unique sites in galleries",
+    "edge-entry paths parallel to carbon sheets",
+    "linked fractional population"
+  ],
+  "limitation": "Bookkeeping and geometry checks, not empirical or kinetic validation."
+}

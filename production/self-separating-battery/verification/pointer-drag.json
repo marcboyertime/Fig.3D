@@ -1,0 +1,34 @@
+{
+  "dragBefore": {
+    "elevation": "0.3900",
+    "fps": "117.4",
+    "frameP95": "8.7",
+    "rendered": "true",
+    "yaw": "0.7000"
+  },
+  "dragAfter": {
+    "elevation": "0.3900",
+    "fps": "117.4",
+    "frameP95": "8.7",
+    "layer": "all",
+    "rendered": "true",
+    "yaw": "0.3400"
+  },
+  "verticalAfter": {
+    "elevation": "0.7200",
+    "fps": "117.4",
+    "frameP95": "8.7",
+    "layer": "all",
+    "rendered": "true",
+    "yaw": "0.3400"
+  },
+  "diagonalAfter": {
+    "elevation": "0.4800",
+    "fps": "117.4",
+    "frameP95": "8.7",
+    "layer": "all",
+    "rendered": "true",
+    "yaw": "0.5800"
+  },
+  "observation": "Near front pore moved right with rightward pointer motion; drag did not select a material."
+}
