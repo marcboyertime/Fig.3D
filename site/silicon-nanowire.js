@@ -188,6 +188,8 @@ function managePlay(){
 let stageInView=false;if(typeof IntersectionObserver==='function')new IntersectionObserver(e=>{stageInView=e[0].intersectionRatio>=.6;},{threshold:[0,.6,1]}).observe($('stage'));else stageInView=true;
 // On a first visit the page builds in first (CSS); the figure's reading clock starts once the stage has arrived.
 const BUILD_IN=document.documentElement.classList.contains('build-in')?5.6:0;
+// Any pointer, key, wheel or touch input skips the build-in to its end, as on the other modules.
+if(BUILD_IN){const skip=()=>{for(const an of document.getAnimations())if(/^build-/.test(an.animationName||''))an.finish();for(const ev of ['pointerdown','keydown','wheel','touchstart'])removeEventListener(ev,skip,true);};for(const ev of ['pointerdown','keydown','wheel','touchstart'])addEventListener(ev,skip,{capture:true,passive:true});}
 function startOpening(){
  if(!state.opening||!scene)return;
  const durations=OPENING.map(readingTime);durations[0]+=BUILD_IN;let beat=0,t=0,emerging=false;
