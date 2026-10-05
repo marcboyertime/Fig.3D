@@ -55,6 +55,8 @@ function update(){
 }
 function advance(now){
  if(!state.intro||state.paused){lastTime=0;return;}
+ // The first-visit page opening holds this clock until the stage has appeared.
+ if(window.Fig3DOpening?.holding){lastTime=0;return;}
  if(lastTime)elapsed+=Math.min(60,now-lastTime);lastTime=now;
  const seconds=elapsed/1000,p=openingPhase(seconds),modelTime=seconds-OPENING_STARTS[2];
  if(p!==phase){phase=p;caption(...OPENING_BEATS[p].copy);

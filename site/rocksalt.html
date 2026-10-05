@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <!-- Working copy of references/rocksalt-li-pathways-user-original.html (kept unchanged). Edits follow context/space/Companion-001/Claim-Trace-2026-09-30.md: tetrahedral-site wording, 9% small-crystal note, 9% conditions. --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}</style></head><body>
-<nav class="fig-bar" aria-label="Fig.3D"><a class="fig-brand" href="index.html" aria-label="Fig.3D home">Fig.<span>3D</span></a><span class="fig-tag">COMPANION PREVIEW</span><a class="fig-back" href="index.html#next-title">Back to the collection</a></nav>
+<link rel="stylesheet" href="module-opening.css"><script src="module-opening.js"></script><nav class="fig-bar" aria-label="Fig.3D" data-open="1"><a class="fig-brand" href="index.html" aria-label="Fig.3D home">Fig.<span>3D</span></a><span class="fig-tag">COMPANION PREVIEW</span><a class="fig-back" href="index.html#next-title">Back to the collection</a></nav>
 <title>Rocksalt Li Pathways — Fig.3D</title>
 <link rel="preload" href="assets/fonts/Sora-Variable.ttf" as="font" type="font/ttf" crossorigin>
 <style>
@@ -220,15 +220,28 @@ sub,sup{font-size:.72em}
 @media (max-width:980px){.source{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-template-areas:"head" "fig" "body";row-gap:18px}}
 @media (max-width:480px){.source-figure>a{padding:8px 9px;border-radius:8px}.source-copy h2{font-size:21px}.source-map a{grid-template-columns:84px minmax(0,1fr)}}
 @media(min-width:900px){.steps{flex-wrap:wrap;row-gap:10px;overflow-x:visible}}
+
+/* Title, question and introduction */
+.page-head{margin-bottom:26px}
+.page-head h1{font-size:clamp(32px,3.4vw,48px);letter-spacing:-.025em;line-height:1.08}
+.page-head .fig-question{color:var(--ink);opacity:.86;max-width:44ch;font-size:clamp(18px,1.6vw,22px)}
+.page-head .fig-intro{margin-top:24px;--fig-ink:var(--ink);--fig-muted:var(--muted);--fig-intro-accent:var(--accent);--fig-intro-line:var(--line)}
+.page-head .fig-intro h2{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.08em}
+@media (max-width:480px){.page-head h1{font-size:30px}}
 </style>
 
 <div class="app">
-  <header>
-    <h1>Rocksalt Li Pathways</h1>
-    <p class="sub">How lithium finds its way through layered, spinel and disordered rocksalt (DRX) cathodes, built up one idea at a time. Based on Hau et al., <i>Adv. Mater.</i> 2025, Figure 1.</p>
+  <header class="page-head">
+    <div data-open="title"><h1 data-open-line>Rocksalt Li Pathways</h1>
+    <p class="fig-question" data-open-line>How does lithium get through a cathode whose metals are arranged at random?</p></div>
+    <section class="fig-intro" aria-label="About this paper" data-open="2">
+      <div data-open="2"><h2>Why this paper</h2><p>Most lithium-ion cathodes are ordered oxides built on nickel and cobalt, metals whose supply is concentrated in a few countries. Disordered rocksalts (DRX) can be made from Earth-abundant metals such as manganese. Hau et al., <i>Adv. Mater.</i> 2025, review what makes them work.</p></div>
+      <div data-open="3"><h2>The puzzle</h2><p>Charging and discharging means lithium hopping from site to site through the solid. Ordered cathodes have built-in lanes. In DRX the metals sit at random, so a hop is easy only where few metal atoms crowd its doorway, and lithium crosses the crystal only if enough easy hops link up. Extra lithium makes that more likely.</p></div>
+      <div data-open="4"><h2>Reading Figure 1</h2><p>Three columns, three ways to arrange the same atoms: layered, spinel and DRX. The top row shows each crystal, the middle row a single lithium hop and the metals beside it, the bottom row the network those hops form. <b><i class="swatch" style="color:#5fbf4a"></i>Green</b> is lithium, <b><i class="swatch" style="color:#a43fb0"></i>purple</b> a transition metal such as manganese, and a dashed circle an empty site.</p></div>
+    </section>
   </header>
 
-  <section class="source" aria-labelledby="source-title">
+  <section class="source" aria-labelledby="source-title" data-open="5">
     <div class="source-copy source-head">
       <p class="eyebrow">Start with the paper</p>
       <h2 id="source-title">One figure<br>Four ideas at once</h2>
@@ -261,9 +274,9 @@ sub,sup{font-size:.72em}
       </ul>
     </div>
   </section>
-  <nav class="steps" id="steps" aria-label="Steps"></nav>
+  <nav class="steps" id="steps" aria-label="Steps" data-open="6"></nav>
 
-  <main>
+  <main data-open="6" data-open-stage>
     <div class="viewer" id="viewer">
       <canvas id="gl" role="img" aria-label="Interactive 3D model for the current step. Drag to rotate, scroll or pinch to zoom."></canvas>
       <div id="labels"></div>

@@ -97,7 +97,8 @@ function startOpening(){if(!state.opening)return endOpening();lastTime=0;introRA
 function intro(now){
  introRAF=0;if(!state.opening)return;
  const r=$('scene-stage').getBoundingClientRect(),onscreen=r.bottom>80&&r.top<innerHeight-80;
- if(!state.paused&&!document.hidden&&onscreen){
+ // The first-visit page opening holds this clock until the stage has appeared.
+ if(!state.paused&&!document.hidden&&onscreen&&!window.Fig3DOpening?.holding){
   const beat=schedule.find(b=>openingTime<b.end);
   // Hold the clock at the hand-over until the model can actually appear.
   const waiting=beat?.emerge&&!loaded;

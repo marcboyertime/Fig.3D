@@ -84,7 +84,8 @@ function setToggle() {
   $('film-toggle').setAttribute('aria-pressed', String(paused));
   $('film-toggle-label').textContent = paused ? 'Play' : 'Pause';
 }
-function play() { if (ready && data && !userPaused && onScreen && !document.hidden) video.play().catch(() => { userPaused = true; setToggle(); }); }
+// The first-visit page opening holds the film until it has appeared.
+function play() { if (ready && data && !userPaused && onScreen && !document.hidden && !window.Fig3DOpening?.holding) video.play().catch(() => { userPaused = true; setToggle(); }); }
 
 $('film-toggle').addEventListener('click', () => {
   userPaused = !video.paused ? true : false;
@@ -125,3 +126,5 @@ fetch('assets/diffusion-film/film.json').then(r => r.json()).then(json => {
   setToggle();
   play();
 });
+
+addEventListener('fig3d:stage', play);
