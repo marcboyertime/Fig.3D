@@ -14,6 +14,7 @@ Durable principles taken from this:
 - **Register on the printed object, measured.** The model must leave the page from the exact printed object, fitted numerically (silhouette fit of pose, scale and length), not placed by eye or by matching boxes.
 - **Use the paper’s own picture conventions.** Colour by the paper’s scale (Fig. 5: red lithiated, blue crystalline, warm front) and cut the way the paper cuts (Fig. 5b lid), so model and figure compare at a glance.
 - **Less text on screen at once.** During the opening, the figure caption and controls step back; one caption per beat.
+- **Explain the paper before the explorer (Marcky, same day):** “there also needs to be a much better textual introduction to what the heck is going on in figure/paper, what we're looking at, so user can get an understanding.” Every companion opens with a short primer in plain language: why the problem matters, what the experiment did, what was surprising, and how to read the key figure (what each panel and colour shows). It sits between the title and the stage, and it must not repeat the captions that come later.
 
 ### 5 October 2026 — annotated method package and practical review loop
 

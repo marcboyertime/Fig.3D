@@ -16,6 +16,12 @@ button:hover:not(:disabled),a:hover{color:#c6d5ff}[hidden]{display:none!importan
 .intro .eyebrow{flex-basis:100%}
 .intro h1{font-size:clamp(34px,3.4vw,54px);font-weight:500;letter-spacing:-.05em;line-height:1.08;margin:6px 0 0}
 .intro .lede{color:var(--muted);font-size:17px;margin:0}
+/* The primer: what the paper is and what the figure shows, before the explorer. */
+.primer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.1fr);gap:20px clamp(32px,4vw,72px);margin:4px 0 46px;padding-bottom:34px;border-bottom:1px solid var(--line)}
+.primer-lede{font-size:clamp(19px,1.45vw,22px);line-height:1.6;color:#dfe5f1;margin:0;letter-spacing:-.01em}
+.primer-points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(22px,2.4vw,40px)}
+.primer-points p{margin:0;font-size:15px;line-height:1.7;color:#b3bed2}
+.primer-points .primer-step{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:#a9bfff;margin-bottom:10px;font-weight:500}
 
 /* One toolbar over the stage; the explanation beside it. */
 .explorer{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(320px,1fr);grid-template-areas:'toolbar inspection' 'stage inspection';grid-template-rows:auto 1fr;column-gap:clamp(28px,3.6vw,64px);align-items:start}
@@ -127,6 +133,7 @@ noscript{display:block;margin:30px 5vw;color:#b6c3d9}
 .webgl-failed #wire{visibility:hidden}
 
 @media(max-width:1180px){
+ .primer{grid-template-columns:1fr}
  .explorer{grid-template-columns:minmax(0,1.5fr) minmax(290px,1fr);column-gap:28px}
  .toolbar{gap:8px 18px}.tabs{gap:20px}.tabs button{font-size:15px}
  .camera-controls button:not([data-camera=reset]){display:none}
@@ -134,6 +141,7 @@ noscript{display:block;margin:30px 5vw;color:#b6c3d9}
 }
 @media(max-width:860px){
  .intro{margin-bottom:14px}.intro h1{font-size:40px}.intro .lede{font-size:16px}
+ .primer{grid-template-columns:1fr;margin-bottom:30px;padding-bottom:26px}.primer-points{grid-template-columns:1fr;gap:20px}.primer-lede{font-size:18px}
  .explorer{grid-template-columns:1fr;grid-template-areas:'toolbar' 'stage' 'inspection';grid-template-rows:auto}
  .inspection{padding-top:22px}
  .toolbar{margin-bottom:8px}.display-switch{width:100%;overflow-x:auto;scrollbar-width:none}.display-switch::-webkit-scrollbar{display:none}.display-switch button{flex:1;padding-inline:8px}
