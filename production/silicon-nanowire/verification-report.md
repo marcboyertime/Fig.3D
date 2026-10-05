@@ -1,3 +1,17 @@
+# Verification report
+
+## 2026-10-05 rebuild (Claude)
+
+Executed: `node site/silicon-nanowire-verification.mjs` (adds Fig. 5a registration box within 4 native px, question presets and return) and `node site/silicon-nanowire-controller-verification.mjs` (rewritten for the new controller: truthful figure/model buttons, state preserved across figures, per-question figures and source panels, opening beats and hand-over, no-WebGL section). Both pass.
+
+Browser: three rounds of virtual-clock stills in headless Chromium (SwiftShader) at 1512×982 and 390×844 (2×), covering the first-visit build-in, the opening, every question and stress stage, the three straight-on views, closed/open, play extremes and every figure. Review videos are recorded with `verification/browser/record-review.mjs`.
+
+Not tested: Safari, Firefox, a real phone or touch hand-feel, real GPU frame rates, screen readers, browser zoom. Virtual-clock captures show authored timing only.
+
+---
+
+## Earlier report (Codex, first version)
+
 # Verification report · 2026-10-05
 
 ## Delivery state
