@@ -6,6 +6,8 @@ Executed: `node site/silicon-nanowire-verification.mjs` (adds Fig. 5a registrati
 
 Browser: three rounds of virtual-clock stills in headless Chromium (SwiftShader) at 1512×982 and 390×844 (2×), covering the first-visit build-in, the opening, every question and stress stage, the three straight-on views, closed/open, play extremes and every figure. Review videos are recorded with `verification/browser/record-review.mjs`.
 
+Continuous recording caught a freeze that the stills had missed. When the opening reached its section sweep, the opening's per-frame `setState` woke the render loop, and the frame then scheduled a second chain. The number of renders doubled every frame. `WireScene.frame` no longer schedules a frame when one is already pending. A headless rerun stepped frame by frame through the sweep to confirm the fix: each frame of the sweep now takes about 0.3 s to capture instead of doubling.
+
 Not tested: Safari, Firefox, a real phone or touch hand-feel, real GPU frame rates, screen readers, browser zoom. Virtual-clock captures show authored timing only.
 
 ---

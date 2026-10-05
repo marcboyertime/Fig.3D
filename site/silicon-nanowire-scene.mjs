@@ -63,9 +63,14 @@ export class WireScene{
   this.wedge=new T.Group();this.group.add(this.wedge);
   this.wedgeParts={shell:mesh(this.geo.shellWedge,this.wedgeMat.shell,this.wedge),core:mesh(this.geo.coreWedge,this.wedgeMat.core,this.wedge),cut:mesh(this.geo.cut,this.wedgeMat.cut,this.wedge)};
   // The movable section: a crisp band just outside the surface and a faint fill.
-  this.ringGeo=new T.BufferGeometry();this.ringGeo.setAttribute('position',new T.BufferAttribute(new Float32Array((R+1)*2*3),3).setUsage(T.DynamicDrawUsage));
-  const ri=[];for(let i=0;i<R;i++){const a=2*i;ri.push(a,a+1,a+2,a+1,a+3,a+2);}this.ringGeo.setIndex(ri);
-  this.ring=new T.Mesh(this.ringGeo,new T.MeshBasicMaterial({color:lin(0xe6eeff),transparent:true,opacity:.95,side:T.DoubleSide,depthWrite:false,toneMapped:false}));this.ring.frustumCulled=false;this.ring.renderOrder=3;this.group.add(this.ring);
+  // Its upper arc belongs to the lid and travels and fades with it; across the open cut a chord marks the section instead.
+  const ringPos=new T.BufferAttribute(new Float32Array((R+1)*2*3),3).setUsage(T.DynamicDrawUsage),chordPos=new T.BufferAttribute(new Float32Array(4*3),3).setUsage(T.DynamicDrawUsage);
+  const band=(pos,index)=>{const g=new T.BufferGeometry();g.setAttribute('position',pos);g.setIndex(index);return g;};
+  const ri={upper:[],lower:[]};for(let i=0;i<R;i++){const a=2*i;(i<HALF?ri.upper:ri.lower).push(a,a+1,a+2,a+1,a+3,a+2);}
+  this.ringGeo=band(ringPos,ri.lower);this.ringLidGeo=band(ringPos,ri.upper);this.chordGeo=band(chordPos,[0,1,2,1,3,2]);
+  const ringMat=()=>new T.MeshBasicMaterial({color:lin(0xe6eeff),transparent:true,opacity:.95,side:T.DoubleSide,depthWrite:false,toneMapped:false});
+  const ringMesh=(g,parent)=>{const o=new T.Mesh(g,ringMat());o.frustumCulled=false;o.renderOrder=3;parent.add(o);return o;};
+  this.ring=ringMesh(this.ringGeo,this.group);this.ringLid=ringMesh(this.ringLidGeo,this.wedge);this.chord=ringMesh(this.chordGeo,this.group);
   // Sign-only stress marks on the exposed face, drawn like the paper's own ←□→ notation.
   this.arrows=new T.Group();this.group.add(this.arrows);
   this.arrowMat={tension:new T.MeshBasicMaterial({color:lin(0xffb27a),transparent:true,depthTest:false,toneMapped:false}),compression:new T.MeshBasicMaterial({color:lin(0x9fc2ff),transparent:true,depthTest:false,toneMapped:false})};
@@ -118,7 +123,10 @@ export class WireScene{
  updateSlice(){
   const v=this.view,d=section(v.progress,v.slice),arr=this.ringGeo.attributes.position.array;
   for(let i=0;i<=R;i++){const th=TAU*i/R,[x,y]=outer(th,d),r=Math.hypot(x,y)||1,ux=x/r,uy=y/r;const k=6*i;arr[k]=x+ux*.03;arr[k+1]=y+uy*.03;arr[k+2]=d.z;arr[k+3]=x+ux*.1;arr[k+4]=y+uy*.1;arr[k+5]=d.z;}
-  this.ringGeo.attributes.position.needsUpdate=true;this.ring.material.opacity=.95*v.ring;this.ring.visible=v.ring>.01;
+  this.ringGeo.attributes.position.needsUpdate=true;
+  const c=this.chordGeo.attributes.position.array,w=.035,y=.012;c.set([-d.a,y,d.z-w, d.a,y,d.z-w, -d.a,y,d.z+w, d.a,y,d.z+w]);this.chordGeo.attributes.position.needsUpdate=true;
+  const o=this.view.open,lid=1-smooth(.3,.95,o),cut=smooth(.15,.6,o);
+  for(const [m,k] of [[this.ring,1],[this.ringLid,lid],[this.chord,cut]]){m.material.opacity=.95*v.ring*k;m.visible=v.ring*k>.01;}
   this.canvas.dataset.slice=String(this.state?.slice??v.slice);
  }
  updateWedge(){
@@ -175,6 +183,8 @@ export class WireScene{
   if(this.travel){const t=this.travel;t.t+=dt*1000;const u=t.duration?clamp(t.t/t.duration):1,k=ease(u);for(const key of ['yaw','elevation','halfHeight'])this.pose[key]=t.from[key]+(t.to[key]-t.from[key])*k;if(u>=1)this.travel=null;this.dirty=true;}
   if(this.state&&this.step(dt))this.dirty=true;
   if(this.dirty)this.renderNow();
+  // An animator may already have woken the loop this frame; never start a second chain.
+  if(this.raf)return;
   if(this.travel||this.animators.size||!this.settled())this.raf=requestAnimationFrame(t=>this.frame(t));else this.last=0;
  }
  wake(){this.dirty=true;if(!this.raf&&this.active&&!document.hidden)this.raf=requestAnimationFrame(t=>this.frame(t));}

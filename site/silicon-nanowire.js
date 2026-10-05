@@ -241,5 +241,5 @@ reducedQuery.addEventListener('change',e=>{if(state.opening)stopOpening();state=
 addEventListener('pagehide',()=>{state={...state,playing:false};playStop?.();playStop=null;scene?.stop();});
 addEventListener('pageshow',()=>scene?.wake());
 if(params.has('card'))state.card=true;
-window.figState=()=>({...state});
+window.figState=()=>({...state});window.figScene=scene;
 sync();if(state.opening&&scene)startOpening();else if(state.opening){state.opening=false;state.display='model';sync();}
