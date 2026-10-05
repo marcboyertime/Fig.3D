@@ -7,7 +7,7 @@ const lin=hex=>new T.Color(hex).convertSRGBToLinear();
 // Colours follow Figure 5's own scale: blue = crystalline silicon (c≈0), red = lithiated (c≈1),
 // with the paper's warm transition band at the reaction front.
 export const PALETTE={crystal:'#4f7be0',front:'#e8b44e',lithiated:'#d4553b',mutedShell:'#8e97ab',mutedCore:'#55638a',tension:'#ffb27a',compression:'#9fc2ff'};
-const C={crystal:lin(0x2a54c2),front:lin(0xd99a2b),lith:lin(0xb93421),mShell:lin(0x6f7789),mCore:lin(0x3a4669)};
+const C={crystal:lin(0x2a54c2),front:lin(0xd99a2b),lith:lin(0xb93421),mShell:lin(0x4d5568),mCore:lin(0x2b3757)};
 const R=144,A=96,HALF=R/2;
 const approach=(v,t,dt,rate)=>Math.abs(t-v)<1e-4?t:v+(t-v)*(1-Math.exp(-dt*rate));
 
@@ -74,7 +74,7 @@ export class WireScene{
  }
  setState(s){
   this.state=s;const stress=s.question==='stress',fracture=s.question==='fracture',axis=s.question==='swelling'&&s.view==='axis',trimmed=stress||fracture||axis;
-  Object.assign(this.target,{progress:s.progress,slice:s.slice,open:s.open&&!trimmed?1:0,trim:trimmed?s.slice:0,muted:stress?1:0,arrows:stress&&s.stress!=='mises'?1:0,neck:fracture?1:0,ring:trimmed||(s.opening&&s.beat<3)?0:1});
+  Object.assign(this.target,{progress:s.progress,slice:s.slice,open:s.open&&!trimmed&&(s.view==='oblique'||s.view==null)?1:0,trim:trimmed?s.slice:0,muted:stress?1:0,arrows:stress&&s.stress!=='mises'?1:0,neck:fracture?1:0,ring:trimmed||(s.opening&&s.beat<3)?0:1});
   if(s.reduced||!this.started){Object.assign(this.view,this.target);this.started=true;}
   this.wake();
  }
@@ -155,7 +155,7 @@ export class WireScene{
  }
  resize(){const r=this.canvas.getBoundingClientRect();if(r.width<10||r.height<10)return;this.width=r.width;this.height=r.height;this.renderer.setPixelRatio(this.dpr);this.renderer.setSize(r.width,r.height,false);this.updateCamera();this.dirty=true;this.wake();}
  // Narrow stages keep the wire's width in view rather than its height.
- halfHeightFor(p){return p.halfHeight*Math.max(1,1.15/(this.width/this.height));}
+ halfHeightFor(p){return p.halfHeight*Math.max(1,1.02/(this.width/this.height));}
  basis(p=this.pose){const cy=Math.cos(p.yaw),sy=Math.sin(p.yaw),ce=Math.cos(p.elevation),se=Math.sin(p.elevation);return {forward:new T.Vector3(sy*ce,se,cy*ce),right:new T.Vector3(cy,0,-sy),up:new T.Vector3(-sy*se,ce,-cy*se)};}
  updateCamera(){const p=this.pose,h=this.halfHeightFor(p),a=this.width/this.height,b=this.basis(p);Object.assign(this.camera,{left:-h*a,right:h*a,top:h,bottom:-h});this.camera.updateProjectionMatrix();this.camera.position.copy(b.forward).multiplyScalar(40);this.camera.up.copy(b.up);this.camera.lookAt(0,0,0);this.camera.updateMatrixWorld();this.canvas.dataset.yaw=p.yaw.toFixed(4);this.canvas.dataset.elevation=p.elevation.toFixed(4);}
  project(pos){const p=new T.Vector3(...pos).project(this.camera);return {x:(p.x+1)*this.width/2,y:(1-p.y)*this.height/2,z:p.z};}

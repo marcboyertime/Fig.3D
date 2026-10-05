@@ -139,7 +139,7 @@ function placeLabels(sc){
    const sf=Math.min(.97,frontAt(v.progress)),dF=section(v.progress,sf),pf=outer(Math.PI*.62,dF);at.front=[pf[0],pf[1],dF.z,-20,-34];show.front=v.progress>.03&&sf<.96;
    const dE=section(v.progress,0);at.supply=[0,-outer(Math.PI/2,dE)[1],dE.z,-60,26];show.supply=v.trim<.02;
   }
-  if(q==='fracture'&&free){const s=Math.min(.95,s0+.2),d=section(v.progress,s);at.neck=[.3,outer(Math.PI/2,d)[1]+.05,d.z,16,-30];show.neck=v.neck>.6;}
+  if(q==='fracture'&&free){const s=Math.min(.95,s0+.2),d=section(v.progress,s);at.neck=[.3,outer(Math.PI/2,d)[1]+.05,d.z,70,-36];show.neck=v.neck>.6;}
   if(q==='stress'&&state.stress!=='mises'&&free){const d=section(v.progress,v.trim),top=outer(Math.PI/2,d)[1],late=state.stress!=='early';
    LABELS.tension.textContent='Tension';LABELS.compression.textContent='Compression';
    at[late?'tension':'compression']=[.62,top-.2,d.z,0,-11];at[late?'compression':'tension']=[.62,0,d.z,0,-11];show.tension=show.compression=v.arrows>.6;}

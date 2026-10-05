@@ -10,9 +10,9 @@ export const HOME={yaw:.56,elevation:.5,halfHeight:4.6};
 export const VIEWS={
  oblique:HOME,
  // Both side views put the wire axis horizontal, so switching between them shows only the width change (Fig. 3g–h).
- x1:{yaw:Math.PI/2,elevation:0,halfHeight:4},
- x2:{yaw:Math.PI/2,elevation:Math.PI/2-.0001,halfHeight:4},
- axis:{yaw:0,elevation:0,halfHeight:2.5}
+ x1:{yaw:Math.PI/2,elevation:0,halfHeight:4.4},
+ x2:{yaw:Math.PI/2,elevation:Math.PI/2-.0001,halfHeight:4.4},
+ axis:{yaw:0,elevation:0,halfHeight:3.3}
 };
 export const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,Number(v)||0));
 export const smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t);};

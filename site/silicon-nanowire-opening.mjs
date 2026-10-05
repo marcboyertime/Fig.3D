@@ -14,7 +14,7 @@ export class PaperEmergence{
   const s=this.scene,W=s.width,H=s.height,f=FIGURES['5'],box=PANEL_A.box,boxH=box[3]-box[1];
   // Panel a at most 1.8× its native pixels and never taller than 70% of the stage.
   const S=Math.min(1.8,H*.7/boxH,W*.6/(box[2]-box[0])),unit=PANEL_A.unit*S;
-  const aspect=Math.max(1,1.15/(W/H)),pose={...PAPER_POSE,halfHeight:H/(2*unit)/aspect};
+  const aspect=Math.max(1,1.02/(W/H)),pose={...PAPER_POSE,halfHeight:H/(2*unit)/aspect};
   const final={x:W/2-PANEL_A.origin[0]*S,y:H/2-PANEL_A.origin[1]*S,w:f.width*S,h:f.height*S};
   return {pose,final,S};
  }
