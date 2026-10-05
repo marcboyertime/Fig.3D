@@ -1,0 +1,3592 @@
+[
+  {
+    "files": [
+      {
+        "id": 4275412,
+        "name": "nl201684d_si_011.mpg",
+        "size": 4577280,
+        "is_link_only": false,
+        "download_url": "https://ndownloader.figshare.com/files/4275412",
+        "supplied_md5": "a7f594fc1b64f23ad3c8673cb6434b57",
+        "computed_md5": "a7f594fc1b64f23ad3c8673cb6434b57",
+        "mimetype": "video/mpeg"
+      }
+    ],
+    "folder_structure": {},
+    "authors": [
+      {
+        "id": 1901479,
+        "full_name": "Xiao Hua Liu",
+        "first_name": "Xiao Hua",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439401,
+        "full_name": "He Zheng",
+        "first_name": "He",
+        "last_name": "Zheng",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 51791,
+        "full_name": "Li Zhong",
+        "first_name": "Li",
+        "last_name": "Zhong",
+        "is_active": false,
+        "url_name": "Li_Zhong",
+        "orcid_id": ""
+      },
+      {
+        "id": 282228,
+        "full_name": "Shan Huang",
+        "first_name": "Shan",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1908541,
+        "full_name": "Khim Karki",
+        "first_name": "Khim",
+        "last_name": "Karki",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177712,
+        "full_name": "Li Qiang Zhang",
+        "first_name": "Li Qiang",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 4829,
+        "full_name": "Yang Liu",
+        "first_name": "Yang",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "Yang_Liu",
+        "orcid_id": ""
+      },
+      {
+        "id": 354129,
+        "full_name": "Akihiro Kushima",
+        "first_name": "Akihiro",
+        "last_name": "Kushima",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177710,
+        "full_name": "Wen Tao Liang",
+        "first_name": "Wen Tao",
+        "last_name": "Liang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2032204,
+        "full_name": "Jiang Wei Wang",
+        "first_name": "Jiang Wei",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1794046,
+        "full_name": "Jeong-Hyun Cho",
+        "first_name": "Jeong-Hyun",
+        "last_name": "Cho",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2104168,
+        "full_name": "Eric Epstein",
+        "first_name": "Eric",
+        "last_name": "Epstein",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1486459,
+        "full_name": "Shadi A. Dayeh",
+        "first_name": "Shadi A.",
+        "last_name": "Dayeh",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1596076,
+        "full_name": "S. Tom Picraux",
+        "first_name": "S. Tom",
+        "last_name": "Picraux",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 460268,
+        "full_name": "Ting Zhu",
+        "first_name": "Ting",
+        "last_name": "Zhu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 354128,
+        "full_name": "Ju Li",
+        "first_name": "Ju",
+        "last_name": "Li",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 165238,
+        "full_name": "John P. Sullivan",
+        "first_name": "John P.",
+        "last_name": "Sullivan",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1669252,
+        "full_name": "John Cumings",
+        "first_name": "John",
+        "last_name": "Cumings",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 312621,
+        "full_name": "Chunsheng Wang",
+        "first_name": "Chunsheng",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1394710,
+        "full_name": "Scott X. Mao",
+        "first_name": "Scott X.",
+        "last_name": "Mao",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177714,
+        "full_name": "Zhi Zhen Ye",
+        "first_name": "Zhi Zhen",
+        "last_name": "Ye",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 360681,
+        "full_name": "Sulin Zhang",
+        "first_name": "Sulin",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439398,
+        "full_name": "Jian Yu Huang",
+        "first_name": "Jian Yu",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      }
+    ],
+    "custom_fields": [],
+    "figshare_url": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624794",
+    "download_disabled": false,
+    "description": "We report direct observation of an unexpected anisotropic swelling of Si nanowires during lithiation against either a solid electrolyte with a lithium counter-electrode or a liquid electrolyte with a LiCoO<sub>2</sub> counter-electrode. Such anisotropic expansion is attributed to the interfacial processes of accommodating large volumetric strains at the lithiation reaction front that depend sensitively on the crystallographic orientation. This anisotropic swelling results in lithiated Si nanowires with a remarkable dumbbell-shaped cross section, which develops due to plastic flow and an ensuing necking instability that is induced by the tensile hoop stress buildup in the lithiated shell. The plasticity-driven morphological instabilities often lead to fracture in lithiated nanowires, now captured in video. These results provide important insight into the battery degradation mechanisms.",
+    "funding": null,
+    "funding_list": [],
+    "version": 1,
+    "status": "public",
+    "size": 4577280,
+    "created_date": "2016-02-23T02:54:57Z",
+    "modified_date": "2023-06-02T14:56:39Z",
+    "is_public": true,
+    "is_confidential": false,
+    "is_metadata_record": false,
+    "confidential_reason": "",
+    "metadata_reason": "",
+    "license": {
+      "value": 10,
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "tags": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "keywords": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "title": "Biophysics",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 915,
+        "title": "Physical Sciences not elsewhere classified",
+        "parent_id": 6,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 15,
+        "title": "Neuroscience",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 21,
+        "title": "Biotechnology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 61,
+        "title": "Developmental Biology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      }
+    ],
+    "references": [
+      "https://doi.org/10.1021/nl201684d"
+    ],
+    "has_linked_file": false,
+    "citation": "Liu, Xiao Hua; Zheng, He; Zhong, Li; Huang, Shan; Karki, Khim; Zhang, Li Qiang; et al. (2016). Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation. ACS Publications. Media. https://doi.org/10.1021/nl201684d.s011",
+    "related_materials": [
+      {
+        "id": 31728116,
+        "identifier": "10.1021/nl201684d",
+        "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+        "relation": "IsSupplementTo",
+        "identifier_type": "DOI",
+        "is_linkout": true,
+        "link": "https://doi.org/10.1021/nl201684d"
+      }
+    ],
+    "is_embargoed": false,
+    "embargo_date": null,
+    "embargo_type": null,
+    "embargo_title": "",
+    "embargo_reason": "",
+    "embargo_options": [],
+    "id": 2624794,
+    "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "doi": "10.1021/nl201684d.s011",
+    "handle": "",
+    "url": "https://api.figshare.com/v2/articles/2624794",
+    "published_date": "2011-08-10T00:00:00Z",
+    "thumb": "https://ndownloader.figshare.com/files/4275412/preview/4275412/thumb.png",
+    "defined_type": 2,
+    "defined_type_name": "media",
+    "group_id": 2514,
+    "url_private_api": "https://api.figshare.com/v2/account/articles/2624794",
+    "url_public_api": "https://api.figshare.com/v2/articles/2624794",
+    "url_private_html": "https://figshare.com/account/articles/2624794",
+    "url_public_html": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624794",
+    "timeline": {
+      "posted": "2011-08-10T00:00:00",
+      "firstOnline": "2016-02-23"
+    },
+    "resource_title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "resource_doi": "10.1021/nl201684d"
+  },
+  {
+    "files": [
+      {
+        "id": 4275402,
+        "name": "nl201684d_si_004.mpg",
+        "size": 8110077,
+        "is_link_only": false,
+        "download_url": "https://ndownloader.figshare.com/files/4275402",
+        "supplied_md5": "c06aaaa127d662867d870e6618e4a38e",
+        "computed_md5": "c06aaaa127d662867d870e6618e4a38e",
+        "mimetype": "video/mpeg"
+      }
+    ],
+    "folder_structure": {},
+    "authors": [
+      {
+        "id": 1901479,
+        "full_name": "Xiao Hua Liu",
+        "first_name": "Xiao Hua",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439401,
+        "full_name": "He Zheng",
+        "first_name": "He",
+        "last_name": "Zheng",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 51791,
+        "full_name": "Li Zhong",
+        "first_name": "Li",
+        "last_name": "Zhong",
+        "is_active": false,
+        "url_name": "Li_Zhong",
+        "orcid_id": ""
+      },
+      {
+        "id": 282228,
+        "full_name": "Shan Huang",
+        "first_name": "Shan",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1908541,
+        "full_name": "Khim Karki",
+        "first_name": "Khim",
+        "last_name": "Karki",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177712,
+        "full_name": "Li Qiang Zhang",
+        "first_name": "Li Qiang",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 4829,
+        "full_name": "Yang Liu",
+        "first_name": "Yang",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "Yang_Liu",
+        "orcid_id": ""
+      },
+      {
+        "id": 354129,
+        "full_name": "Akihiro Kushima",
+        "first_name": "Akihiro",
+        "last_name": "Kushima",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177710,
+        "full_name": "Wen Tao Liang",
+        "first_name": "Wen Tao",
+        "last_name": "Liang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2032204,
+        "full_name": "Jiang Wei Wang",
+        "first_name": "Jiang Wei",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1794046,
+        "full_name": "Jeong-Hyun Cho",
+        "first_name": "Jeong-Hyun",
+        "last_name": "Cho",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2104168,
+        "full_name": "Eric Epstein",
+        "first_name": "Eric",
+        "last_name": "Epstein",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1486459,
+        "full_name": "Shadi A. Dayeh",
+        "first_name": "Shadi A.",
+        "last_name": "Dayeh",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1596076,
+        "full_name": "S. Tom Picraux",
+        "first_name": "S. Tom",
+        "last_name": "Picraux",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 460268,
+        "full_name": "Ting Zhu",
+        "first_name": "Ting",
+        "last_name": "Zhu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 354128,
+        "full_name": "Ju Li",
+        "first_name": "Ju",
+        "last_name": "Li",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 165238,
+        "full_name": "John P. Sullivan",
+        "first_name": "John P.",
+        "last_name": "Sullivan",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1669252,
+        "full_name": "John Cumings",
+        "first_name": "John",
+        "last_name": "Cumings",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 312621,
+        "full_name": "Chunsheng Wang",
+        "first_name": "Chunsheng",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1394710,
+        "full_name": "Scott X. Mao",
+        "first_name": "Scott X.",
+        "last_name": "Mao",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177714,
+        "full_name": "Zhi Zhen Ye",
+        "first_name": "Zhi Zhen",
+        "last_name": "Ye",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 360681,
+        "full_name": "Sulin Zhang",
+        "first_name": "Sulin",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439398,
+        "full_name": "Jian Yu Huang",
+        "first_name": "Jian Yu",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      }
+    ],
+    "custom_fields": [],
+    "figshare_url": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624788",
+    "download_disabled": false,
+    "description": "We report direct observation of an unexpected anisotropic swelling of Si nanowires during lithiation against either a solid electrolyte with a lithium counter-electrode or a liquid electrolyte with a LiCoO<sub>2</sub> counter-electrode. Such anisotropic expansion is attributed to the interfacial processes of accommodating large volumetric strains at the lithiation reaction front that depend sensitively on the crystallographic orientation. This anisotropic swelling results in lithiated Si nanowires with a remarkable dumbbell-shaped cross section, which develops due to plastic flow and an ensuing necking instability that is induced by the tensile hoop stress buildup in the lithiated shell. The plasticity-driven morphological instabilities often lead to fracture in lithiated nanowires, now captured in video. These results provide important insight into the battery degradation mechanisms.",
+    "funding": null,
+    "funding_list": [],
+    "version": 1,
+    "status": "public",
+    "size": 8110077,
+    "created_date": "2016-02-23T02:54:46Z",
+    "modified_date": "2023-09-22T00:16:17Z",
+    "is_public": true,
+    "is_confidential": false,
+    "is_metadata_record": false,
+    "confidential_reason": "",
+    "metadata_reason": "",
+    "license": {
+      "value": 10,
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "tags": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "keywords": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "title": "Biophysics",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 915,
+        "title": "Physical Sciences not elsewhere classified",
+        "parent_id": 6,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 15,
+        "title": "Neuroscience",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 21,
+        "title": "Biotechnology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 61,
+        "title": "Developmental Biology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      }
+    ],
+    "references": [
+      "https://doi.org/10.1021/nl201684d"
+    ],
+    "has_linked_file": false,
+    "citation": "Liu, Xiao Hua; Zheng, He; Zhong, Li; Huang, Shan; Karki, Khim; Zhang, Li Qiang; et al. (2016). Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation. ACS Publications. Media. https://doi.org/10.1021/nl201684d.s004",
+    "related_materials": [
+      {
+        "id": 149276547,
+        "identifier": "10.1021/nl201684d",
+        "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+        "relation": "IsSupplementTo",
+        "identifier_type": "DOI",
+        "is_linkout": true,
+        "link": "https://doi.org/10.1021/nl201684d"
+      }
+    ],
+    "is_embargoed": false,
+    "embargo_date": null,
+    "embargo_type": null,
+    "embargo_title": "",
+    "embargo_reason": "",
+    "embargo_options": [],
+    "id": 2624788,
+    "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "doi": "10.1021/nl201684d.s004",
+    "handle": "",
+    "url": "https://api.figshare.com/v2/articles/2624788",
+    "published_date": "2011-08-10T00:00:00Z",
+    "thumb": "https://ndownloader.figshare.com/files/4275402/preview/4275402/thumb.png",
+    "defined_type": 2,
+    "defined_type_name": "media",
+    "group_id": 2514,
+    "url_private_api": "https://api.figshare.com/v2/account/articles/2624788",
+    "url_public_api": "https://api.figshare.com/v2/articles/2624788",
+    "url_private_html": "https://figshare.com/account/articles/2624788",
+    "url_public_html": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624788",
+    "timeline": {
+      "posted": "2011-08-10T00:00:00",
+      "firstOnline": "2016-02-23"
+    },
+    "resource_title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "resource_doi": "10.1021/nl201684d"
+  },
+  {
+    "files": [
+      {
+        "id": 4275390,
+        "name": "nl201684d_si_002.mpg",
+        "size": 8597504,
+        "is_link_only": false,
+        "download_url": "https://ndownloader.figshare.com/files/4275390",
+        "supplied_md5": "27787472058379ffeab6dc82b0ab2166",
+        "computed_md5": "27787472058379ffeab6dc82b0ab2166",
+        "mimetype": "video/mpeg"
+      }
+    ],
+    "folder_structure": {},
+    "authors": [
+      {
+        "id": 1901479,
+        "full_name": "Xiao Hua Liu",
+        "first_name": "Xiao Hua",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439401,
+        "full_name": "He Zheng",
+        "first_name": "He",
+        "last_name": "Zheng",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 51791,
+        "full_name": "Li Zhong",
+        "first_name": "Li",
+        "last_name": "Zhong",
+        "is_active": false,
+        "url_name": "Li_Zhong",
+        "orcid_id": ""
+      },
+      {
+        "id": 282228,
+        "full_name": "Shan Huang",
+        "first_name": "Shan",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1908541,
+        "full_name": "Khim Karki",
+        "first_name": "Khim",
+        "last_name": "Karki",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177712,
+        "full_name": "Li Qiang Zhang",
+        "first_name": "Li Qiang",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 4829,
+        "full_name": "Yang Liu",
+        "first_name": "Yang",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "Yang_Liu",
+        "orcid_id": ""
+      },
+      {
+        "id": 354129,
+        "full_name": "Akihiro Kushima",
+        "first_name": "Akihiro",
+        "last_name": "Kushima",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177710,
+        "full_name": "Wen Tao Liang",
+        "first_name": "Wen Tao",
+        "last_name": "Liang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2032204,
+        "full_name": "Jiang Wei Wang",
+        "first_name": "Jiang Wei",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1794046,
+        "full_name": "Jeong-Hyun Cho",
+        "first_name": "Jeong-Hyun",
+        "last_name": "Cho",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2104168,
+        "full_name": "Eric Epstein",
+        "first_name": "Eric",
+        "last_name": "Epstein",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1486459,
+        "full_name": "Shadi A. Dayeh",
+        "first_name": "Shadi A.",
+        "last_name": "Dayeh",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1596076,
+        "full_name": "S. Tom Picraux",
+        "first_name": "S. Tom",
+        "last_name": "Picraux",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 460268,
+        "full_name": "Ting Zhu",
+        "first_name": "Ting",
+        "last_name": "Zhu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 354128,
+        "full_name": "Ju Li",
+        "first_name": "Ju",
+        "last_name": "Li",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 165238,
+        "full_name": "John P. Sullivan",
+        "first_name": "John P.",
+        "last_name": "Sullivan",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1669252,
+        "full_name": "John Cumings",
+        "first_name": "John",
+        "last_name": "Cumings",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 312621,
+        "full_name": "Chunsheng Wang",
+        "first_name": "Chunsheng",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1394710,
+        "full_name": "Scott X. Mao",
+        "first_name": "Scott X.",
+        "last_name": "Mao",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177714,
+        "full_name": "Zhi Zhen Ye",
+        "first_name": "Zhi Zhen",
+        "last_name": "Ye",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 360681,
+        "full_name": "Sulin Zhang",
+        "first_name": "Sulin",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439398,
+        "full_name": "Jian Yu Huang",
+        "first_name": "Jian Yu",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      }
+    ],
+    "custom_fields": [],
+    "figshare_url": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624776",
+    "download_disabled": false,
+    "description": "We report direct observation of an unexpected anisotropic swelling of Si nanowires during lithiation against either a solid electrolyte with a lithium counter-electrode or a liquid electrolyte with a LiCoO<sub>2</sub> counter-electrode. Such anisotropic expansion is attributed to the interfacial processes of accommodating large volumetric strains at the lithiation reaction front that depend sensitively on the crystallographic orientation. This anisotropic swelling results in lithiated Si nanowires with a remarkable dumbbell-shaped cross section, which develops due to plastic flow and an ensuing necking instability that is induced by the tensile hoop stress buildup in the lithiated shell. The plasticity-driven morphological instabilities often lead to fracture in lithiated nanowires, now captured in video. These results provide important insight into the battery degradation mechanisms.",
+    "funding": null,
+    "funding_list": [],
+    "version": 1,
+    "status": "public",
+    "size": 8597504,
+    "created_date": "2016-02-23T02:54:40Z",
+    "modified_date": "2023-06-02T14:56:39Z",
+    "is_public": true,
+    "is_confidential": false,
+    "is_metadata_record": false,
+    "confidential_reason": "",
+    "metadata_reason": "",
+    "license": {
+      "value": 10,
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "tags": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "keywords": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "title": "Biophysics",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 915,
+        "title": "Physical Sciences not elsewhere classified",
+        "parent_id": 6,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 15,
+        "title": "Neuroscience",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 21,
+        "title": "Biotechnology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 61,
+        "title": "Developmental Biology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      }
+    ],
+    "references": [
+      "https://doi.org/10.1021/nl201684d"
+    ],
+    "has_linked_file": false,
+    "citation": "Liu, Xiao Hua; Zheng, He; Zhong, Li; Huang, Shan; Karki, Khim; Zhang, Li Qiang; et al. (2016). Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation. ACS Publications. Media. https://doi.org/10.1021/nl201684d.s002",
+    "related_materials": [
+      {
+        "id": 31728119,
+        "identifier": "10.1021/nl201684d",
+        "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+        "relation": "IsSupplementTo",
+        "identifier_type": "DOI",
+        "is_linkout": true,
+        "link": "https://doi.org/10.1021/nl201684d"
+      }
+    ],
+    "is_embargoed": false,
+    "embargo_date": null,
+    "embargo_type": null,
+    "embargo_title": "",
+    "embargo_reason": "",
+    "embargo_options": [],
+    "id": 2624776,
+    "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "doi": "10.1021/nl201684d.s002",
+    "handle": "",
+    "url": "https://api.figshare.com/v2/articles/2624776",
+    "published_date": "2011-08-10T00:00:00Z",
+    "thumb": "https://ndownloader.figshare.com/files/4275390/preview/4275390/thumb.png",
+    "defined_type": 2,
+    "defined_type_name": "media",
+    "group_id": 2514,
+    "url_private_api": "https://api.figshare.com/v2/account/articles/2624776",
+    "url_public_api": "https://api.figshare.com/v2/articles/2624776",
+    "url_private_html": "https://figshare.com/account/articles/2624776",
+    "url_public_html": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624776",
+    "timeline": {
+      "posted": "2011-08-10T00:00:00",
+      "firstOnline": "2016-02-23"
+    },
+    "resource_title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "resource_doi": "10.1021/nl201684d"
+  },
+  {
+    "files": [
+      {
+        "id": 4275372,
+        "name": "nl201684d_si_008.mpg",
+        "size": 4812705,
+        "is_link_only": false,
+        "download_url": "https://ndownloader.figshare.com/files/4275372",
+        "supplied_md5": "4a52135131d9249110f4579763f415cd",
+        "computed_md5": "4a52135131d9249110f4579763f415cd",
+        "mimetype": "video/mpeg"
+      }
+    ],
+    "folder_structure": {},
+    "authors": [
+      {
+        "id": 1901479,
+        "full_name": "Xiao Hua Liu",
+        "first_name": "Xiao Hua",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439401,
+        "full_name": "He Zheng",
+        "first_name": "He",
+        "last_name": "Zheng",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 51791,
+        "full_name": "Li Zhong",
+        "first_name": "Li",
+        "last_name": "Zhong",
+        "is_active": false,
+        "url_name": "Li_Zhong",
+        "orcid_id": ""
+      },
+      {
+        "id": 282228,
+        "full_name": "Shan Huang",
+        "first_name": "Shan",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1908541,
+        "full_name": "Khim Karki",
+        "first_name": "Khim",
+        "last_name": "Karki",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177712,
+        "full_name": "Li Qiang Zhang",
+        "first_name": "Li Qiang",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 4829,
+        "full_name": "Yang Liu",
+        "first_name": "Yang",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "Yang_Liu",
+        "orcid_id": ""
+      },
+      {
+        "id": 354129,
+        "full_name": "Akihiro Kushima",
+        "first_name": "Akihiro",
+        "last_name": "Kushima",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177710,
+        "full_name": "Wen Tao Liang",
+        "first_name": "Wen Tao",
+        "last_name": "Liang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2032204,
+        "full_name": "Jiang Wei Wang",
+        "first_name": "Jiang Wei",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1794046,
+        "full_name": "Jeong-Hyun Cho",
+        "first_name": "Jeong-Hyun",
+        "last_name": "Cho",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2104168,
+        "full_name": "Eric Epstein",
+        "first_name": "Eric",
+        "last_name": "Epstein",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1486459,
+        "full_name": "Shadi A. Dayeh",
+        "first_name": "Shadi A.",
+        "last_name": "Dayeh",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1596076,
+        "full_name": "S. Tom Picraux",
+        "first_name": "S. Tom",
+        "last_name": "Picraux",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 460268,
+        "full_name": "Ting Zhu",
+        "first_name": "Ting",
+        "last_name": "Zhu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 354128,
+        "full_name": "Ju Li",
+        "first_name": "Ju",
+        "last_name": "Li",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 165238,
+        "full_name": "John P. Sullivan",
+        "first_name": "John P.",
+        "last_name": "Sullivan",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1669252,
+        "full_name": "John Cumings",
+        "first_name": "John",
+        "last_name": "Cumings",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 312621,
+        "full_name": "Chunsheng Wang",
+        "first_name": "Chunsheng",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1394710,
+        "full_name": "Scott X. Mao",
+        "first_name": "Scott X.",
+        "last_name": "Mao",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177714,
+        "full_name": "Zhi Zhen Ye",
+        "first_name": "Zhi Zhen",
+        "last_name": "Ye",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 360681,
+        "full_name": "Sulin Zhang",
+        "first_name": "Sulin",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439398,
+        "full_name": "Jian Yu Huang",
+        "first_name": "Jian Yu",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      }
+    ],
+    "custom_fields": [],
+    "figshare_url": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624758",
+    "download_disabled": false,
+    "description": "We report direct observation of an unexpected anisotropic swelling of Si nanowires during lithiation against either a solid electrolyte with a lithium counter-electrode or a liquid electrolyte with a LiCoO<sub>2</sub> counter-electrode. Such anisotropic expansion is attributed to the interfacial processes of accommodating large volumetric strains at the lithiation reaction front that depend sensitively on the crystallographic orientation. This anisotropic swelling results in lithiated Si nanowires with a remarkable dumbbell-shaped cross section, which develops due to plastic flow and an ensuing necking instability that is induced by the tensile hoop stress buildup in the lithiated shell. The plasticity-driven morphological instabilities often lead to fracture in lithiated nanowires, now captured in video. These results provide important insight into the battery degradation mechanisms.",
+    "funding": null,
+    "funding_list": [],
+    "version": 1,
+    "status": "public",
+    "size": 4812705,
+    "created_date": "2016-02-23T02:54:30Z",
+    "modified_date": "2023-07-29T12:52:14Z",
+    "is_public": true,
+    "is_confidential": false,
+    "is_metadata_record": false,
+    "confidential_reason": "",
+    "metadata_reason": "",
+    "license": {
+      "value": 10,
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "tags": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "keywords": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "title": "Biophysics",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 915,
+        "title": "Physical Sciences not elsewhere classified",
+        "parent_id": 6,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 15,
+        "title": "Neuroscience",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 21,
+        "title": "Biotechnology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 61,
+        "title": "Developmental Biology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      }
+    ],
+    "references": [
+      "https://doi.org/10.1021/nl201684d"
+    ],
+    "has_linked_file": false,
+    "citation": "Liu, Xiao Hua; Zheng, He; Zhong, Li; Huang, Shan; Karki, Khim; Zhang, Li Qiang; et al. (2016). Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation. ACS Publications. Media. https://doi.org/10.1021/nl201684d.s008",
+    "related_materials": [
+      {
+        "id": 114390960,
+        "identifier": "10.1021/nl201684d",
+        "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+        "relation": "IsSupplementTo",
+        "identifier_type": "DOI",
+        "is_linkout": true,
+        "link": "https://doi.org/10.1021/nl201684d"
+      }
+    ],
+    "is_embargoed": false,
+    "embargo_date": null,
+    "embargo_type": null,
+    "embargo_title": "",
+    "embargo_reason": "",
+    "embargo_options": [],
+    "id": 2624758,
+    "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "doi": "10.1021/nl201684d.s008",
+    "handle": "",
+    "url": "https://api.figshare.com/v2/articles/2624758",
+    "published_date": "2011-08-10T00:00:00Z",
+    "thumb": "https://s3-eu-west-1.amazonaws.com/ppreviews-acs-4898564/4275372/thumb.png",
+    "defined_type": 2,
+    "defined_type_name": "media",
+    "group_id": 2514,
+    "url_private_api": "https://api.figshare.com/v2/account/articles/2624758",
+    "url_public_api": "https://api.figshare.com/v2/articles/2624758",
+    "url_private_html": "https://figshare.com/account/articles/2624758",
+    "url_public_html": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624758",
+    "timeline": {
+      "posted": "2011-08-10T00:00:00",
+      "firstOnline": "2016-02-23"
+    },
+    "resource_title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "resource_doi": "10.1021/nl201684d"
+  },
+  {
+    "files": [
+      {
+        "id": 4275360,
+        "name": "nl201684d_si_007.mpg",
+        "size": 7020544,
+        "is_link_only": false,
+        "download_url": "https://ndownloader.figshare.com/files/4275360",
+        "supplied_md5": "0edeb3417cb48d60f0feea7904bbd55e",
+        "computed_md5": "0edeb3417cb48d60f0feea7904bbd55e",
+        "mimetype": "video/mpeg"
+      }
+    ],
+    "folder_structure": {},
+    "authors": [
+      {
+        "id": 1901479,
+        "full_name": "Xiao Hua Liu",
+        "first_name": "Xiao Hua",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439401,
+        "full_name": "He Zheng",
+        "first_name": "He",
+        "last_name": "Zheng",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 51791,
+        "full_name": "Li Zhong",
+        "first_name": "Li",
+        "last_name": "Zhong",
+        "is_active": false,
+        "url_name": "Li_Zhong",
+        "orcid_id": ""
+      },
+      {
+        "id": 282228,
+        "full_name": "Shan Huang",
+        "first_name": "Shan",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1908541,
+        "full_name": "Khim Karki",
+        "first_name": "Khim",
+        "last_name": "Karki",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177712,
+        "full_name": "Li Qiang Zhang",
+        "first_name": "Li Qiang",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 4829,
+        "full_name": "Yang Liu",
+        "first_name": "Yang",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "Yang_Liu",
+        "orcid_id": ""
+      },
+      {
+        "id": 354129,
+        "full_name": "Akihiro Kushima",
+        "first_name": "Akihiro",
+        "last_name": "Kushima",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177710,
+        "full_name": "Wen Tao Liang",
+        "first_name": "Wen Tao",
+        "last_name": "Liang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2032204,
+        "full_name": "Jiang Wei Wang",
+        "first_name": "Jiang Wei",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1794046,
+        "full_name": "Jeong-Hyun Cho",
+        "first_name": "Jeong-Hyun",
+        "last_name": "Cho",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2104168,
+        "full_name": "Eric Epstein",
+        "first_name": "Eric",
+        "last_name": "Epstein",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1486459,
+        "full_name": "Shadi A. Dayeh",
+        "first_name": "Shadi A.",
+        "last_name": "Dayeh",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1596076,
+        "full_name": "S. Tom Picraux",
+        "first_name": "S. Tom",
+        "last_name": "Picraux",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 460268,
+        "full_name": "Ting Zhu",
+        "first_name": "Ting",
+        "last_name": "Zhu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 354128,
+        "full_name": "Ju Li",
+        "first_name": "Ju",
+        "last_name": "Li",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 165238,
+        "full_name": "John P. Sullivan",
+        "first_name": "John P.",
+        "last_name": "Sullivan",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1669252,
+        "full_name": "John Cumings",
+        "first_name": "John",
+        "last_name": "Cumings",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 312621,
+        "full_name": "Chunsheng Wang",
+        "first_name": "Chunsheng",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1394710,
+        "full_name": "Scott X. Mao",
+        "first_name": "Scott X.",
+        "last_name": "Mao",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177714,
+        "full_name": "Zhi Zhen Ye",
+        "first_name": "Zhi Zhen",
+        "last_name": "Ye",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 360681,
+        "full_name": "Sulin Zhang",
+        "first_name": "Sulin",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439398,
+        "full_name": "Jian Yu Huang",
+        "first_name": "Jian Yu",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      }
+    ],
+    "custom_fields": [],
+    "figshare_url": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624748",
+    "download_disabled": false,
+    "description": "We report direct observation of an unexpected anisotropic swelling of Si nanowires during lithiation against either a solid electrolyte with a lithium counter-electrode or a liquid electrolyte with a LiCoO<sub>2</sub> counter-electrode. Such anisotropic expansion is attributed to the interfacial processes of accommodating large volumetric strains at the lithiation reaction front that depend sensitively on the crystallographic orientation. This anisotropic swelling results in lithiated Si nanowires with a remarkable dumbbell-shaped cross section, which develops due to plastic flow and an ensuing necking instability that is induced by the tensile hoop stress buildup in the lithiated shell. The plasticity-driven morphological instabilities often lead to fracture in lithiated nanowires, now captured in video. These results provide important insight into the battery degradation mechanisms.",
+    "funding": null,
+    "funding_list": [],
+    "version": 1,
+    "status": "public",
+    "size": 7020544,
+    "created_date": "2016-02-23T02:54:18Z",
+    "modified_date": "2023-06-21T14:36:32Z",
+    "is_public": true,
+    "is_confidential": false,
+    "is_metadata_record": false,
+    "confidential_reason": "",
+    "metadata_reason": "",
+    "license": {
+      "value": 10,
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "tags": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "keywords": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "title": "Biophysics",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 915,
+        "title": "Physical Sciences not elsewhere classified",
+        "parent_id": 6,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 15,
+        "title": "Neuroscience",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 21,
+        "title": "Biotechnology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 61,
+        "title": "Developmental Biology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      }
+    ],
+    "references": [
+      "https://doi.org/10.1021/nl201684d"
+    ],
+    "has_linked_file": false,
+    "citation": "Liu, Xiao Hua; Zheng, He; Zhong, Li; Huang, Shan; Karki, Khim; Zhang, Li Qiang; et al. (2016). Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation. ACS Publications. Media. https://doi.org/10.1021/nl201684d.s007",
+    "related_materials": [
+      {
+        "id": 101965227,
+        "identifier": "10.1021/nl201684d",
+        "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+        "relation": "IsSupplementTo",
+        "identifier_type": "DOI",
+        "is_linkout": true,
+        "link": "https://doi.org/10.1021/nl201684d"
+      }
+    ],
+    "is_embargoed": false,
+    "embargo_date": null,
+    "embargo_type": null,
+    "embargo_title": "",
+    "embargo_reason": "",
+    "embargo_options": [],
+    "id": 2624748,
+    "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "doi": "10.1021/nl201684d.s007",
+    "handle": "",
+    "url": "https://api.figshare.com/v2/articles/2624748",
+    "published_date": "2011-08-10T00:00:00Z",
+    "thumb": "https://ndownloader.figshare.com/files/4275360/preview/4275360/thumb.png",
+    "defined_type": 2,
+    "defined_type_name": "media",
+    "group_id": 2514,
+    "url_private_api": "https://api.figshare.com/v2/account/articles/2624748",
+    "url_public_api": "https://api.figshare.com/v2/articles/2624748",
+    "url_private_html": "https://figshare.com/account/articles/2624748",
+    "url_public_html": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624748",
+    "timeline": {
+      "posted": "2011-08-10T00:00:00",
+      "firstOnline": "2016-02-23"
+    },
+    "resource_title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "resource_doi": "10.1021/nl201684d"
+  },
+  {
+    "files": [
+      {
+        "id": 4275348,
+        "name": "nl201684d_si_003.mpg",
+        "size": 12097536,
+        "is_link_only": false,
+        "download_url": "https://ndownloader.figshare.com/files/4275348",
+        "supplied_md5": "2f7c67398b869a0ae682db4179f0c256",
+        "computed_md5": "2f7c67398b869a0ae682db4179f0c256",
+        "mimetype": "video/mpeg"
+      }
+    ],
+    "folder_structure": {},
+    "authors": [
+      {
+        "id": 1901479,
+        "full_name": "Xiao Hua Liu",
+        "first_name": "Xiao Hua",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439401,
+        "full_name": "He Zheng",
+        "first_name": "He",
+        "last_name": "Zheng",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 51791,
+        "full_name": "Li Zhong",
+        "first_name": "Li",
+        "last_name": "Zhong",
+        "is_active": false,
+        "url_name": "Li_Zhong",
+        "orcid_id": ""
+      },
+      {
+        "id": 282228,
+        "full_name": "Shan Huang",
+        "first_name": "Shan",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1908541,
+        "full_name": "Khim Karki",
+        "first_name": "Khim",
+        "last_name": "Karki",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177712,
+        "full_name": "Li Qiang Zhang",
+        "first_name": "Li Qiang",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 4829,
+        "full_name": "Yang Liu",
+        "first_name": "Yang",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "Yang_Liu",
+        "orcid_id": ""
+      },
+      {
+        "id": 354129,
+        "full_name": "Akihiro Kushima",
+        "first_name": "Akihiro",
+        "last_name": "Kushima",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177710,
+        "full_name": "Wen Tao Liang",
+        "first_name": "Wen Tao",
+        "last_name": "Liang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2032204,
+        "full_name": "Jiang Wei Wang",
+        "first_name": "Jiang Wei",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1794046,
+        "full_name": "Jeong-Hyun Cho",
+        "first_name": "Jeong-Hyun",
+        "last_name": "Cho",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2104168,
+        "full_name": "Eric Epstein",
+        "first_name": "Eric",
+        "last_name": "Epstein",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1486459,
+        "full_name": "Shadi A. Dayeh",
+        "first_name": "Shadi A.",
+        "last_name": "Dayeh",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1596076,
+        "full_name": "S. Tom Picraux",
+        "first_name": "S. Tom",
+        "last_name": "Picraux",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 460268,
+        "full_name": "Ting Zhu",
+        "first_name": "Ting",
+        "last_name": "Zhu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 354128,
+        "full_name": "Ju Li",
+        "first_name": "Ju",
+        "last_name": "Li",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 165238,
+        "full_name": "John P. Sullivan",
+        "first_name": "John P.",
+        "last_name": "Sullivan",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1669252,
+        "full_name": "John Cumings",
+        "first_name": "John",
+        "last_name": "Cumings",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 312621,
+        "full_name": "Chunsheng Wang",
+        "first_name": "Chunsheng",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1394710,
+        "full_name": "Scott X. Mao",
+        "first_name": "Scott X.",
+        "last_name": "Mao",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177714,
+        "full_name": "Zhi Zhen Ye",
+        "first_name": "Zhi Zhen",
+        "last_name": "Ye",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 360681,
+        "full_name": "Sulin Zhang",
+        "first_name": "Sulin",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439398,
+        "full_name": "Jian Yu Huang",
+        "first_name": "Jian Yu",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      }
+    ],
+    "custom_fields": [],
+    "figshare_url": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624734",
+    "download_disabled": false,
+    "description": "We report direct observation of an unexpected anisotropic swelling of Si nanowires during lithiation against either a solid electrolyte with a lithium counter-electrode or a liquid electrolyte with a LiCoO<sub>2</sub> counter-electrode. Such anisotropic expansion is attributed to the interfacial processes of accommodating large volumetric strains at the lithiation reaction front that depend sensitively on the crystallographic orientation. This anisotropic swelling results in lithiated Si nanowires with a remarkable dumbbell-shaped cross section, which develops due to plastic flow and an ensuing necking instability that is induced by the tensile hoop stress buildup in the lithiated shell. The plasticity-driven morphological instabilities often lead to fracture in lithiated nanowires, now captured in video. These results provide important insight into the battery degradation mechanisms.",
+    "funding": null,
+    "funding_list": [],
+    "version": 1,
+    "status": "public",
+    "size": 12097536,
+    "created_date": "2016-02-23T02:54:10Z",
+    "modified_date": "2023-06-02T14:56:31Z",
+    "is_public": true,
+    "is_confidential": false,
+    "is_metadata_record": false,
+    "confidential_reason": "",
+    "metadata_reason": "",
+    "license": {
+      "value": 10,
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "tags": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "keywords": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "title": "Biophysics",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 915,
+        "title": "Physical Sciences not elsewhere classified",
+        "parent_id": 6,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 15,
+        "title": "Neuroscience",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 21,
+        "title": "Biotechnology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 61,
+        "title": "Developmental Biology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      }
+    ],
+    "references": [
+      "https://doi.org/10.1021/nl201684d"
+    ],
+    "has_linked_file": false,
+    "citation": "Liu, Xiao Hua; Zheng, He; Zhong, Li; Huang, Shan; Karki, Khim; Zhang, Li Qiang; et al. (2016). Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation. ACS Publications. Media. https://doi.org/10.1021/nl201684d.s003",
+    "related_materials": [
+      {
+        "id": 31727804,
+        "identifier": "10.1021/nl201684d",
+        "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+        "relation": "IsSupplementTo",
+        "identifier_type": "DOI",
+        "is_linkout": true,
+        "link": "https://doi.org/10.1021/nl201684d"
+      }
+    ],
+    "is_embargoed": false,
+    "embargo_date": null,
+    "embargo_type": null,
+    "embargo_title": "",
+    "embargo_reason": "",
+    "embargo_options": [],
+    "id": 2624734,
+    "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "doi": "10.1021/nl201684d.s003",
+    "handle": "",
+    "url": "https://api.figshare.com/v2/articles/2624734",
+    "published_date": "2011-08-10T00:00:00Z",
+    "thumb": "https://ndownloader.figshare.com/files/4275348/preview/4275348/thumb.png",
+    "defined_type": 2,
+    "defined_type_name": "media",
+    "group_id": 2514,
+    "url_private_api": "https://api.figshare.com/v2/account/articles/2624734",
+    "url_public_api": "https://api.figshare.com/v2/articles/2624734",
+    "url_private_html": "https://figshare.com/account/articles/2624734",
+    "url_public_html": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624734",
+    "timeline": {
+      "posted": "2011-08-10T00:00:00",
+      "firstOnline": "2016-02-23"
+    },
+    "resource_title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "resource_doi": "10.1021/nl201684d"
+  },
+  {
+    "files": [
+      {
+        "id": 4275338,
+        "name": "nl201684d_si_006.mpg",
+        "size": 5924864,
+        "is_link_only": false,
+        "download_url": "https://ndownloader.figshare.com/files/4275338",
+        "supplied_md5": "a99ccb8bfc6ecbdb0a653002b94d1589",
+        "computed_md5": "a99ccb8bfc6ecbdb0a653002b94d1589",
+        "mimetype": "video/mpeg"
+      }
+    ],
+    "folder_structure": {},
+    "authors": [
+      {
+        "id": 1901479,
+        "full_name": "Xiao Hua Liu",
+        "first_name": "Xiao Hua",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439401,
+        "full_name": "He Zheng",
+        "first_name": "He",
+        "last_name": "Zheng",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 51791,
+        "full_name": "Li Zhong",
+        "first_name": "Li",
+        "last_name": "Zhong",
+        "is_active": false,
+        "url_name": "Li_Zhong",
+        "orcid_id": ""
+      },
+      {
+        "id": 282228,
+        "full_name": "Shan Huang",
+        "first_name": "Shan",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1908541,
+        "full_name": "Khim Karki",
+        "first_name": "Khim",
+        "last_name": "Karki",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177712,
+        "full_name": "Li Qiang Zhang",
+        "first_name": "Li Qiang",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 4829,
+        "full_name": "Yang Liu",
+        "first_name": "Yang",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "Yang_Liu",
+        "orcid_id": ""
+      },
+      {
+        "id": 354129,
+        "full_name": "Akihiro Kushima",
+        "first_name": "Akihiro",
+        "last_name": "Kushima",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177710,
+        "full_name": "Wen Tao Liang",
+        "first_name": "Wen Tao",
+        "last_name": "Liang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2032204,
+        "full_name": "Jiang Wei Wang",
+        "first_name": "Jiang Wei",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1794046,
+        "full_name": "Jeong-Hyun Cho",
+        "first_name": "Jeong-Hyun",
+        "last_name": "Cho",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2104168,
+        "full_name": "Eric Epstein",
+        "first_name": "Eric",
+        "last_name": "Epstein",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1486459,
+        "full_name": "Shadi A. Dayeh",
+        "first_name": "Shadi A.",
+        "last_name": "Dayeh",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1596076,
+        "full_name": "S. Tom Picraux",
+        "first_name": "S. Tom",
+        "last_name": "Picraux",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 460268,
+        "full_name": "Ting Zhu",
+        "first_name": "Ting",
+        "last_name": "Zhu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 354128,
+        "full_name": "Ju Li",
+        "first_name": "Ju",
+        "last_name": "Li",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 165238,
+        "full_name": "John P. Sullivan",
+        "first_name": "John P.",
+        "last_name": "Sullivan",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1669252,
+        "full_name": "John Cumings",
+        "first_name": "John",
+        "last_name": "Cumings",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 312621,
+        "full_name": "Chunsheng Wang",
+        "first_name": "Chunsheng",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1394710,
+        "full_name": "Scott X. Mao",
+        "first_name": "Scott X.",
+        "last_name": "Mao",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177714,
+        "full_name": "Zhi Zhen Ye",
+        "first_name": "Zhi Zhen",
+        "last_name": "Ye",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 360681,
+        "full_name": "Sulin Zhang",
+        "first_name": "Sulin",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439398,
+        "full_name": "Jian Yu Huang",
+        "first_name": "Jian Yu",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      }
+    ],
+    "custom_fields": [],
+    "figshare_url": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624724",
+    "download_disabled": false,
+    "description": "We report direct observation of an unexpected anisotropic swelling of Si nanowires during lithiation against either a solid electrolyte with a lithium counter-electrode or a liquid electrolyte with a LiCoO<sub>2</sub> counter-electrode. Such anisotropic expansion is attributed to the interfacial processes of accommodating large volumetric strains at the lithiation reaction front that depend sensitively on the crystallographic orientation. This anisotropic swelling results in lithiated Si nanowires with a remarkable dumbbell-shaped cross section, which develops due to plastic flow and an ensuing necking instability that is induced by the tensile hoop stress buildup in the lithiated shell. The plasticity-driven morphological instabilities often lead to fracture in lithiated nanowires, now captured in video. These results provide important insight into the battery degradation mechanisms.",
+    "funding": null,
+    "funding_list": [],
+    "version": 1,
+    "status": "public",
+    "size": 5924864,
+    "created_date": "2016-02-23T02:54:03Z",
+    "modified_date": "2023-06-02T14:56:31Z",
+    "is_public": true,
+    "is_confidential": false,
+    "is_metadata_record": false,
+    "confidential_reason": "",
+    "metadata_reason": "",
+    "license": {
+      "value": 10,
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "tags": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "keywords": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "title": "Biophysics",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 915,
+        "title": "Physical Sciences not elsewhere classified",
+        "parent_id": 6,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 15,
+        "title": "Neuroscience",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 21,
+        "title": "Biotechnology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 61,
+        "title": "Developmental Biology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      }
+    ],
+    "references": [
+      "https://doi.org/10.1021/nl201684d"
+    ],
+    "has_linked_file": false,
+    "citation": "Liu, Xiao Hua; Zheng, He; Zhong, Li; Huang, Shan; Karki, Khim; Zhang, Li Qiang; et al. (2016). Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation. ACS Publications. Media. https://doi.org/10.1021/nl201684d.s006",
+    "related_materials": [
+      {
+        "id": 31727831,
+        "identifier": "10.1021/nl201684d",
+        "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+        "relation": "IsSupplementTo",
+        "identifier_type": "DOI",
+        "is_linkout": true,
+        "link": "https://doi.org/10.1021/nl201684d"
+      }
+    ],
+    "is_embargoed": false,
+    "embargo_date": null,
+    "embargo_type": null,
+    "embargo_title": "",
+    "embargo_reason": "",
+    "embargo_options": [],
+    "id": 2624724,
+    "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "doi": "10.1021/nl201684d.s006",
+    "handle": "",
+    "url": "https://api.figshare.com/v2/articles/2624724",
+    "published_date": "2011-08-10T00:00:00Z",
+    "thumb": "https://ndownloader.figshare.com/files/4275338/preview/4275338/thumb.png",
+    "defined_type": 2,
+    "defined_type_name": "media",
+    "group_id": 2514,
+    "url_private_api": "https://api.figshare.com/v2/account/articles/2624724",
+    "url_public_api": "https://api.figshare.com/v2/articles/2624724",
+    "url_private_html": "https://figshare.com/account/articles/2624724",
+    "url_public_html": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624724",
+    "timeline": {
+      "posted": "2011-08-10T00:00:00",
+      "firstOnline": "2016-02-23"
+    },
+    "resource_title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "resource_doi": "10.1021/nl201684d"
+  },
+  {
+    "files": [
+      {
+        "id": 4275324,
+        "name": "nl201684d_si_010.mpg",
+        "size": 2011136,
+        "is_link_only": false,
+        "download_url": "https://ndownloader.figshare.com/files/4275324",
+        "supplied_md5": "048fd2488aedcee72caf032dceccbde6",
+        "computed_md5": "048fd2488aedcee72caf032dceccbde6",
+        "mimetype": "video/mpeg"
+      }
+    ],
+    "folder_structure": {},
+    "authors": [
+      {
+        "id": 1901479,
+        "full_name": "Xiao Hua Liu",
+        "first_name": "Xiao Hua",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439401,
+        "full_name": "He Zheng",
+        "first_name": "He",
+        "last_name": "Zheng",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 51791,
+        "full_name": "Li Zhong",
+        "first_name": "Li",
+        "last_name": "Zhong",
+        "is_active": false,
+        "url_name": "Li_Zhong",
+        "orcid_id": ""
+      },
+      {
+        "id": 282228,
+        "full_name": "Shan Huang",
+        "first_name": "Shan",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1908541,
+        "full_name": "Khim Karki",
+        "first_name": "Khim",
+        "last_name": "Karki",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177712,
+        "full_name": "Li Qiang Zhang",
+        "first_name": "Li Qiang",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 4829,
+        "full_name": "Yang Liu",
+        "first_name": "Yang",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "Yang_Liu",
+        "orcid_id": ""
+      },
+      {
+        "id": 354129,
+        "full_name": "Akihiro Kushima",
+        "first_name": "Akihiro",
+        "last_name": "Kushima",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177710,
+        "full_name": "Wen Tao Liang",
+        "first_name": "Wen Tao",
+        "last_name": "Liang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2032204,
+        "full_name": "Jiang Wei Wang",
+        "first_name": "Jiang Wei",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1794046,
+        "full_name": "Jeong-Hyun Cho",
+        "first_name": "Jeong-Hyun",
+        "last_name": "Cho",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2104168,
+        "full_name": "Eric Epstein",
+        "first_name": "Eric",
+        "last_name": "Epstein",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1486459,
+        "full_name": "Shadi A. Dayeh",
+        "first_name": "Shadi A.",
+        "last_name": "Dayeh",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1596076,
+        "full_name": "S. Tom Picraux",
+        "first_name": "S. Tom",
+        "last_name": "Picraux",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 460268,
+        "full_name": "Ting Zhu",
+        "first_name": "Ting",
+        "last_name": "Zhu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 354128,
+        "full_name": "Ju Li",
+        "first_name": "Ju",
+        "last_name": "Li",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 165238,
+        "full_name": "John P. Sullivan",
+        "first_name": "John P.",
+        "last_name": "Sullivan",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1669252,
+        "full_name": "John Cumings",
+        "first_name": "John",
+        "last_name": "Cumings",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 312621,
+        "full_name": "Chunsheng Wang",
+        "first_name": "Chunsheng",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1394710,
+        "full_name": "Scott X. Mao",
+        "first_name": "Scott X.",
+        "last_name": "Mao",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177714,
+        "full_name": "Zhi Zhen Ye",
+        "first_name": "Zhi Zhen",
+        "last_name": "Ye",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 360681,
+        "full_name": "Sulin Zhang",
+        "first_name": "Sulin",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439398,
+        "full_name": "Jian Yu Huang",
+        "first_name": "Jian Yu",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      }
+    ],
+    "custom_fields": [],
+    "figshare_url": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624710",
+    "download_disabled": false,
+    "description": "We report direct observation of an unexpected anisotropic swelling of Si nanowires during lithiation against either a solid electrolyte with a lithium counter-electrode or a liquid electrolyte with a LiCoO<sub>2</sub> counter-electrode. Such anisotropic expansion is attributed to the interfacial processes of accommodating large volumetric strains at the lithiation reaction front that depend sensitively on the crystallographic orientation. This anisotropic swelling results in lithiated Si nanowires with a remarkable dumbbell-shaped cross section, which develops due to plastic flow and an ensuing necking instability that is induced by the tensile hoop stress buildup in the lithiated shell. The plasticity-driven morphological instabilities often lead to fracture in lithiated nanowires, now captured in video. These results provide important insight into the battery degradation mechanisms.",
+    "funding": null,
+    "funding_list": [],
+    "version": 1,
+    "status": "public",
+    "size": 2011136,
+    "created_date": "2016-02-23T02:53:55Z",
+    "modified_date": "2023-07-28T09:46:01Z",
+    "is_public": true,
+    "is_confidential": false,
+    "is_metadata_record": false,
+    "confidential_reason": "",
+    "metadata_reason": "",
+    "license": {
+      "value": 10,
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "tags": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "keywords": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "title": "Biophysics",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 915,
+        "title": "Physical Sciences not elsewhere classified",
+        "parent_id": 6,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 15,
+        "title": "Neuroscience",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 21,
+        "title": "Biotechnology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 61,
+        "title": "Developmental Biology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      }
+    ],
+    "references": [
+      "https://doi.org/10.1021/nl201684d"
+    ],
+    "has_linked_file": false,
+    "citation": "Liu, Xiao Hua; Zheng, He; Zhong, Li; Huang, Shan; Karki, Khim; Zhang, Li Qiang; et al. (2016). Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation. ACS Publications. Media. https://doi.org/10.1021/nl201684d.s010",
+    "related_materials": [
+      {
+        "id": 114219420,
+        "identifier": "10.1021/nl201684d",
+        "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+        "relation": "IsSupplementTo",
+        "identifier_type": "DOI",
+        "is_linkout": true,
+        "link": "https://doi.org/10.1021/nl201684d"
+      }
+    ],
+    "is_embargoed": false,
+    "embargo_date": null,
+    "embargo_type": null,
+    "embargo_title": "",
+    "embargo_reason": "",
+    "embargo_options": [],
+    "id": 2624710,
+    "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "doi": "10.1021/nl201684d.s010",
+    "handle": "",
+    "url": "https://api.figshare.com/v2/articles/2624710",
+    "published_date": "2011-08-10T00:00:00Z",
+    "thumb": "https://ndownloader.figshare.com/files/4275324/preview/4275324/thumb.png",
+    "defined_type": 2,
+    "defined_type_name": "media",
+    "group_id": 2514,
+    "url_private_api": "https://api.figshare.com/v2/account/articles/2624710",
+    "url_public_api": "https://api.figshare.com/v2/articles/2624710",
+    "url_private_html": "https://figshare.com/account/articles/2624710",
+    "url_public_html": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624710",
+    "timeline": {
+      "posted": "2011-08-10T00:00:00",
+      "firstOnline": "2016-02-23"
+    },
+    "resource_title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "resource_doi": "10.1021/nl201684d"
+  },
+  {
+    "files": [
+      {
+        "id": 4275312,
+        "name": "nl201684d_si_001.pdf",
+        "size": 3137019,
+        "is_link_only": false,
+        "download_url": "https://ndownloader.figshare.com/files/4275312",
+        "supplied_md5": "06c320ccf6e909a72318a2a924601f2f",
+        "computed_md5": "06c320ccf6e909a72318a2a924601f2f",
+        "mimetype": "application/pdf"
+      }
+    ],
+    "folder_structure": {},
+    "authors": [
+      {
+        "id": 1901479,
+        "full_name": "Xiao Hua Liu",
+        "first_name": "Xiao Hua",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439401,
+        "full_name": "He Zheng",
+        "first_name": "He",
+        "last_name": "Zheng",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 51791,
+        "full_name": "Li Zhong",
+        "first_name": "Li",
+        "last_name": "Zhong",
+        "is_active": false,
+        "url_name": "Li_Zhong",
+        "orcid_id": ""
+      },
+      {
+        "id": 282228,
+        "full_name": "Shan Huang",
+        "first_name": "Shan",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1908541,
+        "full_name": "Khim Karki",
+        "first_name": "Khim",
+        "last_name": "Karki",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177712,
+        "full_name": "Li Qiang Zhang",
+        "first_name": "Li Qiang",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 4829,
+        "full_name": "Yang Liu",
+        "first_name": "Yang",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "Yang_Liu",
+        "orcid_id": ""
+      },
+      {
+        "id": 354129,
+        "full_name": "Akihiro Kushima",
+        "first_name": "Akihiro",
+        "last_name": "Kushima",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177710,
+        "full_name": "Wen Tao Liang",
+        "first_name": "Wen Tao",
+        "last_name": "Liang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2032204,
+        "full_name": "Jiang Wei Wang",
+        "first_name": "Jiang Wei",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1794046,
+        "full_name": "Jeong-Hyun Cho",
+        "first_name": "Jeong-Hyun",
+        "last_name": "Cho",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2104168,
+        "full_name": "Eric Epstein",
+        "first_name": "Eric",
+        "last_name": "Epstein",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1486459,
+        "full_name": "Shadi A. Dayeh",
+        "first_name": "Shadi A.",
+        "last_name": "Dayeh",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1596076,
+        "full_name": "S. Tom Picraux",
+        "first_name": "S. Tom",
+        "last_name": "Picraux",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 460268,
+        "full_name": "Ting Zhu",
+        "first_name": "Ting",
+        "last_name": "Zhu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 354128,
+        "full_name": "Ju Li",
+        "first_name": "Ju",
+        "last_name": "Li",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 165238,
+        "full_name": "John P. Sullivan",
+        "first_name": "John P.",
+        "last_name": "Sullivan",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1669252,
+        "full_name": "John Cumings",
+        "first_name": "John",
+        "last_name": "Cumings",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 312621,
+        "full_name": "Chunsheng Wang",
+        "first_name": "Chunsheng",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1394710,
+        "full_name": "Scott X. Mao",
+        "first_name": "Scott X.",
+        "last_name": "Mao",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177714,
+        "full_name": "Zhi Zhen Ye",
+        "first_name": "Zhi Zhen",
+        "last_name": "Ye",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 360681,
+        "full_name": "Sulin Zhang",
+        "first_name": "Sulin",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439398,
+        "full_name": "Jian Yu Huang",
+        "first_name": "Jian Yu",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      }
+    ],
+    "custom_fields": [],
+    "figshare_url": "https://acs.figshare.com/articles/journal_contribution/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624698",
+    "download_disabled": false,
+    "description": "We report direct observation of an unexpected anisotropic swelling of Si nanowires during lithiation against either a solid electrolyte with a lithium counter-electrode or a liquid electrolyte with a LiCoO<sub>2</sub> counter-electrode. Such anisotropic expansion is attributed to the interfacial processes of accommodating large volumetric strains at the lithiation reaction front that depend sensitively on the crystallographic orientation. This anisotropic swelling results in lithiated Si nanowires with a remarkable dumbbell-shaped cross section, which develops due to plastic flow and an ensuing necking instability that is induced by the tensile hoop stress buildup in the lithiated shell. The plasticity-driven morphological instabilities often lead to fracture in lithiated nanowires, now captured in video. These results provide important insight into the battery degradation mechanisms.",
+    "funding": null,
+    "funding_list": [],
+    "version": 1,
+    "status": "public",
+    "size": 3137019,
+    "created_date": "2016-02-23T02:53:45Z",
+    "modified_date": "2023-08-02T10:16:21Z",
+    "is_public": true,
+    "is_confidential": false,
+    "is_metadata_record": false,
+    "confidential_reason": "",
+    "metadata_reason": "",
+    "license": {
+      "value": 10,
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "tags": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "keywords": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "title": "Biophysics",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 915,
+        "title": "Physical Sciences not elsewhere classified",
+        "parent_id": 6,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 15,
+        "title": "Neuroscience",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 21,
+        "title": "Biotechnology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 61,
+        "title": "Developmental Biology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      }
+    ],
+    "references": [
+      "https://doi.org/10.1021/nl201684d"
+    ],
+    "has_linked_file": false,
+    "citation": "Liu, Xiao Hua; Zheng, He; Zhong, Li; Huang, Shan; Karki, Khim; Zhang, Li Qiang; et al. (2016). Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation. ACS Publications. Journal contribution. https://doi.org/10.1021/nl201684d.s001",
+    "related_materials": [
+      {
+        "id": 115073397,
+        "identifier": "10.1021/nl201684d",
+        "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+        "relation": "IsSupplementTo",
+        "identifier_type": "DOI",
+        "is_linkout": true,
+        "link": "https://doi.org/10.1021/nl201684d"
+      }
+    ],
+    "is_embargoed": false,
+    "embargo_date": null,
+    "embargo_type": null,
+    "embargo_title": "",
+    "embargo_reason": "",
+    "embargo_options": [],
+    "id": 2624698,
+    "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "doi": "10.1021/nl201684d.s001",
+    "handle": "",
+    "url": "https://api.figshare.com/v2/articles/2624698",
+    "published_date": "2011-08-10T00:00:00Z",
+    "thumb": "https://s3-eu-west-1.amazonaws.com/ppreviews-acs-4898564/4275312/thumb.png",
+    "defined_type": 6,
+    "defined_type_name": "journal contribution",
+    "group_id": 2514,
+    "url_private_api": "https://api.figshare.com/v2/account/articles/2624698",
+    "url_public_api": "https://api.figshare.com/v2/articles/2624698",
+    "url_private_html": "https://figshare.com/account/articles/2624698",
+    "url_public_html": "https://acs.figshare.com/articles/journal_contribution/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624698",
+    "timeline": {
+      "posted": "2011-08-10T00:00:00",
+      "firstOnline": "2016-02-23"
+    },
+    "resource_title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "resource_doi": "10.1021/nl201684d"
+  },
+  {
+    "files": [
+      {
+        "id": 4275298,
+        "name": "nl201684d_si_005.mpg",
+        "size": 8900608,
+        "is_link_only": false,
+        "download_url": "https://ndownloader.figshare.com/files/4275298",
+        "supplied_md5": "f270f6fedbc0cd7a3e7494f073d9fed8",
+        "computed_md5": "f270f6fedbc0cd7a3e7494f073d9fed8",
+        "mimetype": "video/mpeg"
+      }
+    ],
+    "folder_structure": {},
+    "authors": [
+      {
+        "id": 1901479,
+        "full_name": "Xiao Hua Liu",
+        "first_name": "Xiao Hua",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439401,
+        "full_name": "He Zheng",
+        "first_name": "He",
+        "last_name": "Zheng",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 51791,
+        "full_name": "Li Zhong",
+        "first_name": "Li",
+        "last_name": "Zhong",
+        "is_active": false,
+        "url_name": "Li_Zhong",
+        "orcid_id": ""
+      },
+      {
+        "id": 282228,
+        "full_name": "Shan Huang",
+        "first_name": "Shan",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1908541,
+        "full_name": "Khim Karki",
+        "first_name": "Khim",
+        "last_name": "Karki",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177712,
+        "full_name": "Li Qiang Zhang",
+        "first_name": "Li Qiang",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 4829,
+        "full_name": "Yang Liu",
+        "first_name": "Yang",
+        "last_name": "Liu",
+        "is_active": false,
+        "url_name": "Yang_Liu",
+        "orcid_id": ""
+      },
+      {
+        "id": 354129,
+        "full_name": "Akihiro Kushima",
+        "first_name": "Akihiro",
+        "last_name": "Kushima",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177710,
+        "full_name": "Wen Tao Liang",
+        "first_name": "Wen Tao",
+        "last_name": "Liang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2032204,
+        "full_name": "Jiang Wei Wang",
+        "first_name": "Jiang Wei",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1794046,
+        "full_name": "Jeong-Hyun Cho",
+        "first_name": "Jeong-Hyun",
+        "last_name": "Cho",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2104168,
+        "full_name": "Eric Epstein",
+        "first_name": "Eric",
+        "last_name": "Epstein",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1486459,
+        "full_name": "Shadi A. Dayeh",
+        "first_name": "Shadi A.",
+        "last_name": "Dayeh",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1596076,
+        "full_name": "S. Tom Picraux",
+        "first_name": "S. Tom",
+        "last_name": "Picraux",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 460268,
+        "full_name": "Ting Zhu",
+        "first_name": "Ting",
+        "last_name": "Zhu",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 354128,
+        "full_name": "Ju Li",
+        "first_name": "Ju",
+        "last_name": "Li",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 165238,
+        "full_name": "John P. Sullivan",
+        "first_name": "John P.",
+        "last_name": "Sullivan",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1669252,
+        "full_name": "John Cumings",
+        "first_name": "John",
+        "last_name": "Cumings",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 312621,
+        "full_name": "Chunsheng Wang",
+        "first_name": "Chunsheng",
+        "last_name": "Wang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1394710,
+        "full_name": "Scott X. Mao",
+        "first_name": "Scott X.",
+        "last_name": "Mao",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 2177714,
+        "full_name": "Zhi Zhen Ye",
+        "first_name": "Zhi Zhen",
+        "last_name": "Ye",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 360681,
+        "full_name": "Sulin Zhang",
+        "first_name": "Sulin",
+        "last_name": "Zhang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      },
+      {
+        "id": 1439398,
+        "full_name": "Jian Yu Huang",
+        "first_name": "Jian Yu",
+        "last_name": "Huang",
+        "is_active": false,
+        "url_name": "_",
+        "orcid_id": ""
+      }
+    ],
+    "custom_fields": [],
+    "figshare_url": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624684",
+    "download_disabled": false,
+    "description": "We report direct observation of an unexpected anisotropic swelling of Si nanowires during lithiation against either a solid electrolyte with a lithium counter-electrode or a liquid electrolyte with a LiCoO<sub>2</sub> counter-electrode. Such anisotropic expansion is attributed to the interfacial processes of accommodating large volumetric strains at the lithiation reaction front that depend sensitively on the crystallographic orientation. This anisotropic swelling results in lithiated Si nanowires with a remarkable dumbbell-shaped cross section, which develops due to plastic flow and an ensuing necking instability that is induced by the tensile hoop stress buildup in the lithiated shell. The plasticity-driven morphological instabilities often lead to fracture in lithiated nanowires, now captured in video. These results provide important insight into the battery degradation mechanisms.",
+    "funding": null,
+    "funding_list": [],
+    "version": 1,
+    "status": "public",
+    "size": 8900608,
+    "created_date": "2016-02-23T02:53:38Z",
+    "modified_date": "2023-06-02T14:56:50Z",
+    "is_public": true,
+    "is_confidential": false,
+    "is_metadata_record": false,
+    "confidential_reason": "",
+    "metadata_reason": "",
+    "license": {
+      "value": 10,
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "tags": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "keywords": [
+      "plastic flow",
+      "electrolyte",
+      "Si nanowires",
+      "battery degradation mechanisms",
+      "hoop stress buildup",
+      "necking instability",
+      "lithiation reaction front",
+      "lithiated Si nanowires",
+      "LithiationWe report",
+      "lithiated nanowires",
+      "Such anisotropic expansion",
+      "Silicon Nanowires",
+      "lithiated shell"
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "title": "Biophysics",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 915,
+        "title": "Physical Sciences not elsewhere classified",
+        "parent_id": 6,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 15,
+        "title": "Neuroscience",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 21,
+        "title": "Biotechnology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      },
+      {
+        "id": 61,
+        "title": "Developmental Biology",
+        "parent_id": 48,
+        "path": "",
+        "source_id": "",
+        "taxonomy_id": 10
+      }
+    ],
+    "references": [
+      "https://doi.org/10.1021/nl201684d"
+    ],
+    "has_linked_file": false,
+    "citation": "Liu, Xiao Hua; Zheng, He; Zhong, Li; Huang, Shan; Karki, Khim; Zhang, Li Qiang; et al. (2016). Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation. ACS Publications. Media. https://doi.org/10.1021/nl201684d.s005",
+    "related_materials": [
+      {
+        "id": 31728689,
+        "identifier": "10.1021/nl201684d",
+        "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+        "relation": "IsSupplementTo",
+        "identifier_type": "DOI",
+        "is_linkout": true,
+        "link": "https://doi.org/10.1021/nl201684d"
+      }
+    ],
+    "is_embargoed": false,
+    "embargo_date": null,
+    "embargo_type": null,
+    "embargo_title": "",
+    "embargo_reason": "",
+    "embargo_options": [],
+    "id": 2624684,
+    "title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "doi": "10.1021/nl201684d.s005",
+    "handle": "",
+    "url": "https://api.figshare.com/v2/articles/2624684",
+    "published_date": "2011-08-10T00:00:00Z",
+    "thumb": "https://s3-eu-west-1.amazonaws.com/ppreviews-acs-4898564/4275298/thumb.png",
+    "defined_type": 2,
+    "defined_type_name": "media",
+    "group_id": 2514,
+    "url_private_api": "https://api.figshare.com/v2/account/articles/2624684",
+    "url_public_api": "https://api.figshare.com/v2/articles/2624684",
+    "url_private_html": "https://figshare.com/account/articles/2624684",
+    "url_public_html": "https://acs.figshare.com/articles/media/Anisotropic_Swelling_and_Fracture_of_Silicon_Nanowires_during_Lithiation/2624684",
+    "timeline": {
+      "posted": "2011-08-10T00:00:00",
+      "firstOnline": "2016-02-23"
+    },
+    "resource_title": "Anisotropic Swelling and Fracture of Silicon Nanowires during Lithiation",
+    "resource_doi": "10.1021/nl201684d"
+  }
+]

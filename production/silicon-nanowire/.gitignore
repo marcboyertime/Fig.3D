@@ -1,0 +1,6 @@
+# Reproducible local extraction / Blender intermediates.
+sources/*-p*.png
+sources/*.txt
+geometry.json
+teaser.png
+*.blend1

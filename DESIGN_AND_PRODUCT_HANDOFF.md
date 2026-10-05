@@ -4,6 +4,38 @@
 
 This is the living product/design guide, not only a historical handoff. At the user's explicit request (3 October 2026), record every new critique, preference and improvement here in the same work session. Fold durable principles into the guide, date concrete examples, and distinguish requested work from verified implementation. Read this section before future design or interaction changes. Earlier implementation/status claims below describe their original handoff and may be superseded by current code and verification reports.
 
+### 5 October 2026 — annotated method package and practical review loop
+
+The user supplied `fig3d-method.zip` in response to our questions to Claude. The complete package is preserved unchanged under [context/fig3d-method](context/fig3d-method/), including the [detailed answers](context/fig3d-method/method/README.md), eight annotated comparison boards, the original playbook, and six helper scripts. Read the answers and inspect the relevant boards before designing another companion. They document the reasoning behind the user-endorsed result, not merely its final styling. Code references describe upstream commit `defeef0`; the package is not a current-site test report.
+
+**Apply these lessons:**
+- Review source → previous version → intermediate attempt → final at comparable scale. Identify the explanatory/compositional fault before adjusting materials or adding effects.
+- For figure emergence, measure native-image landmarks, fit projection and pose, and report residual alignment error. Preserve position, size and color through the DOM/WebGL handover. A matching outline does not establish reconstructed internal geometry. Orthographic-fit agreement is supporting evidence, not proof; independently validate fitting methods before generalizing to irregular objects.
+- Diagnose rendering in order: color pipeline, exposure, individual lights, reflection environment, then material response. Compare lightness as well as hue. Inspect the actual renderer version and conversion behavior; do not blindly copy manual sRGB conversions or scene-specific numerical settings.
+- Map each scientific claim to the visual change that communicates it, its source, and what it must not imply. Pair apparatus and magnified mechanism when both scales are necessary. Check intermediate motion and carrier directions, not only final states.
+- Review contact sheets first for composition and distinct states, then full-size images for typography, edges and labels. Write a defect list, fix it, and repeat the affected checks. DOM overlap tests miss SVG labels, bad wrapping, misleading paths and weak visual hierarchy.
+- Recompose phone views and camera framing. An in-bounds desktop layout shrunk onto a phone can still conceal the explanation. Keep controls and the resulting change readily visible together.
+- Review stills before costly motion recordings, then inspect transition frames and handover. Virtual-clock captures show authored timing only; independently measure real-time interaction and rendering. Keep observed defects, author-reported checks and untested behavior separate.
+
+**Carry forward the author's remaining observations as a review backlog, not newly reproduced bugs:** the page-lift edge sliver; cathode route whose endpoints are hidden; pendant/label collision; undersized initial figure; displaced Device label; underdeveloped Interface circuit; phone Formation controls separated from the scene; card vignette edge. Reproduce against the current version before fixing. Real-device performance, touch, actual browser zoom, OS reduced motion, screen readers, contrast, other browsers and independent learner understanding remain unestablished by this package.
+
+**Reuse limits:** preserve the supplied files as reference evidence. Browser helpers have sandbox-specific Playwright imports, Python helpers have Linux font and absolute input/output paths, and board regeneration depends on lost raw captures. Adapt tools to the permitted local tooling when needed; do not execute archive scripts blindly or treat them as portable installed tools. No helper was executed during this import. The original boards survive even where intermediate renders cannot be reproduced.
+
+### 4 October 2026 — user-endorsed craft benchmark
+
+The user reviewed Opus’s interwoven-battery redesign and supplied its production account, saying **“now THAT is the kind of work i want to see.”** Preserve [the supplied playbook](context/Opus-Interwoven-Battery-Playbook.md) as the concrete reference for future work. This is explicit approval of the direction and level of craft, not evidence that every behavior or scientific claim is verified.
+
+- Start with the paper and a claim ledger. Source fidelity should drive distinct, understandable visual states.
+- Measure figure geometry and camera correspondence. Register the live model to the printed object so it appears to emerge from the paper; preserve recognizable landmarks throughout the transition.
+- Use source-consistent material colors, controlled neutral lighting, readable depth, and deliberate surface response. Blue/violet branding does not restrict scientific material colors.
+- Pace explanations for reading and inspection; allow immediate interruption and quick, state-preserving figure/model comparisons. Treat the playbook’s timing values as starting points, not universal rules.
+- Every explanatory step must visibly communicate what changes. Linked apparatus and magnified mechanism views are a strong example; changing only the caption is insufficient.
+- Inspect every meaningful state at actual desktop and phone sizes. Use contact sheets, motion recordings, and repeated corrections for framing, typography, labels, transitions, and scientific meaning. Functional tests alone do not establish visual quality.
+- Automate checks for control/content agreement, overlap, overflow, input direction, interruption, rapid switching, and state preservation. Test animated mechanisms as well as geometry and static end states.
+- Keep verification claims precise: virtual-clock recordings assess authored choreography, not real-time performance; viewport approximation does not replace actual browser zoom; software-rendered desktop checks do not establish physical-phone behavior.
+
+Apply the method with judgment. Do not copy this paper’s apparatus, palette, or exact choreography into unrelated modules. The standard is careful scientific explanation and visibly refined execution, not additional effects or complexity.
+
 ### 3 October 2026 — paper companions and depth of explanation
 
 - **Controls must tell the truth about the visible state.** Starting with a source figure is intentional. Figure 1 must be selected while Figure 1 is visible; a “3D model” selection must correspond to the model. Opening timelines, manual selection, reduced motion and interruption all need the same display state. Never hide a second, contradictory state behind an intro overlay.
@@ -133,3 +165,11 @@ Launch planning calls for a versioned source packet and claim ledger, verified m
 Begin with the existing artifact and evidence, not a fresh boilerplate project. Review the remaining items in ENGINEERING_STATE, then make a bounded iteration with clearly improved scientific meaning and visual quality. Keep the user in the loop concisely and act on routine reversible work without repeated confirmation. Do not keep broad testing/research running after relevant checks pass unless a real change or unresolved issue justifies it. The user's explicit reason for this handoff is to conserve Codex usage and continue in Claude.
 
 This package includes everything recovered and assembled for the current implementation and broader project planning, but not a fabricated complete historical archive. Earlier named blueprint/launch ZIP downloads and a distinct improved rocksalt HTML remain unrecovered as original bytes. The current supplied HTML is present unchanged. The raw complete original conversation is not bundled; source links and the fifteen Page exports preserve recoverable planning context. When a record is missing, state the gap rather than inventing a decision.
+
+## 2026-10-05 · Silicon nanowire companion: source-first spatial reasoning
+
+The user requested a complete Liu et al. (2011) paper companion focused on Figure 5, linked to experimental Figures 1–3. The central payoff is orientation → anisotropic transformation → tapered core/shell → stress redistribution → observed damage. Preserve a genuinely 3D whole wire and an exactly linked movable section, natural hand-following orbit, accessible controls, same-stage source switching, reading-paced paper emergence and an interruptible opening.
+
+Prefer usable source simulation outputs. When only rendered supplementary movies/panels are public, use a declared bounded geometric reconstruction. Never make up quantitative stress, kinetics or fracture thresholds for visual impact. Assigned diffusivity anisotropy is an effective interface-motion surrogate; fitted chemical strain is distinct from measured dimensional change. Normal stress must identify its component and crystal axis; von Mises stress is unsigned. Keep colors stable and source panels unaltered. Explain unfamiliar concepts locally and provide deeper methods without crowding the main scene.
+
+Quality must be established separately for source fidelity, implementation and likely viewer inference. Model checks cannot substitute for real browser inspection. Preserve exact evidence and mark untested states/devices explicitly. The October 5 browser review was interrupted by a browser URL-policy block; consult the module verification report before claiming complete visual acceptance. The module is a reviewable local change, not a public deployment.
