@@ -4,6 +4,17 @@
 
 This is the living product/design guide, not only a historical handoff. At the user's explicit request (3 October 2026), record every new critique, preference and improvement here in the same work session. Fold durable principles into the guide, date concrete examples, and distinguish requested work from verified implementation. Read this section before future design or interaction changes. Earlier implementation/status claims below describe their original handoff and may be superseded by current code and verification reports.
 
+### 5 October 2026 — silicon nanowire companion: user critique of the first version
+
+Marcky reviewed the Codex-built silicon nanowire companion (PR #9) and said: **“nothing looks smooth, page looks cluttered, unnatural navigation. need you to fix and fully take to next level.”** Observed in the browser before the rebuild: the opening zoom spilled outside its frame and landed a 3D section at the wrong size over panel d; two stacked rows of tabs plus a figure row, zoom buttons, “Enter the wire”, “Explore now” and “Pause” all competed under the stage; every control change (question, field, stress stage, slider) snapped the geometry and camera instead of moving.
+
+Durable principles taken from this:
+- **One navigation row.** Questions and the figure/model switch share one toolbar above the stage, as on the interwoven battery page. Offer only the figures relevant to the current question. Controls for the stage (zoom, camera, opening) live in the stage’s own bottom bar, never as a second button row.
+- **Nothing snaps.** Every state change the reader causes is shown as motion: the model eases its geometry, cut and colours toward the requested state, and the camera travels. Tab changes glide to that question’s reported state and give the reader’s own state back on return.
+- **Register on the printed object, measured.** The model must leave the page from the exact printed object, fitted numerically (silhouette fit of pose, scale and length), not placed by eye or by matching boxes.
+- **Use the paper’s own picture conventions.** Colour by the paper’s scale (Fig. 5: red lithiated, blue crystalline, warm front) and cut the way the paper cuts (Fig. 5b lid), so model and figure compare at a glance.
+- **Less text on screen at once.** During the opening, the figure caption and controls step back; one caption per beat.
+
 ### 5 October 2026 — annotated method package and practical review loop
 
 The user supplied `fig3d-method.zip` in response to our questions to Claude. The complete package is preserved unchanged under [context/fig3d-method](context/fig3d-method/), including the [detailed answers](context/fig3d-method/method/README.md), eight annotated comparison boards, the original playbook, and six helper scripts. Read the answers and inspect the relevant boards before designing another companion. They document the reasoning behind the user-endorsed result, not merely its final styling. Code references describe upstream commit `defeef0`; the package is not a current-site test report.

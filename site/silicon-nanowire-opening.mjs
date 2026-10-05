@@ -1,39 +1,75 @@
-// Screen-registered paper-to-volume transition. The source remains original pixels.
-import {section,outer,HOME,clamp,ease} from './silicon-nanowire-model.mjs';
+// The model leaves the page from the printed wire of Figure 5a.
+// 1. The real figure zooms until panel a's wire sits exactly where the model will be drawn at PAPER_POSE
+//    (pose, scale and origin come from a silhouette fit, not from matching boxes by eye).
+// 2. The same pixels become a textured page inside the WebGL scene, so nothing visibly swaps.
+// 3. A copy of panel a in front dissolves, revealing the shaded model in its place.
+// 4. The page tips back and dims while the camera turns from the paper's viewpoint to the working view.
+import {PAPER_POSE,PANEL_A,FIGURES,clamp,ease} from './silicon-nanowire-model.mjs';
 const T=window.THREE;
+export const PROFILE={zoom:2600,reveal:1500,lift:3200};
 export class PaperEmergence{
- constructor(scene,stage){this.scene=scene;this.stage=stage;this.token=0;this.active=false;this.paused=false;}
- async run(img,{opening=false,onSwap=()=>{},onDone=()=>{}}={}){
-  this.cancel();const token=++this.token,sc=this.scene,box=this.stage.getBoundingClientRect(),r=img.getBoundingClientRect();
-  const src=img.currentSrc||img.src,texture=await new T.TextureLoader().loadAsync(src);if(token!==this.token){texture.dispose();return;}
-  texture.encoding=T.sRGBEncoding;this.texture=texture;const isFive=src.includes('figure-5');
-  this.active=true;this.elapsed=0;this.onDone=onDone;this.onSwap=onSwap;this.opening=opening;this.savedPose={...sc.pose};this.oldOpen=sc.state.open;
-  const natural=[img.naturalWidth,img.naturalHeight];this.natural=natural;
-  const anchor=isFive?[49,390,312,539]:[0,0,...natural];
-  const from={x:r.left-box.left,y:r.top-box.top,w:r.width,h:r.height};
-  const targetW=Math.min(sc.width*.67,(anchor[2]-anchor[0])*1.45),d=section(sc.state.progress,0),h=d.a*sc.height/targetW;
-  this.paperPose=isFive?{yaw:0,elevation:0,halfHeight:h/Math.max(1,.95/(sc.width/sc.height))}:{...sc.pose};
-  const scale=targetW/(anchor[2]-anchor[0]),w=natural[0]*scale,hh=natural[1]*scale;
-  this.final=isFive?{x:sc.width/2-(anchor[0]+anchor[2])/2*scale,y:sc.height/2-(anchor[1]+anchor[3])/2*scale,w,h:hh}:from;
-  this.zoomFrom=from;this.anchor=anchor;this.timings=opening?[1900,1400,2300]:[380,300,650];
-  const el=document.createElement('div');el.className='emerge-transit';Object.assign(el.style,{left:from.x+'px',top:from.y+'px',width:from.w+'px',height:from.h+'px'});const copy=new Image();copy.src=src;copy.alt='';el.append(copy);
-  if(isFive){const focus=document.createElement('div');focus.className='emerge-focus';Object.assign(focus.style,{left:anchor[0]/natural[0]*100+'%',top:anchor[1]/natural[1]*100+'%',width:(anchor[2]-anchor[0])/natural[0]*100+'%',height:(anchor[3]-anchor[1])/natural[1]*100+'%'});el.append(focus);this.focus=focus;}
-  this.stage.append(el);this.transit=el;this.stage.classList.add('is-emerging');this.stop=sc.animate((now,dt)=>this.frame(dt));
+ constructor(scene,stage){this.scene=scene;this.stage=stage;this.active=false;this.paused=false;this.loader=new T.TextureLoader();}
+ texture(src){return this.textures??=new Promise((resolve,reject)=>this.loader.load(src,t=>{t.encoding=T.sRGBEncoding;t.minFilter=T.LinearMipmapLinearFilter;t.anisotropy=4;resolve(t);},undefined,reject));}
+ plan(){
+  const s=this.scene,W=s.width,H=s.height,f=FIGURES['5'],box=PANEL_A.box,boxH=box[3]-box[1];
+  // Panel a at most 1.8× its native pixels and never taller than 70% of the stage.
+  const S=Math.min(1.8,H*.7/boxH,W*.6/(box[2]-box[0])),unit=PANEL_A.unit*S;
+  const aspect=Math.max(1,1.15/(W/H)),pose={...PAPER_POSE,halfHeight:H/(2*unit)/aspect};
+  const final={x:W/2-PANEL_A.origin[0]*S,y:H/2-PANEL_A.origin[1]*S,w:f.width*S,h:f.height*S};
+  return {pose,final,S};
  }
- frame(dt){if(!this.active)return false;if(!this.paused)this.elapsed+=dt*1000;const [zoom,reveal,lift]=this.timings,t=this.elapsed,sc=this.scene;
-  if(t<zoom){const u=ease(clamp(t/zoom)),a=this.zoomFrom,b=this.final;this.transit.style.transform=`translate(${(b.x-a.x)*u}px,${(b.y-a.y)*u}px) scale(${1+(b.w/a.w-1)*u})`;if(this.focus)this.focus.style.opacity=String(clamp(t/500));return true;}
+ async run(img,{toPose,onSwap,onDone,timing=PROFILE}){
+  this.cancel();const token=this.token=Symbol();
+  const texture=await this.texture(img.currentSrc||img.src);if(token!==this.token)return;
+  const stage=this.stage.getBoundingClientRect(),r=img.getBoundingClientRect();
+  this.from={x:r.left-stage.left,y:r.top-stage.top,w:r.width,h:r.height};
+  Object.assign(this,this.plan());this.toPose={...toPose};this.timing=timing;this.elapsed=0;this.map=texture;this.onSwap=onSwap;this.onDone=onDone;this.active=true;this.userHasCamera=false;
+  const el=document.createElement('div');el.className='emerge-transit';el.setAttribute('aria-hidden','true');
+  Object.assign(el.style,{left:this.from.x+'px',top:this.from.y+'px',width:this.from.w+'px',height:this.from.h+'px'});
+  const copy=new Image();copy.src=img.currentSrc||img.src;copy.alt='';
+  const f=FIGURES['5'],b=PANEL_A.box,focus=document.createElement('div');focus.className='emerge-focus';
+  Object.assign(focus.style,{left:b[0]/f.width*100+'%',top:b[1]/f.height*100+'%',width:(b[2]-b[0])/f.width*100+'%',height:(b[3]-b[1])/f.height*100+'%'});
+  el.append(copy,focus);this.stage.append(el);this.transit=el;this.focus=focus;this.stage.classList.add('is-emerging');
+  this.stop=this.scene.animate((now,dt)=>this.frame(dt));
+ }
+ get duration(){const t=this.timing;return t.zoom+t.reveal+t.lift;}
+ frame(dt){
+  if(!this.active)return false;if(!this.paused)this.elapsed+=Math.min(dt,.25)*1000;
+  const {zoom,reveal,lift}=this.timing,t=this.elapsed,sc=this.scene;
+  if(t<zoom){const u=ease(clamp(t/zoom)),a=this.from,b=this.final,k=(a.w+(b.w-a.w)*u)/a.w;
+   this.transit.style.transform=`translate(${(b.x-a.x)*u}px,${(b.y-a.y)*u}px) scale(${k})`;
+   this.focus.style.opacity=String(clamp(t/(zoom*.3))*(1-clamp((t-zoom*.75)/(zoom*.25))*.7));return true;}
   if(!this.page)this.swap();
-  const u=ease(clamp((t-zoom)/reveal));this.front.material.opacity=1-u;
-  const v=ease(clamp((t-zoom-reveal)/lift));this.page.rotation.x=-1.38*v;this.page.material.opacity=1-v;this.page.material.color.setScalar(1-.6*v);
-  for(const k of ['yaw','elevation','halfHeight'])sc.pose[k]=this.paperPose[k]+(this.savedPose[k]-this.paperPose[k])*v;
-  if(t>=zoom+reveal+lift){const done=this.onDone;this.cancel();sc.pose={...this.savedPose};done();return false;}return true;
+  this.front.material.opacity=1-ease(clamp((t-zoom)/reveal));this.front.visible=this.front.material.opacity>0;
+  const l=clamp((t-zoom-reveal)/lift),u=ease(l);
+  this.pageGroup.quaternion.setFromAxisAngle(this.axis,-1.42*u);
+  const fade=1-ease(clamp((l-.2)/.8));this.page.material.opacity=fade;this.page.material.color.setScalar(.3+.7*fade);this.page.visible=fade>0;
+  if(!this.userHasCamera){const a=this.pose,b=this.toPose,p=sc.pose;for(const k of ['yaw','elevation','halfHeight'])p[k]=a[k]+(b[k]-a[k])*u;sc.dirty=true;}
+  if(t>=zoom+reveal+lift){this.finish();return false;}
+  return true;
  }
- swap(){const sc=this.scene,p=this.paperPose;sc.pose={...p};sc.travel=null;sc.updateCamera();const {right,up,forward}=sc.basis(),k=sc.worldPerPixel(),r=this.final;
+ swap(){
+  const sc=this.scene,p=this.pose;sc.travel=null;sc.pose={...p};sc.updateCamera();
+  const {right,up,forward}=sc.basis(p),k=sc.worldPerPixel(p),cx=sc.width/2,cy=sc.height/2,f=this.final,n=[FIGURES['5'].width,FIGURES['5'].height],a=PANEL_A.box;
+  const world=(x,y,depth)=>new T.Vector3().addScaledVector(right,(x-cx)*k).addScaledVector(up,(cy-y)*k).addScaledVector(forward,depth);
   const q=new T.Quaternion().setFromRotationMatrix(new T.Matrix4().makeBasis(right,up,forward));
-  const plane=(r,depth,uv)=>{const g=new T.PlaneGeometry(r.w*k,r.h*k);if(uv){const a=g.attributes.uv;for(let i=0;i<a.count;i++)a.setXY(i,uv[0]+a.getX(i)*(uv[2]-uv[0]),1-uv[3]+a.getY(i)*(uv[3]-uv[1]));}
-   const m=new T.Mesh(g,new T.MeshBasicMaterial({map:this.texture,toneMapped:false,transparent:true,depthWrite:false,side:T.DoubleSide}));m.quaternion.copy(q);m.position.copy(right).multiplyScalar((r.x+r.w/2-sc.width/2)*k).addScaledVector(up,(sc.height/2-r.y-r.h/2)*k).addScaledVector(forward,depth);sc.scene.add(m);return m;};
-  this.page=plane(r,-10);const a=this.anchor,n=this.natural,s=r.w/n[0];this.front=plane({x:r.x+a[0]*s,y:r.y+a[1]*s,w:(a[2]-a[0])*s,h:(a[3]-a[1])*s},10,[a[0]/n[0],a[1]/n[1],a[2]/n[0],a[3]/n[1]]);this.front.material.depthTest=false;this.front.renderOrder=10;this.transit.remove();this.transit=null;this.onSwap();
+  const plane=(x,y,w,h,depth,uv)=>{const g=new T.PlaneGeometry(w*k,h*k);if(uv){const at=g.attributes.uv;for(let i=0;i<at.count;i++)at.setXY(i,uv[0]+at.getX(i)*(uv[2]-uv[0]),1-uv[3]+at.getY(i)*(uv[3]-uv[1]));}
+   const m=new T.Mesh(g,new T.MeshBasicMaterial({map:this.map,toneMapped:false,transparent:true,depthWrite:false}));m.quaternion.copy(q);m.position.copy(world(x+w/2,y+h/2,depth));m.frustumCulled=false;return m;};
+  // Hinge on the bottom edge of panel a, on a page plane behind the model.
+  const pivot=world(f.x+f.w*((a[0]+a[2])/2/n[0]),f.y+f.h*(a[3]/n[1]),-12);
+  this.axis=right.clone();this.pageGroup=new T.Group();this.pageGroup.position.copy(pivot);sc.scene.add(this.pageGroup);
+  this.page=plane(f.x,f.y,f.w,f.h,-12);this.page.position.sub(pivot);this.page.renderOrder=-1;this.pageGroup.add(this.page);
+  const s=f.w/n[0];this.front=plane(f.x+a[0]*s,f.y+a[1]*s,(a[2]-a[0])*s,(a[3]-a[1])*s,12,[a[0]/n[0],a[1]/n[1],a[2]/n[0],a[3]/n[1]]);this.front.material.depthTest=false;this.front.renderOrder=10;sc.scene.add(this.front);
+  this.onSwap?.();sc.renderNow();this.transit.remove();this.transit=null;
  }
- cancel(){this.token++;this.active=false;this.stop?.();this.stop=null;this.transit?.remove();this.transit=null;for(const k of ['page','front']){if(this[k]){this.scene.scene.remove(this[k]);this[k].geometry.dispose();this[k].material.dispose();this[k]=null;}}this.texture?.dispose();this.texture=null;this.stage.classList.remove('is-emerging');this.scene.wake();}
- interrupt(){if(!this.active)return;const done=this.onDone;this.cancel();done?.();}
+ // A drag or key hands the camera to the reader; the page clears quickly and the opening does not resume.
+ yieldCamera(){if(!this.active)return;this.userHasCamera=true;if(!this.page)this.elapsed=this.timing.zoom;this.elapsed=Math.max(this.elapsed,this.timing.zoom+this.timing.reveal+this.timing.lift*.75);}
+ finish(){if(!this.active)return;if(!this.page&&this.transit)this.swap();const done=this.onDone;this.clear();if(!this.userHasCamera)this.scene.pose={...this.toPose};this.scene.wake();done?.();}
+ clear(){
+  this.active=false;this.stop?.();this.stop=null;this.transit?.remove();this.transit=null;
+  if(this.pageGroup){this.scene.scene.remove(this.pageGroup);this.page.geometry.dispose();this.page.material.dispose();}
+  if(this.front){this.scene.scene.remove(this.front);this.front.geometry.dispose();this.front.material.dispose();}
+  this.page=this.front=this.pageGroup=null;this.stage.classList.remove('is-emerging');this.onDone=null;this.scene.wake();
+ }
+ cancel(){this.token=null;if(this.active)this.clear();}
 }
