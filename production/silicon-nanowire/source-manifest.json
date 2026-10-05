@@ -1,0 +1,34 @@
+{
+  "sources/liu-2011.pdf": {
+    "sha256": "ac959ee1ca39a3b2e9b86a8a2b06341bb5c34ebccc4f77ebc7098a18bb14cf7b",
+    "bytes": 4170804
+  },
+  "sources/nl201684d_si_001.pdf": {
+    "sha256": "97fe20c293a7fa29b0bd3fc01921fe5de7d9581425ffc29618d871c2f1fd1bd1",
+    "bytes": 3137019
+  },
+  "site/assets/silicon-nanowire/figure-1.jpeg": {
+    "sha256": "8f39a4b1007850716621acbea82d91a8e2d38618932ec59e021d09a073996aa8",
+    "bytes": 996340
+  },
+  "site/assets/silicon-nanowire/figure-5.jpeg": {
+    "sha256": "766bc2bd7eda267177f0f59525a9b56090cee3745bec35cb30604ef0a741cb61",
+    "bytes": 424212
+  },
+  "site/assets/silicon-nanowire/figure-s8.jpeg": {
+    "sha256": "7e076ee262e0bb06b276ec5fb99e99652e39546436f8281084eddaa9be50d79b",
+    "bytes": 258864
+  },
+  "site/assets/silicon-nanowire/figure-2.jpeg": {
+    "sha256": "c7b30de07506d656ba94e6bfbd2a23b4f21c3420d766083f7f4a2b29f567b0e6",
+    "bytes": 1374957
+  },
+  "site/assets/silicon-nanowire/figure-s10.jpeg": {
+    "sha256": "7cae0963ffcfe6b837472fd49b28d129c6f40f75e855ac6e3f2ffb17ed9bf7eb",
+    "bytes": 173302
+  },
+  "site/assets/silicon-nanowire/figure-3.jpeg": {
+    "sha256": "68c55dba78af621bcdc503a660a61dabf1f8a65e78e4a2ecd072deda6960f4ca",
+    "bytes": 590020
+  }
+}
