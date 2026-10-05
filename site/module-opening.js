@@ -58,7 +58,7 @@
    const ink=el=>{const range=document.createRange();range.selectNodeContents(el);return range.getBoundingClientRect();};
    const boxes=lines.map(ink),head=ink(title.querySelector('h1')||lines[0]);
    const r={left:Math.min(...boxes.map(b=>b.left)),right:Math.max(...boxes.map(b=>b.right)),top:Math.min(...boxes.map(b=>b.top)),bottom:Math.max(...boxes.map(b=>b.bottom))};
-   const scale=Math.max(1,Math.min(1.45,(innerWidth*.84)/Math.max(1,head.width),(innerHeight*.5)/Math.max(1,r.bottom-r.top)));
+   const scale=Math.max(1,Math.min(1.45,(innerWidth*.84)/Math.max(1,head.width),(innerWidth*.9)/Math.max(1,r.right-r.left),(innerHeight*.5)/Math.max(1,r.bottom-r.top)));
    const cx=(r.left+r.right)/2,cy=(r.top+r.bottom)/2,box=title.getBoundingClientRect();
    // Scale about the words' centre so the measured centre lands on the window's centre.
    title.style.transformOrigin=`${cx-box.left}px ${cy-box.top}px`;

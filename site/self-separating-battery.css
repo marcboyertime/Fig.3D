@@ -199,7 +199,8 @@ noscript{display:block;margin:30px 5vw;color:#b6c3d9}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.paper-view{animation:none}.scene-content,.display-switch button{transition:none}}
 
-/* Introduction above the explorer */
+/* Introduction above the explorer; the question sits under the title, as on every module */
+.intro .lede{flex-basis:100%;max-width:40ch;font-size:clamp(18px,1.6vw,22px);line-height:1.4;color:#c9d5f5;margin-top:4px}
 main>.fig-intro{margin:4px 0 30px;--fig-intro-line:var(--line)}
 #scientific-notes{margin-top:90px}
 @media (max-width:760px){main>.fig-intro{margin-bottom:22px}#scientific-notes{margin-top:56px}}
