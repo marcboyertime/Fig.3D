@@ -147,7 +147,7 @@ function placeLabels(sc){
  for(const [k,el] of Object.entries(LABELS)){
   const on=!!show[k]&&!showingPaper();el.classList.toggle('on',on);if(!at[k])continue;
   const [x,y,z,dx,dy]=at[k],p=sc.project([x,y,z]),w=el.offsetWidth,h=el.offsetHeight;
-  const left=clamp(p.x+dx,8,sc.width-w-8),top=clamp(p.y+dy,8,sc.height-h-60);
+  const left=clamp(p.x+dx,8,sc.width-w-8),top=clamp(p.y+dy,8,sc.height-h-(sc.width<560?92:84));
   el.style.transform=`translate(${left.toFixed(1)}px,${top.toFixed(1)}px)`;
  }
 }
