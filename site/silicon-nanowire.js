@@ -192,7 +192,7 @@ const BUILD_IN=document.documentElement.classList.contains('build-in')?5.6:0;
 if(BUILD_IN){const skip=()=>{for(const an of document.getAnimations())if(/^build-/.test(an.animationName||''))an.finish();for(const ev of ['pointerdown','keydown','wheel','touchstart'])removeEventListener(ev,skip,true);};for(const ev of ['pointerdown','keydown','wheel','touchstart'])addEventListener(ev,skip,{capture:true,passive:true});}
 function startOpening(){
  if(!state.opening||!scene)return;
- const durations=OPENING.map(readingTime);durations[0]+=BUILD_IN;let beat=0,t=0,emerging=false;
+ const durations=OPENING.map(readingTime);let beat=0,t=0,emerging=false,waited=false;
  durations[1]=(PROFILE.zoom+PROFILE.reveal+PROFILE.lift)/1000+.6;
  emergence.texture($('paper-image').currentSrc||$('paper-image').src).catch(()=>{});
  let elapsed=0;state.beat=0;state.progress=.45;state.open=false;state.slice=.12;sync();
@@ -203,6 +203,8 @@ function startOpening(){
   sync();};
  openingStop=scene.animate((now,dt)=>{
   if(!state.opening)return false;if(state.openingPaused||(beat===0&&!stageInView))return true;
+  // Only the part of the build-in still playing when the stage comes into view delays the first beat.
+  if(!waited){waited=true;durations[0]+=Math.max(0,BUILD_IN-now/1000);}
   t+=dt;elapsed+=dt;$('opening-progress').style.setProperty('--p',clamp(elapsed/durations.reduce((a,b)=>a+b,0)).toFixed(3));
   if(beat===3){state.slice=.12+.5*smooth(.4,durations[3]-1.4,t);scene.setState(state);$('slice').value=(state.slice*100).toFixed(1);$('slice-value').value=Math.round(state.slice*100)+'%';}
   if(t>=durations[beat]&&!(beat===1&&emerging)){if(beat<OPENING.length-1)enter(beat+1);else{state=reduce(state,{type:'stop-opening'});state.beat=null;openingStop=null;sync();return false;}}
