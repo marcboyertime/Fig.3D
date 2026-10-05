@@ -164,7 +164,7 @@ noscript{display:block;margin:30px 5vw;color:#b6c3d9}
  .display-switch button{font-size:13px;min-height:40px}
  .stage-bar{padding:4px 8px}.scene-help{font-size:11px}
  .scene-labels .label{font-size:11px;line-height:19px;padding:0 5px}
- .section-inset{width:128px}.section-inset figcaption{font-size:10px}
+ .section-inset{width:128px;padding:6px 7px 4px}.section-inset figcaption{font-size:10px;white-space:nowrap;gap:6px}
  .caption h2{font-size:28px}.caption>p:last-child{font-size:16px}
  .opening-progress{width:56px}
  footer{flex-direction:column;align-items:flex-start;padding-block:25px}
