@@ -74,7 +74,7 @@ export class WireScene{
  }
  setState(s){
   this.state=s;const stress=s.question==='stress',fracture=s.question==='fracture',axis=s.question==='swelling'&&s.view==='axis',trimmed=stress||fracture||axis;
-  Object.assign(this.target,{progress:s.progress,slice:s.slice,open:s.open&&!trimmed&&(s.view==='oblique'||s.view==null)?1:0,trim:trimmed?s.slice:0,muted:stress?1:0,arrows:stress&&s.stress!=='mises'?1:0,neck:fracture?1:0,ring:trimmed||(s.opening&&s.beat<3)?0:1});
+  Object.assign(this.target,{progress:s.progress,slice:s.slice,open:s.open&&!trimmed&&(s.view==='oblique'||s.view==null)?1:0,trim:trimmed?s.slice:0,muted:stress?1:0,arrows:stress&&s.stress!=='mises'?1:0,neck:fracture?1:0,ring:trimmed||s.card||(s.opening&&s.beat<3)?0:1});
   if(s.reduced||!this.started){Object.assign(this.view,this.target);this.started=true;}
   this.wake();
  }

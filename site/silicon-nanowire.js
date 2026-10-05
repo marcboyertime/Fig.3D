@@ -82,7 +82,7 @@ function sync(){
  all('[data-display]').forEach(b=>{b.hidden=!offered.includes(b.dataset.display)&&b.dataset.display!==state.display;b.setAttribute('aria-pressed',String(b.dataset.display===state.display));});
  // Controls
  const q=state.question;
- $('swelling-controls').hidden=q!=='swelling';$('stress-controls').hidden=q!=='stress';$('cut-row').hidden=q!=='swelling'||failed;
+ $('swelling-controls').hidden=q!=='swelling';$('stress-controls').hidden=q!=='stress';$('cut-row').hidden=q!=='swelling'||failed||(state.view!=null&&state.view!=='oblique');
  all('[data-stress]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.stress===state.stress)));
  all('[data-view]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.view===state.view));b.disabled=failed;});
  $('progress').value=(state.progress*100).toFixed(1);$('progress-value').value=Math.round(state.progress*100)+'%';
@@ -238,5 +238,6 @@ addEventListener('resize',()=>sizeFigure());
 reducedQuery.addEventListener('change',e=>{if(state.opening)stopOpening();state=reduce(state,{type:'reduced',value:e.matches});sync();});
 addEventListener('pagehide',()=>{state={...state,playing:false};playStop?.();playStop=null;scene?.stop();});
 addEventListener('pageshow',()=>scene?.wake());
+if(params.has('card'))state.card=true;
 window.figState=()=>({...state});
 sync();if(state.opening&&scene)startOpening();else if(state.opening){state.opening=false;state.display='model';sync();}
