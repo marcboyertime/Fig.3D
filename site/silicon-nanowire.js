@@ -184,6 +184,8 @@ function managePlay(){
 }
 
 // ————— The opening: one visible change per beat, paced for reading —————
+// The figure's reading clock waits until most of the stage is on screen, so nobody misses the hand-over.
+let stageInView=false;if(typeof IntersectionObserver==='function')new IntersectionObserver(e=>{stageInView=e[0].intersectionRatio>=.6;},{threshold:[0,.6,1]}).observe($('stage'));else stageInView=true;
 // On a first visit the page builds in first (CSS); the figure's reading clock starts once the stage has arrived.
 const BUILD_IN=document.documentElement.classList.contains('build-in')?5.6:0;
 function startOpening(){
@@ -198,7 +200,7 @@ function startOpening(){
   if(b===3){state.slice=.12;}
   sync();};
  openingStop=scene.animate((now,dt)=>{
-  if(!state.opening)return false;if(state.openingPaused)return true;
+  if(!state.opening)return false;if(state.openingPaused||(beat===0&&!stageInView))return true;
   t+=dt;elapsed+=dt;$('opening-progress').style.setProperty('--p',clamp(elapsed/durations.reduce((a,b)=>a+b,0)).toFixed(3));
   if(beat===3){state.slice=.12+.5*smooth(.4,durations[3]-1.4,t);scene.setState(state);$('slice').value=(state.slice*100).toFixed(1);$('slice-value').value=Math.round(state.slice*100)+'%';}
   if(t>=durations[beat]&&!(beat===1&&emerging)){if(beat<OPENING.length-1)enter(beat+1);else{state=reduce(state,{type:'stop-opening'});state.beat=null;openingStop=null;sync();return false;}}

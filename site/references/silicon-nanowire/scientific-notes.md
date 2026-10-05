@@ -19,7 +19,7 @@ The public supporting archive contains rendered microscopy/simulation movies and
 | Fully lithiated H/D0=2.62, V/D0=1.14 in FE | Fig. S8b–c; simulated shape fitted to experiment | Target outer extents of final schematic section | Intermediate contours and neck depth are authored, not a fit or time series |
 | Core approximately Li deficient; shell Li rich | Fig. 2l; EELS observation. Fig. 5b,d; modeled c | Stable blue-to-amber illustrative Li legend, c≈0 core / c≈1 shell | Sharp two-region idealization; no inventory/conservation/flux prediction |
 | c is normalized by fully lithiated concentration at x=3.75 | Fig. 5 caption; model definition | Definition beside lithium view; original Fig. 5 colorbar retained | No claim every real shell is a single Li15Si4 phase; product groups crystalline/amorphous alloy and other phases |
-| Internal transformation mismatch produces stress without applied load | Main text pp. E–F; SI pp. 16–18 | Core/shell cutaway plus opposing normal-stress arrows | Not a force-balanced numerical solution; arrows are sign-only |
+| Internal transformation mismatch produces stress without applied load | Main text pp. E–F; SI pp. 16–18 | Core/shell cutaway (upper half lifted off, as in Fig. 5b) plus opposing normal-stress arrows on the exposed section face | Not a force-balanced numerical solution; arrows are sign-only |
 | Surface σ11 is compressive early, tensile at indent later; center reverses sign | Fig. S10a–d; simulation | Explicit Early/Late comparison, corresponding source panel | Discrete source-supported stages; switch is not a fracture threshold or quantitative time mapping |
 | σ11 is normal stress along x1, not axial stress | Fig. 5a,f and S10 | Tension/compression key with x1 label | No MPa or GPa attached to our arrows |
 | von Mises stress nonnegative and measures distortional stress | Fig. 5e and SI J2 definition | Original 5e with source legend 0–3.3 GPa | Unsigned; not tensile/compressive; authored model yield parameter 3 GPa, do not conflate with top printed colorbar |
@@ -31,11 +31,11 @@ The public supporting archive contains rendered microscopy/simulation movies and
 
 ## Geometry specification
 
-Coordinates are in units of pristine radius R0, with x=x1, y=x2, z=x3. Basis directions are [1,−1,0]/√2, [1,1,−1]/√3, [1,1,2]/√6. The transverse plane is (112); a longitudinal cut at x2=0 has normal [1,1,−1]. The source applies incoming Li at the front end. The position control s runs from 0 at the supplied end to 1 at the far end; the renderer uses z=L(0.5−s), with the supplied end at +L/2. Overall length L=14R0 is chosen for composition, not a specimen measurement.
+Coordinates are in units of pristine radius R0, with x=x1, y=x2, z=x3. Basis directions are [1,−1,0]/√2, [1,1,−1]/√3, [1,1,2]/√6. The transverse plane is (112); a longitudinal cut at x2=0 has normal [1,1,−1]. The source applies incoming Li at the front end. The position control s runs from 0 at the supplied end to 1 at the far end; the renderer uses z=L(0.5−s), with the supplied end at +L/2. Overall length L=9R0 and the paper viewpoint (yaw 0.3985, elevation 0.6682) come from a silhouette fit of the model at p=0.45 to the printed wire of Fig. 5a (IoU 0.905; `production/silicon-nanowire/registration/fit-panel-a.py`). This is a fit to the authors' rendered simulation, not a specimen measurement; the FE wire's own length is not reported.
 
 The pure model defines local transformation q = smoothstep(0,0.65,1.7p−s), p∈[0,1]. This makes the surface and reaction front advance from the supplied end, with a diminishing residual core behind the front. It is an illustrative ordering, not a diffusion calculation. Cross-section x=a cosθ, y=b sinθ (1−n exp(−(x/(0.34a))²)), with a=1+1.62q, b chosen so maximum half-height is 1+0.14q, n=0.34 smoothstep(0.35,0.95,q). The analytical curve is simple and symmetric. Core semiaxes are (1−q)^1.45 and (1−q)^0.58, contained within the outer boundary; its elongation in x2 demonstrates the paper's topology. At q=1 it disappears.
 
-Lithium colors are illustrative phase values (0 core, 1 transformed shell). They do not estimate a spatial gradient, chemical potential, moles, reaction rate or physical time. All views read the same cross-section evaluator. Cutting the view does not change the scientific state.
+Colours follow Fig. 5's own scale so model and figure compare directly: blue for crystalline silicon (c≈0), red for lithiated material (c≈1), and a narrow warm band where a section has only just begun to transform (local q<0.16), echoing the front band of Fig. 5a. Lithium colors are illustrative phase values (0 core, 1 transformed shell). They do not estimate a spatial gradient, chemical potential, moles, reaction rate or physical time. All views read the same cross-section evaluator. Cutting the view does not change the scientific state.
 
 ## Stress treatment and deeper reasoning
 
@@ -50,3 +50,10 @@ Figures 1, 2, 3 and 5 are embedded image objects extracted from the author PDF a
 ## Verification status
 
 See production/silicon-nanowire/verification-report.md for actual executed checks and limitations. No human expert review is claimed.
+
+## Presentation choices (2026-10-05 rebuild)
+
+- The opening zooms the original Figure 5 until panel a's printed wire sits exactly where the model is drawn at the fitted pose, hands the same pixels to the 3D scene, dissolves panel a to reveal the model, and tips the page away. Any reader input ends it.
+- The cutaway removes the upper half (y>0), the way Fig. 5b is cut, so the tapered crystalline core reads as a blue tongue on the cut face. Straight-on views (along x₁, x₂ and the wire axis) close the wire so widths compare fairly; the wire-axis view shows the section at the slider.
+- Stress and fracture views trim the wire at the selected section so its face is visible, like Fig. 5f. Stress marks redraw the paper's own ←□→ notation for σ₁₁; they carry sign only. The fracture view redraws the white neck outline of Fig. 5f's schematic; it is not a prediction.
+- Every change is eased in the scene (geometry, cut, colours, camera); none of the easing has physical meaning.
