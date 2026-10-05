@@ -7,7 +7,7 @@ const page=await browser.newPage({viewport:{width:+w,height:+h},deviceScaleFacto
 page.on('pageerror',e=>console.log('pageerror',e.message));
 page.on('console',m=>{if(['error','warning'].includes(m.type()))console.log('console',m.text())});
 await page.addInitScript(()=>{let t=0,id=0;const pending=new Map();performance.now=()=>t;window.requestAnimationFrame=cb=>{pending.set(++id,cb);return id;};window.cancelAnimationFrame=i=>pending.delete(i);
- window.__step=(ms,n=1)=>{for(let k=0;k<n;k++){t+=ms;const cbs=[...pending.values()];pending.clear();for(const cb of cbs)try{cb(t);}catch(e){console.error(e);}}};});
+ window.__step=(ms,n=1)=>{for(let k=0;k<n;k++){t+=ms;for(const an of document.getAnimations()){an.pause();an.currentTime=(an.currentTime||0)+ms;}const cbs=[...pending.values()];pending.clear();for(const cb of cbs)try{cb(t);}catch(e){console.error(e);}}};});
 await page.goto('http://localhost:4173/silicon-nanowire.html'+(process.env.Q||''));
 await page.waitForFunction(()=>window.figState);
 for(let i=0;i<30;i++){await page.evaluate(()=>window.__step(0));await page.waitForTimeout(80);}
@@ -17,6 +17,7 @@ const ex=async n=>{await page.locator('#explorer').screenshot({path:`${prefix}-$
 const click=async sel=>{await page.evaluate(s=>document.querySelector(s).click(),sel);};
 const only=process.env.ONLY;
 if(!only||only==='open'){
+ for(const [t,n] of [[.6,'b0'],[1.2,'b1'],[1.6,'b2'],[1.4,'b3'],[1.4,'b4']]){await step(t);await vp(n);}
  await step(3);await vp('o0-paper');
  // into the emergence
  for(const [t,n] of [[4.5,'o1-zoom'],[2,'o2-zoomed'],[1,'o3-reveal'],[1.2,'o4-lift'],[2,'o5-lifted'],[3,'o6-open'],[5,'o7-sweep'],[6,'o8-end']]){await step(t);await vp(n);}

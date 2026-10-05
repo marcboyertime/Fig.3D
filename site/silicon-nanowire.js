@@ -184,9 +184,11 @@ function managePlay(){
 }
 
 // ————— The opening: one visible change per beat, paced for reading —————
+// On a first visit the page builds in first (CSS); the figure's reading clock starts once the stage has arrived.
+const BUILD_IN=document.documentElement.classList.contains('build-in')?5.6:0;
 function startOpening(){
  if(!state.opening||!scene)return;
- const durations=OPENING.map(readingTime);let beat=0,t=0,emerging=false;
+ const durations=OPENING.map(readingTime);durations[0]+=BUILD_IN;let beat=0,t=0,emerging=false;
  durations[1]=(PROFILE.zoom+PROFILE.reveal+PROFILE.lift)/1000+.6;
  emergence.texture($('paper-image').currentSrc||$('paper-image').src).catch(()=>{});
  let elapsed=0;state.beat=0;state.progress=.45;state.open=false;state.slice=.12;sync();

@@ -19,7 +19,7 @@ function mount(query='?reduced'){
  class PaperEmergence{constructor(){this.active=false}texture(){return Promise.resolve()}cancel(){this.active=false}yieldCamera(){}finish(){this.active=false;this.opts?.onDone?.()}run(im,opts){this.active=true;this.opts=opts;return Promise.resolve()}}
  const context={...model,WireScene,PaperEmergence,PALETTE:{crystal:'#4f7be0',front:'#e8b44e',lithiated:'#d4553b',mutedShell:'#8e97ab',mutedCore:'#55638a',tension:'#ffb27a',compression:'#9fc2ff'},PROFILE:{zoom:2600,reveal:1500,lift:3200},
   matchMedia:()=>media,URLSearchParams,location:{search:query},console:{warn(){},error(){}},requestAnimationFrame:f=>f(),addEventListener(){},window:{},
-  document:{getElementById:node,querySelectorAll:s=>groups.get(s)||[],querySelector:s=>node(s),body:node('body'),activeElement:null}};
+  document:{documentElement:{classList:{contains:()=>false}},getElementById:node,querySelectorAll:s=>groups.get(s)||[],querySelector:s=>node(s),body:node('body'),activeElement:null}};
  context.window=context;vm.createContext(context);vm.runInContext(code,context);return {subject:context.subject,node,groups};
 }
 const pressed=(node,key)=>node('display-'+key).attrs['aria-pressed']==='true';
