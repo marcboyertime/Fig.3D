@@ -79,7 +79,7 @@ Opening, fallbacks and phone:
 **Visual review.** Done on stills and videos in `/mnt/project-files/fig3d-review/fast-ion-diffusion/`:
 
 - 21 desktop and 12 phone stills, covering initial, intermediate and final states in both the structural and the energy views.
-- Desktop and phone review videos, recorded on a virtual clock at 15 fps so motion plays at its authored speed.
+- Desktop (133 s) and phone (104 s) review videos, recorded on a virtual clock at 15 fps so motion plays at its authored speed.
 
 **Problems found and fixed during review:**
 

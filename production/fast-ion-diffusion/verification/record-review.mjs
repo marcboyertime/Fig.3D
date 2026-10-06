@@ -30,8 +30,8 @@ if(desktop){
  await drag(-200,24);await step(1);
  await slide('#progress',0,1000,4.5);await step(1);await slide('#progress',1000,450,2);await step(.8);
  await click('.ion-chips button[data-ion="3"]');await step(2.6);await click('.ion-chips button[data-ion="3"]');await step(.6);
- await click('[data-compare="single"]');await step(1);await click('#play');await step(8);
- await click('[data-compare="concerted"]');await step(1.2);
+ await click('#compare-block [data-compare="single"]');await step(1);await click('#play');await step(8);
+ await click('#compare-block [data-compare="concerted"]');await step(1.2);
  await click('[data-framework="full"]');await step(2.6);await click('[data-framework="none"]');await step(2.2);await click('[data-framework="cages"]');await step(1.4);
  await glide('#explorer',.8);await click('[data-display="3"]');await step(3);await click('[data-display="model"]');await step(1.2);
  await click('[data-question="sites"]');await step(3.4);await click('[data-occupancy="average"]');await step(3.4);
@@ -46,7 +46,7 @@ if(desktop){
  await drag(-120,0);await step(1);
  await slide('#progress',0,1000,4);await step(.8);
  await glide('#caption-title',1.2,10);await step(4);await glide('#event-plot',1,20);await slide('#progress',1000,300,2.5);await step(1);
- await click('[data-compare="single"]');await step(.6);await glide('.stage-column',1,10);await step(.4);await page.evaluate(()=>document.getElementById('play').click());await step(8);
+ await click('#compare-block [data-compare="single"]');await step(.6);await glide('.stage-column',1,10);await step(.4);await page.evaluate(()=>document.getElementById('play').click());await step(8);
  await glide('#explorer',1,10);await click('[data-question="barrier"]');await glide('#explorer',.6,10);await step(1);await page.evaluate(()=>document.getElementById('play').click());await step(8);
  await glide('#caption-title',1.2,10);await step(3);await glide('#model-block',1,40);await click('[data-landscape="b"]');await glide('.stage-column',1,10);await step(.4);await page.evaluate(()=>document.getElementById('play').click());await step(8);
 }
