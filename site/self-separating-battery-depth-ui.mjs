@@ -43,7 +43,7 @@ export function updateDepthUI(state,{setCaption,dispatch,fallback}){
  const extra=active&&(d.topic==='formation'||d.topic==='evidence'),ref=d?.topic==='evidence'?6:5;
  $('display-reference').hidden=!extra;$('display-reference').dataset.display=String(ref);$('display-reference').textContent='Figure '+ref;$('display-reference').id;
  $('explorer').classList.toggle('in-depth',active);
- document.querySelector('.paper-context').hidden=active;
+ const context=document.querySelector('.paper-context');if(context)context.hidden=active;
  if(!active){previousTopic=null;wall?.stop();return;}
  const content=depthContent[d.topic],step=formationSteps[d.formation];
  document.querySelectorAll('[data-depth-topic]').forEach(b=>{const on=b.dataset.depthTopic===d.topic;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});

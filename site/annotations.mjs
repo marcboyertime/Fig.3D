@@ -11,7 +11,7 @@
 //   id        stable key; showing the same id again keeps the callout in place and swaps its text if it changed
 //   title     short name of the thing (required); note: one short line saying what it does or why it matters
 //   at()      anchor in stage pixels: {x,y} plus optional r (ring radius around the object) and visible:false
-//   dir       preferred direction from anchor to text, [dx,dy] in screen space; dist: extra reach in px
+//   dir       preferred direction from anchor to text, [dx,dy] in screen space (or a function returning it); dist: extra reach in px
 //   tone      CSS colour of ring, line and title
 //   fade()    optional 0..1 multiplier the page controls (for example a camera transition)
 //   phone     false hides it when the stage is narrow; 'note' keeps its note there too
@@ -132,7 +132,7 @@ export class Annotations{
       const a=item.a,r=Math.max(0,a.r||0),spec=item.spec;
       // A callout with a home keeps its words near a fixed point while its line follows the moving anchor.
       const h=spec.home?.(),base=h&&Number.isFinite(h.x)&&Number.isFinite(h.y)?h:a,rb=base===a?r:0;
-      let [dx,dy]=spec.dir||[1,-.7];const n=Math.hypot(dx,dy)||1;dx/=n;dy/=n;
+      let [dx,dy]=(typeof spec.dir==='function'?spec.dir():spec.dir)||[1,-.7];const n=Math.hypot(dx,dy)||1;dx/=n;dy/=n;
       const plated=this.layer.classList.contains('is-plated'),reach=(compact?18:26)+(spec.dist||0)*(compact?.7:1)+rb,shelf=compact?8:12,gap=plated?0:compact?5:6;
       const box=(ox,oy,side)=>{const ex=base.x+ox,ey=base.y+oy,x=side>0?ex+shelf+gap:ex-shelf-gap-item.w;return {ex,ey,x,y:ey-item.titleMid,w:item.w,h:item.h,side};};
       const candidates=[[dx,dy],[-dx,dy],[dx,-dy],[-dx,-dy],[dx*1.8,dy*1.8],[-dx*1.8,dy*1.8],[dx,dy*.1],[-dx,dy*.1],...(avoid.length?[[dx*3,dy*2],[-dx*3,dy*2],[dx*4.5,dy*1.2],[-dx*4.5,dy*1.2],[dx*6,dy*.6],[-dx*6,dy*.6],[dx*2,dy*4],[-dx*2,dy*4]]:[])].map(([cx,cy])=>{

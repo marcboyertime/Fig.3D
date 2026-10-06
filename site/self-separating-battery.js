@@ -1,6 +1,7 @@
 import {Emergence} from './self-separating-battery-emergence.mjs?v=5';
+import {Annotations} from './annotations.mjs';
 import {updateDepthUI,formationWall} from './self-separating-battery-depth-ui.mjs?v=5';
-import {initialState,reduce,caption,PHASES,PAPER_POSE,HOME,anchorFor,showingPaper,openingSchedule,OPENING_END} from './self-separating-battery-model.mjs?v=5';
+import {initialState,reduce,caption,PHASES,PAPER_POSE,HOME,anchorFor,showingPaper,openingSchedule,OPENING_END,phaseAt} from './self-separating-battery-model.mjs?v=5';
 const $=id=>document.getElementById(id),all=s=>[...document.querySelectorAll(s)];
 const query=new URLSearchParams(location.search),media=matchMedia('(prefers-reduced-motion: reduce)');
 let state=initialState(media.matches||query.has('reduced')),scene=null,emergence=null,loaded=false,fallbackMode=false;
@@ -74,6 +75,7 @@ function render(){
  $('controls').classList.toggle('dimmed',state.opening);
  $('depth-toggle').disabled=!loaded&&!fallbackMode;
  $('scene-help').textContent=fallbackMode?'The 3D view is unavailable; figures and explanations remain':state.deep?.topic==='evidence'?'Original Figure 6 with marks at reported values':state.deep?'Drag to turn · arrow keys rotate':state.view==='interface'?'Drag to turn · select a layer':'Drag to turn · select a material';
+ if(scene?.ready)placeNotes();
 }
 // Moving carriers drawn in the scene: the key names them so the motion reads without the caption.
 const CARRIERS={li:{swatch:'#f3c36a',name:'Li⁺ ion'},e:{swatch:'#e9eef8',name:'Electron'}};
@@ -151,13 +153,135 @@ function switchDisplay(value){
  scene?.setState(state);
 }
 
-// ————— Scene overlays: labels and the leader to the magnified wall —————
+// ————— Scene overlays: callouts, headings and the leader to the magnified wall —————
 const labelEls=new Map(),wallY=x=>.14*Math.sin(x*.83)+.13*Math.cos(1.65*1.1);
+let notes=null,notesKey='',spotCache={key:'',spots:{}};
+const FACES=[[0,1],[0,-1],[1,1],[1,-1],[2,1],[2,-1]];
+// Where to pin each material's callout: on a sample face turned towards the reader, at the point of that
+// material farthest from any other material and from the face's edges, so the pin sits well inside its colour.
+function materialSpots(sc,g){
+ const m=sc.meta,n=m.n,f=sc.field,step=m.step,{forward}=sc.basis(),fw=[forward.x,forward.y,forward.z];
+ const kCut=Math.round((3-g.cut*3+3)/step),show=k=>g.layer==='all'||g.layer===k;
+ const best={};
+ for(const [axis,sign] of FACES){
+  const facing=fw[axis]*sign;if(facing<.18)continue;
+  const fixed=axis===2&&sign>0?Math.min(n-1,kCut):sign>0?n-1:0,grid=[];
+  for(let a=0;a<n;a++)for(let b=0;b<n;b++){
+   const idx=axis===0?[fixed,a,b]:axis===1?[a,fixed,b]:[a,b,fixed];
+   if(axis!==2&&idx[2]>kCut){grid.push(undefined);continue;}
+   const ph=phaseAt(f[(idx[0]*n+idx[1])*n+idx[2]],g,m);grid.push(ph&&!show(ph)?'hidden':ph||'pore');
+  }
+  const edge=[];for(let a=0;a<n;a++)for(let b=0;b<n;b++){const q=grid[a*n+b];for(const [da,db] of [[1,0],[0,1]]){const r=grid[(a+da)*n+b+db];if(a+da<n&&b+db<n&&r!==q)edge.push([a+da/2,b+db/2]);}}
+  for(let a=1;a<n-1;a++)for(let b=1;b<n-1;b++){
+   const q=grid[a*n+b];if(!q||q==='hidden')continue;
+   let d=Math.min(a,b,n-1-a,n-1-b,axis!==2?kCut-b:99)*.8;
+   for(const [ea,eb] of edge){const e=(ea-a)**2+(eb-b)**2;if(e<d*d)d=Math.sqrt(e);}
+   const score=d*(.45+.55*facing);
+   if(!best[q]||score>best[q].score){const u=-3+a*step,v=-3+b*step,c=-3+fixed*step;best[q]={score,p:axis===0?[sign>0?3:-3,u,v]:axis===1?[u,sign>0?3:-3,v]:[u,v,c],axis,sign};}
+  }
+ }
+ return best;
+}
+function spotFor(phase,g){
+ const sc=scene,{forward}=sc.basis(),fw=[forward.x,forward.y,forward.z];
+ const faces=FACES.filter(([a,s])=>fw[a]*s>=.18).map(x=>x.join()).join(';');
+ const key=JSON.stringify([g.view,g.stage,g.architecture,g.layer,g.cut,faces]);
+ if(spotCache.key!==key)spotCache={key,spots:materialSpots(sc,g)};
+ const spot=spotCache.spots[phase];if(!spot)return null;
+ const p=sc.project(sc.network.localToWorld(new window.THREE.Vector3(...spot.p)).toArray());
+ return {x:p.x,y:p.y,visible:fw[spot.axis]*spot.sign>.08};
+}
+// On a wide stage the words for a large object sit in the clear space beside it and the hairline reaches in.
+function beside(corners,anchor,toLocal=x=>x){
+ return ()=>{
+  if(!scene||scene.width<720)return null;const a=anchor();if(!a)return null;
+  const pts=corners().map(c=>scene.project(toLocal(c))),x0=Math.min(...pts.map(p=>p.x)),x1=Math.max(...pts.map(p=>p.x));
+  const side=a.x<(x0+x1)/2?-1:1;return {x:side<0?x0-6:x1+6,y:a.y};
+ };
+}
+const cubeCorners=()=>{const out=[];for(const x of [-3,3])for(const y of [-3,3])for(const z of [-3,3-(scene.geometryState(state).cut*3)])out.push([x,y,z]);return out;};
+const toWorld=c=>scene.network.localToWorld(new window.THREE.Vector3(...c)).toArray();
+const at3=p=>()=>{if(!scene)return null;const q=scene.project(typeof p==='function'?p():p);return {x:q.x,y:q.y};};
+function noteSpecs(){
+ const d=state.deep,list=[];if(!scene?.ready||showingPaper(state)||fallbackMode)return list;
+ const fade=()=>emergence?.active||showingPaper(state)?0:1,g=scene.geometryState(state),pick=key=>(id,commit)=>{if(commit&&state.view==='architecture')dispatch({type:'layer',value:state.layer===key?'all':key});};
+ if(d){
+  if(d.topic==='connectivity'&&scene.deep?.connectionPeak&&scene.deep.link){const sideBehind=scene.deep.link.path.some(p=>p[2]>Math.round(d.slice));list.push({id:'joined',title:'Joined out of plane',note:`These patches meet ${scene.deep.link.maxOffset} samples ${sideBehind?'behind':'in front of'} the cut`,tone:'#ffe2a8',at:at3(()=>scene.deep.connectionPeak.toArray()),dir:[-.5,1],dist:24,fade});}
+  if(d.topic==='length'){const h=1.4*d.length;
+   list.push({id:'len-cathode',title:'Cathode',note:'Electrode plate',tone:'#7fb6ec',at:at3([-2.7,h/2+.17,1.7]),dir:[-1,-.35],fade});
+   list.push({id:'len-ion',title:'Ion conductor',note:'Resistance grows with L',tone:'#e7ecf6',at:at3([-2.7,0,1.7]),dir:[-1,0],fade});
+   list.push({id:'len-anode',title:'Anode',note:'Electrode plate',tone:'#a9aeb8',at:at3([-2.7,-h/2-.17,1.7]),dir:[-1,.35],fade});}
+  if(d.topic==='formation'&&scene.deep?.bench?.state){const b=scene.deep.bench,bs=b.state,used=new Set([bs.plus,bs.minus]),onTone='#eef3ff',offTone='#8995ab';
+   for(const a of b.anchors()){if(a.kind==='mode')continue;
+    const spec={id:'bench-'+a.id,at:at3(a.at),dir:a.align==='start'?[1,-.25]:[-1,-.25],dist:a.id==='device'?6:0,fade};
+    if(a.id==='device')list.push({...spec,title:'Device',note:bs.immersed||!bs.vial?'':'Raised above the liquid',tone:'#c9d3e6'});
+    if(a.id==='carbon')list.push({...spec,title:'Carbon lead',note:used.has('carbon')?'Connected':'Not connected',tone:used.has('carbon')?onTone:offTone});
+    if(a.id==='polymer')list.push({...spec,title:'Polymer lead',note:used.has('polymer')?'Connected':'Not connected',tone:used.has('polymer')?onTone:offTone});
+    if(a.id==='li')list.push({...spec,title:'External lithium',note:used.has('li')?'Connected':'Loose in the liquid',tone:used.has('li')?'#f3c36a':offTone});
+    if(a.id==='liquid')list.push({...spec,title:'Electrolyte',note:'',tone:'#9fc2e6',phone:false});
+   }}
+  return list;
+ }
+ if(state.view==='interface'){
+  const L=scene.layers,front=1.65,x=2.2,mid=k=>[x,(L[k][0]+L[k][1])/2+wallY(x),front],show=k=>state.layer==='all'||state.layer===k;
+  if(show('cathode'))list.push({id:'i-poly',title:'PAQEDOT',note:'Cathode: takes Li⁺ in',tone:PHASES.cathode.swatch,at:at3(mid('cathode')),dir:[1,-.5],fade});
+  if(show('sei'))list.push({id:'i-sei',title:'SEI',note:'Passes Li⁺, blocks electrons',tone:PHASES.sei.swatch,at:at3(mid('sei')),dir:[1,0],fade});
+  if(show('carbon'))list.push({id:'i-carbon',title:'Carbon',note:'Anode: gives up Li⁺ and electrons',tone:'#b4b9c3',at:at3(mid('carbon')),dir:[1,.5],fade});
+  if(state.layer==='all'){
+   list.push({id:'i-ion',title:'Li⁺ ion',note:'Crosses the SEI directly',tone:'#f3c36a',at:()=>rider('ion'),home:at3([.65,1.25,1.72]),dir:[1,-.6],dist:4,fade,priority:-1});
+   list.push({id:'i-electron',title:'Electron',note:'Has to go round, through the wire',tone:'#e6eeff',at:()=>rider('electron'),home:at3([-2.6,2.15,0]),dir:[1,-.4],dist:0,fade,priority:-1});
+  }
+  return list;
+ }
+ if(state.view==='architecture'&&state.architecture==='layered'){
+  const sl=scene.layers,y=k=>(sl[k][0]+sl[k][1])/2,show=k=>state.layer==='all'||state.layer===k;
+  const slabCorners=()=>{const out=[];for(const x of [-2.7,2.7])for(const yy of [sl.carbon[0],sl.cathode[1]])for(const z of [-1.75,1.75])out.push([x,yy,z]);return out;};
+  const slab=(id,k,title,note,tone,pt,dy)=>{const at=at3(pt),home=beside(slabCorners,at);list.push({id,title,note,tone,at,home,dir:()=>{const h=home(),a=at();return h&&a?[h.x<a.x?-1:1,dy*.6]:[1,dy];},fade,onSelect:pick(k)});};
+  if(show('cathode'))slab('s-cathode','cathode','Cathode','A flat electrode sheet',PHASES.cathode.swatch,[1.2,y('cathode'),1.75],-.55);
+  if(show('sei'))slab('s-sep','sei','Separator','Holds the two sheets apart',PHASES.sei.swatch,[1.9,y('sei'),1.75],.05);
+  if(show('carbon'))slab('s-anode','carbon','Anode','The other electrode sheet','#b4b9c3',[1.2,y('carbon'),1.75],.55);
+  return list;
+ }
+ // The sample cube: architecture or one fabrication stage.
+ const fab=state.view==='fabrication',stage=fab?state.stage:'sei',spot=k=>()=>scene&&spotFor(k,g);
+ const TEXT=fab?{
+  hybrid:{carbon:['Resol-rich domain','Becomes the carbon',PHASES.precursor.swatch],template:['Template domain','Removed on heating',PHASES.template.swatch]},
+  carbon:{carbon:['Carbon','The framework that stays','#b4b9c3'],pore:['Open pores','About 90 nm on average','#8fa6c8']},
+  cathode:{carbon:['Carbon','Still touching the coating','#b4b9c3'],cathode:['PAQEDOT','Grown onto the pore walls',PHASES.cathode.swatch]},
+  sei:{carbon:['Carbon','The anode','#b4b9c3'],sei:['SEI','Formed between the two',PHASES.sei.swatch],cathode:['PAQEDOT','The cathode',PHASES.cathode.swatch]}
+ }[stage]:{carbon:['Carbon','Anode and its own wire','#b4b9c3'],sei:['SEI','The separator, grown inside',PHASES.sei.swatch],cathode:['PAQEDOT','Cathode coating the pores',PHASES.cathode.swatch]};
+ const dirs={carbon:[-1,.5],template:[1,-.6],pore:[1,-.6],cathode:[1,-.6],sei:[1,.45]};
+ for(const [k,[title,note,tone]] of Object.entries(TEXT)){
+  if(state.route&&k!==state.route)continue;
+  const at=spot(k),home=beside(cubeCorners,at,toWorld);
+  list.push({id:'m-'+k,title,note,tone,at,home,dir:()=>{const h=home(),a=at();return h&&a?[h.x<a.x?-1:1,dirs[k][1]*.6]:dirs[k];},dist:4,fade,...(!fab?{onSelect:pick(k)}:{})});
+ }
+ if(state.route&&scene.meta){const path=scene.meta.paths[state.route],mid=path[Math.floor(path.length/2)];
+  list.push({id:'route',title:state.route==='carbon'?'One unbroken carbon route':'One unbroken cathode route',note:'Face to face without leaving it',tone:'#ffe2a8',at:()=>{const q=scene.project(scene.network.localToWorld(new window.THREE.Vector3(...mid)).toArray());return {x:q.x,y:q.y};},dir:[.3,1],dist:20,fade,priority:-1});}
+ return list;
+}
+// The interface view's moving carriers: follow one ion while it crosses, one electron while it is on the wire.
+const riders={ion:{i:-1,until:0},electron:{i:-1,until:0}};
+function rider(kind){
+ const sc=scene,t=sc.time,now=performance.now(),r=riders[kind];
+ const q=kind==='ion'?i=>(t*.11+i/3)%1:i=>(t*.09+i/3)%1,objs=kind==='ion'?sc.ions:sc.electrons.slice(3,6),[lo,hi]=kind==='ion'?[.2,.82]:[.06,.94];
+ const inside=i=>{const v=q(i);return v>=lo&&v<=hi;};
+ if(r.i<0||!inside(r.i)&&now>r.until){let pickI=-1,bestQ=2;for(let i=0;i<objs.length;i++)if(inside(i)&&q(i)<bestQ){bestQ=q(i);pickI=i;}if(pickI>=0){r.i=pickI;r.until=now+260;}}
+ const o=objs[r.i];if(!o||!o.visible)return null;
+ const p=sc.project(sc.local.localToWorld(o.position.clone()).toArray());return {x:p.x,y:p.y,r:kind==='ion'?6:4,visible:inside(r.i)};
+}
+function placeNotes(){
+ if(!notes)notes=new Annotations($('scene-stage'),{className:'network-notes is-plated'});
+ const list=noteSpecs(),key=JSON.stringify(list.map(x=>[x.id,x.title,x.note,x.tone]));
+ if(key!==notesKey){notesKey=key;notes.show(list);}
+ notes.frame();
+}
 function placeLabels(s){
  const host=$('scene-labels'),items=[],d=state.deep;
- if(!showingPaper(state)&&!state.opening||!showingPaper(state)){
-  if(d&&s.deep)items.push(...(d.topic==='formation'?s.deep.bench.anchors():s.deep.labels).map(l=>({...l,at:s.deep.bench&&d.topic==='formation'?l.at:l.at})));
-  if(!d&&state.view==='interface'){const L=s.layers;items.push({id:'i-carbon',text:'Carbon',at:[2.75,(L.carbon[0]+L.carbon[1])/2+wallY(2.65),1.65],kind:'phase',align:'start'},{id:'i-sei',text:'SEI',at:[2.75,(L.sei[0]+L.sei[1])/2+wallY(2.65),1.65],kind:'phase',align:'start'},{id:'i-poly',text:'PAQEDOT',at:[2.75,(L.cathode[0]+L.cathode[1])/2+wallY(2.65),1.65],kind:'phase',align:'start'},{id:'i-circuit',text:'External circuit',at:[-3.25,1.95,0],kind:'quiet'});}
+ placeNotes();
+ if(!showingPaper(state)&&d&&s.deep){
+  if(d.topic==='formation')items.push(...s.deep.bench.anchors().filter(l=>l.kind==='mode'));
+  else items.push(...s.deep.labels.filter(l=>['title','symbol-l','symbol-a'].includes(l.kind)));
  }
  const seen=new Set();
  for(const item of items){

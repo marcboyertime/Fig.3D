@@ -94,10 +94,10 @@ export class FormationBench{
 // ————— Magnified wall (2D, crisp at any size) —————
 const NS='http://www.w3.org/2000/svg';
 const el=(name,attrs={},parent)=>{const e=document.createElementNS(NS,name);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);parent?.append(e);return e;};
-const W=360,H=300,C0=0,CARBON=118,POLY=96;
+const W=360,H=300,C0=0,CARBON=118,POLY=96,TOP=30,BOTTOM=40;
 export class FormationWall{
  constructor(host){
-  this.host=host;this.svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img'});host.append(this.svg);
+  this.host=host;this.svg=el('svg',{viewBox:`0 ${-TOP} ${W} ${H+TOP+BOTTOM}`,role:'img'});host.append(this.svg);
   const defs=el('defs',{},this.svg);
   const grad=(id,stops,x2='1')=>{const g=el('linearGradient',{id,x1:'0',x2,y1:'0',y2:x2==='1'?'0':'1'},defs);stops.forEach(([o,c])=>el('stop',{offset:o,'stop-color':c},g));};
   grad('wall-carbon',[[0,'#35383e'],[1,'#5c6068']]);grad('wall-poly',[[0,'#1d6db0'],[1,'#164f82']]);grad('wall-pore',[[0,'#2a4f74'],[1,'#1c3550']]);
@@ -174,14 +174,30 @@ export class FormationWall{
   this.labelsFor(step,L,u);
   return t<1||s.flows.includes('short');
  }
+ // Labels sit in bands above and below the wall, each with a pin in the region it names and a hairline to it,
+ // so no word is drawn over a strand, pendant or carrier. Only the flow note stays inside, on a halo.
  labelsFor(step,L,u){
-  const s=step.inset,items=[['Carbon',L.x1/2,H-12,'#d7dbe2','middle']];
-  if(L.sei>.3)items.push([s.sei===1&&u<1?'SEI forming':'SEI',L.x2+L.sei/2,18,'#bff0d6','middle']);
-  if(L.plate>2)items.push(['Li plates',L.x1+L.plate/2,H-12,'#eef2f8','middle']);
-  const doped=s.polymer==='doped'||(step.key==='charge-device'&&u>.5);items.push(['PAQEDOT',L.x3+POLY/2,H-12,'#d5e8ff','middle']);if(!doped)items.push(['de-doped',L.x3+POLY/2,H-28,'#9fb6d6','middle']);
-  items.push([step.immersed?'Pore · liquid':'Pore',W-8,H-12,'#b6c9de','end']);
-  if(s.flows.includes('short'))items.push(['e⁻ cross: a short',L.x1,18,'#ffffff','middle']);
-  if(s.flows.some(f=>f.startsWith('e-'))&&!s.flows.includes('short')&&L.sei>.3&&step.key!=='form-sei'&&step.key!=='plate-strip')items.push(['e⁻ blocked',L.x2-8,H/2+4,'#e6eeff','end']);
-  this.labels.replaceChildren(...items.map(([text,x,y,fill,anchor,vertical])=>{const g=el('text',{x,y,'text-anchor':anchor,fill,transform:vertical?`rotate(-90 ${x} ${y})`:'',dy:vertical?'4':'0'});g.textContent=text;return g;}));
+  const s=step.inset,doped=s.polymer==='doped'||(step.key==='charge-device'&&u>.5),below=[],above=[],inside=[];
+  below.push({text:'Carbon',x:L.x1/2,fill:'#d7dbe2'});
+  below.push({text:'PAQEDOT',sub:doped?'doped':'de-doped',x:L.x3+POLY*.47,fill:'#cfe3ff'});
+  below.push({text:'Pore',sub:step.immersed?'with electrolyte':'',x:(L.x4+W)/2,fill:'#b6c9de'});
+  const plate=L.plate>2,sei=L.sei>.3;
+  if(plate)above.push({text:'Li plates',x:L.x1+L.plate/2,fill:'#eef2f8',side:sei?-1:0});
+  if(sei)above.push({text:s.sei===1&&u<1?'SEI forming':'SEI',x:L.x2+L.sei/2,fill:'#bff0d6',side:plate?1:0});
+  if(s.flows.includes('short'))above.push({text:'e⁻ cross: a short',x:L.x1,fill:'#ffffff',side:0,pin:44});
+  if(s.flows.some(f=>f.startsWith('e-'))&&!s.flows.includes('short')&&sei&&step.key!=='form-sei'&&step.key!=='plate-strip')inside.push({text:'e⁻ blocked',x:L.x2-10,y:H/2+4,fill:'#e6eeff'});
+  const nodes=[],stroke='#6f7f9c';
+  for(const b of below){
+   const pinY=H-16;nodes.push(el('circle',{cx:b.x,cy:pinY,r:2,fill:b.fill}),el('path',{d:`M${b.x} ${pinY+4}V${H+8}`,stroke:b.fill,'stroke-width':.8,opacity:.6}));
+   const t=el('text',{x:b.x,y:H+22,'text-anchor':'middle',fill:b.fill,'font-size':12.5});t.textContent=b.text;nodes.push(t);
+   if(b.sub){const n=el('text',{x:b.x,y:H+35,'text-anchor':'middle',fill:'#8d9bb5','font-size':10.5});n.textContent=b.sub;nodes.push(n);}
+  }
+  for(const a of above){
+   const pinY=a.pin??16,tx=a.x+(a.side||0)*14,anchor=a.side<0?'end':a.side>0?'start':'middle',elbow=-10;
+   nodes.push(el('circle',{cx:a.x,cy:pinY,r:2,fill:a.fill}),el('path',{d:a.side?`M${a.x} ${pinY-4}V${elbow}H${tx-(a.side*2)}`:`M${a.x} ${pinY-4}V${elbow+2}`,fill:'none',stroke:a.fill,'stroke-width':.8,opacity:.6}));
+   const t=el('text',{x:a.side?tx:a.x,y:a.side?elbow+4:-14,'text-anchor':anchor,fill:a.fill,'font-size':12.5});t.textContent=a.text;nodes.push(t);
+  }
+  for(const n of inside){const t=el('text',{x:n.x,y:n.y,'text-anchor':'end',fill:n.fill,'font-size':12,stroke:'#2b2e34','stroke-width':3,'paint-order':'stroke','stroke-linejoin':'round'});t.textContent=n.text;nodes.push(t);}
+  this.labels.replaceChildren(...nodes);
  }
 }
