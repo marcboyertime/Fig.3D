@@ -1,3 +1,4 @@
+import {Annotations} from './annotations.mjs';
 import {initialState,reduce,FIGURES,DISPLAYS,INSET,clamp,smooth,ease,curveAt,imageAt,ionPositions,singlePosition,hopKind,phi,chainRow,chainBarrier,dist} from './fast-ion-diffusion-model.mjs';
 import {ChannelScene,PALETTE} from './fast-ion-diffusion-scene.mjs';
 const $=id=>document.getElementById(id),all=s=>[...document.querySelectorAll(s)],BASE='assets/fast-ion-diffusion/',SVGNS='http://www.w3.org/2000/svg';
@@ -186,13 +187,33 @@ function drawChain(){
 const labelBox=$('scene-labels');
 const ionTags=DATA.ions.map(i=>{const t=document.createElement('span');t.className='label ion-tag';t.textContent=i.id;labelBox.append(t);return t;});
 const siteTags=DATA.sites.map(s=>{const t=document.createElement('span');t.className='label site-tag';t.textContent=s.kind;labelBox.append(t);return t;});
-const singleTag=(()=>{const t=document.createElement('span');t.className='label note-tag';t.textContent='One Li⁺ alone';labelBox.append(t);return t;})();
+// Callouts that explain: the group or the selected ion during the event, the lone ion in the reference, and one site of each kind.
+const notes=new Annotations($('stage'),{className:'channel-notes',avoid:()=>[...$('stage').querySelectorAll('.scene-key,.stage-bar,.stage-tools')].filter(e=>e.offsetParent).map(e=>{const st=$('stage').getBoundingClientRect(),r=e.getBoundingClientRect();return {x:r.left-st.left-6,y:r.top-st.top-6,w:r.width+12,h:r.height+12};})});
+let notesKey='';const CALLOUT_SITES=['T2','O2'];
+function noteSpecs(sc){
+ const v=sc.view,list=[];if(showingPaper()||state.display==='chain'||failed||(state.opening&&state.beat!=null&&state.beat<3)||v.cell>.5)return list;
+ const pp=()=>sc.pixelsPerAngstrom(),at=f=>()=>{const p=sc.project(f());return {x:p.x,y:p.y,r:.3*pp()};};
+ // The words sit in the clear space above or below the channel; the hairline drops to the ion or site.
+ const band=edge=>{const ys=DATA.sites.map(o=>sc.project(o.p).y);return edge<0?Math.min(...ys)-1.9*pp()-12:Math.max(...ys)+1.9*pp()+12;};
+ const off=(atFn,edge)=>({home:()=>{const a=atFn();return a&&{x:a.x,y:band(edge)};},dir:[1,edge*.05],dist:0});
+ if(state.question==='sites'&&v.average<.5){
+  for(const name of CALLOUT_SITES){const site=siteByName[name];if(!site)continue;const T=site.kind==='T';
+   list.push({id:'site-'+name,title:T?'Tetrahedral site':'Octahedral site',note:T?'Four oxygens around it':'Six oxygens around it',tone:PALETTE.site,at:()=>{const p=sc.project(site.p);return {x:p.x,y:p.y,r:.42*pp()};},...off(()=>sc.project(site.p),T?-1:1),phone:'note'});}
+ }else if(state.question!=='sites'&&state.compare==='single'&&v.single>.5){
+  list.push({id:'single',title:'One Li⁺ alone',note:'Barrier 0.58 eV in Fig. 3e',tone:'#ff6b6e',at:at(()=>singlePosition(DATA,sc.view.progress)),...off(at(()=>singlePosition(DATA,sc.view.progress)),-1),phone:'note'});
+ }else if(state.question!=='sites'&&v.single<.5&&v.average<.5){
+  const sel=state.selection?.kind==='ion'?DATA.ions[state.selection.id-1]:null;
+  if(sel){const k=hopKind(sel);list.push({id:'ion',title:`Ion ${sel.id}: ${sel.from} → ${sel.to}`,note:k==='downhill'?'Steps down into a tetrahedral site':'Steps up into an octahedral site',tone:PALETTE.li,at:at(()=>ionPositions(DATA,sc.view.progress)[sel.id-1]),...off(at(()=>ionPositions(DATA,sc.view.progress)[sel.id-1]),-1),phone:'note',live:true});}
+  else list.push({id:'group',title:'Five Li⁺ move together',note:'Barrier 0.26 eV in Fig. 3b',tone:PALETTE.li,at:at(()=>ionPositions(DATA,sc.view.progress)[2]),...off(at(()=>ionPositions(DATA,sc.view.progress)[2]),-1),phone:'note'});
+ }
+ return list;
+}
 function placeLabels(sc){
  const v=sc.view,inEvent=state.question!=='sites',cell=v.cell>.5,P=ionPositions(DATA,v.progress),pp=sc.pixelsPerAngstrom(),opening=state.opening&&state.beat!=null&&state.beat<3;
  const put=(t,pos,dx,dy,on)=>{t.classList.toggle('on',on&&!showingPaper()&&!opening);if(!on)return;const p=sc.project(pos),w=t.offsetWidth,h=t.offsetHeight;t.style.transform=`translate(${clamp(p.x+dx-w/2,4,sc.width-w-4).toFixed(1)}px,${clamp(p.y+dy-h/2,4,sc.height-h-60).toFixed(1)}px)`;};
  ionTags.forEach((t,i)=>{t.classList.toggle('selected',state.selection?.kind==='ion'&&state.selection.id===i+1);put(t,P[i],0,-(.36*pp+14),v.single<.5&&v.average<.5&&!cell);});
- siteTags.forEach((t,i)=>{t.classList.toggle('dim',inEvent);put(t,DATA.sites[i].p,.5*pp+8,.5*pp+6,!cell&&pp>22);});
- put(singleTag,singlePosition(DATA,v.progress),0,-(.36*pp+16),v.single>.5);
+ siteTags.forEach((t,i)=>{t.classList.toggle('dim',inEvent);put(t,DATA.sites[i].p,.5*pp+8,.5*pp+6,!cell&&pp>22&&!(state.question==='sites'&&v.average<.5&&CALLOUT_SITES.includes(DATA.sites[i].name)));});
+ const list=noteSpecs(sc),key=JSON.stringify(list.map(x=>[x.id,x.title,x.note]));if(key!==notesKey){notesKey=key;notes.show(list);}notes.frame();
 }
 function sceneKey(){
  const q=state.question,dot=(c,t,cls='')=>`<span><i class="${cls}" style="background:${c}"></i>${t}</span>`;
