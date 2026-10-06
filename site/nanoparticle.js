@@ -3,6 +3,7 @@ import {representative,siteDescription,bindingSites,add,mul} from './nanoparticl
 import {fallbackSVG} from './nanoparticle-fallback.mjs?v=20261002-6';
 import {ParticleScene} from './nanoparticle-scene.mjs?v=20261002-6';
 import {OPENING_BEATS,OPENING_STARTS,OPENING_END,openingPhase} from './nanoparticle-opening.mjs?v=20261002-6';
+import {Annotations} from './annotations.mjs';
 const $=id=>document.getElementById(id), reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const forceReduced=new URLSearchParams(location.search).get('motion')==='reduce';
 let state=initialState(reduced.matches||forceReduced),scene,failed=false,elapsed=0,lastTime=0,phase=-1;
@@ -52,6 +53,46 @@ function update(){
   document.querySelectorAll('[data-site]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.site===state.site));$('stacking').hidden=!['fcc','hcp'].includes(state.site);$('stacking').setAttribute('aria-pressed',state.stacking);$('stacking').textContent=state.stacking?'Restore the terrace ↙':'Reveal underlying layers ↗';$('binding-detail').textContent=state.stacking?`${state.site==='hcp'?'Second':'Third'} layer aligned below the hollow. The opening changes visibility only.`:`${site.atomIds.length} surface atom${site.atomIds.length>1?'s frame':' frames'} this position. The diamond marks a location, not a molecule.`;
  }
  $('scene-label').hidden=true;
+ notesFor();
+}
+
+// Callouts in the scene: the face, atom or binding site the caption is talking about carries its own label.
+let notes=null,noteKey='';
+const SITE_NOTES={atop:'Directly above one surface atom',bridge:'Between two neighbouring atoms',hollow:'In the gap among four atoms',fcc:'Over a gap with no atom in the layer below',hcp:'Over an atom in the layer below'};
+function worldRadius(){const c=scene.camera;return (c.top-c.bottom)/scene.height;}
+function facing(p){const c=scene.camera.position,t=scene.pose.target,d=[c.x-t[0],c.y-t[1],c.z-t[2]],n=Math.hypot(...d),q=Math.hypot(...p)||1;return (p[0]*d[0]+p[1]*d[1]+p[2]*d[2])/(n*q);}
+function atAtom(a,r=.56){return ()=>{if(!scene||!a)return null;const pr=scene.project(a.p);return {x:pr.x,y:pr.y,r:r/worldRadius(),visible:pr.z<1&&(a.cn===12||facing(a.p)>-.05)};};}
+function atPoint(p,r=0){return ()=>{if(!scene)return null;const pr=scene.project(p);return {x:pr.x,y:pr.y,r:r?r/worldRadius():0};};}
+function notesFor(){
+ if(!scene||failed)return;
+ if(!notes){
+  notes=new Annotations($('scene-stage'),{className:'particle-notes is-plated',compactWidth:520,avoid:()=>{if(!scene||!state.model)return[];const c=scene.project([0,0,0]),R=state.model.radius??(state.model.radius=Math.max(...state.model.atoms.map(a=>Math.hypot(...a.p))));return[{x:c.x,y:c.y,r:R*.95/worldRadius()}];}});
+ }
+ if(state.intro){if(noteKey!=='intro'){noteKey='intro';notes.hide();}return;}
+ const m=state.model,list=[],gold='#e9c46a',blue='#9fc0ff',violet='#c9b4f0';
+ if(state.view==='surfaces'){
+  const face=m.facets.find(f=>f.id===state.faceId),centre=representative(m,'face',state.faceId);
+  list.push({id:'face',title:face.family==='100'?'{100} face':'{111} face',note:face.family==='100'?'A square grid: each atom has 8 neighbours':'Close-packed triangles: each atom has 9',tone:face.family==='100'?'#d6dcec':violet,at:atAtom(centre),dir:[1,-.6],dist:40,phone:'note'});
+  const other=m.facets.filter(f=>f.family!==face.family).sort((a,b)=>facing(b.center)-facing(a.center))[0];
+  if(other){const a=representative(m,'face',other.id);list.push({id:'other',title:other.family==='100'?'{100} face':'{111} face',note:'The other pattern on the same crystal',tone:'#b8ad8f',at:atAtom(a),dir:[-1,.6],dist:40,phone:false});}
+  const corner=representative(m,'corner');list.push({id:'corner',title:'Corner atom',note:'Only 5 neighbours: the most exposed',tone:gold,at:atAtom(corner),dir:[1,.7],dist:30,phone:false});
+ }
+ if(state.view==='neighbors'&&state.selected){
+  const a=m.byId.get(state.selected);
+  list.push({id:'atom',title:siteDescription(a),note:a.cn===12?'12 neighbours: fully surrounded':`${a.cn} neighbours, ${12-a.cn} missing compared with the inside`,tone:blue,at:atAtom(a,.6),dir:[1,-.65],dist:46,phone:'note',live:true});
+  const nb=a.neighbors.map(id=>m.byId.get(id)).sort((x,y)=>facing(y.p)-facing(x.p))[0];
+  if(nb)list.push({id:'neighbour',title:'Nearest neighbour',note:'Touching it: one of the bonds counted',tone:'#759fe5',at:atAtom(nb,.5),dir:[-1,.6],dist:40,phone:false});
+ }
+ if(state.view==='size'){
+  list.push({id:'surface',title:'Surface atoms',note:`${(m.surfaceFraction*100).toFixed(0)}% of all ${m.atoms.length.toLocaleString()} at this size`,tone:gold,at:atAtom(representative(m,'edge')),dir:[1,-.6],dist:40,live:true,phone:'note'});
+ }
+ if(state.view==='binding'){
+  const site=bindingSites(m,state.faceId)[state.site];
+  if(site)list.push({id:'site',title:`${names[state.site]} site`,note:SITE_NOTES[state.site],tone:violet,at:atPoint(add(site.p,mul(site.normal,1.52)),.42),dir:[1,-.6],dist:40,phone:'note'});
+  if(site&&state.stacking&&site.underlying){const u=m.byId.get(site.underlying);list.push({id:'under',title:'Atom in the layer below',note:state.site==='hcp'?'Sits right under the site':'Offset from the site',tone:'#e4d9ff',at:atAtom(u,.5),dir:[-1,.6],dist:40,phone:false});}
+ }
+ const key=JSON.stringify(list.map(x=>[x.id,x.title,x.note]))+state.selected+state.faceId;
+ if(key!==noteKey){noteKey=key;notes.show(list);}
 }
 function advance(now){
  if(!state.intro||state.paused){lastTime=0;return;}

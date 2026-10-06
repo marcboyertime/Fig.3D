@@ -25,3 +25,5 @@ button.fig-ann-label:focus-visible{outline:1.5px solid var(--tone);outline-offse
 .fig-ann.is-compact .fig-ann-label[data-phone=title] span{display:none}
 /* Light paper backgrounds: dark ink, a pale halo. */
 .fig-ann.on-paper{--ann-halo:#ffffff;--ann-ink:#14182a;--ann-muted:#4a5266}
+.fig-ann.is-plated .fig-ann-label{padding:5px 9px 6px;border-radius:6px;background:rgba(9,12,22,.72);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);box-shadow:0 0 0 1px rgba(255,255,255,.06),0 6px 20px rgba(0,0,0,.35);text-shadow:none}
+.fig-ann.is-plated .fig-ann-label span{color:#b9c2d6}

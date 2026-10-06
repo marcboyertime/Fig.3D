@@ -1,5 +1,6 @@
 import {initialState,reduce,FIGURES,DISPLAYS,HOME,VIEWS,section,outer,contour,frontAt,clamp,smooth} from './silicon-nanowire-model.mjs';
 import {WireScene,PALETTE} from './silicon-nanowire-scene.mjs';
+import {Annotations} from './annotations.mjs';
 import {PaperEmergence,PROFILE} from './silicon-nanowire-opening.mjs';
 const $=id=>document.getElementById(id),all=s=>[...document.querySelectorAll(s)],BASE='assets/silicon-nanowire/';
 const reducedQuery=matchMedia('(prefers-reduced-motion: reduce)'),params=new URLSearchParams(location.search);
@@ -126,7 +127,19 @@ function drawSection(p,s,muted,arrows=state.question==='stress'&&state.stress!==
 }
 
 // ————— Labels anchored to the model —————
-const LABELS=Object.fromEntries(all('[data-label]').map(el=>[el.dataset.label,el]));
+const LABELS={tension:{},compression:{}};
+const notes=new Annotations($('stage'),{className:'wire-notes is-plated',compactWidth:560,avoid:()=>{const st=$('stage').getBoundingClientRect();return [...$('stage').querySelectorAll('.section-inset,.scene-key,.stage-bar')].filter(e=>e.offsetParent).map(e=>{const r=e.getBoundingClientRect();return {x:r.left-st.left-6,y:r.top-st.top-6,w:r.width+12,h:r.height+12};});}});
+let noteAt={},noteScene=null,noteKey='';
+// Title, explanation, colour, direction, reach and phone behaviour for each label.
+const NOTE_TEXT={
+ shell:()=>['Lithiated shell','Silicon that has taken up lithium and swelled','#ff8a7a',[1,-.6],18,'note'],
+ core:()=>['Crystalline core','Silicon not yet reached, shrinking','#8fb2ff',[1,-.7],26,'note'],
+ front:()=>['Reaction front','Where silicon is turning to Li–Si now','#e6ebf6',[-1,-.6],22,false],
+ supply:()=>['Lithium enters','From the source at this end','#e6ebf6',[-1,.55],22,false],
+ neck:()=>['Crack path, after Fig. 5f','Tension pulls the surface indent open','#e6ebf6',[1,-.6],30,'note'],
+ tension:()=>['Tension','Pulled apart here','#ff9f6b',[1,-.4],10,'title'],
+ compression:()=>['Compression','Squeezed here','#7fb0ff',[1,.4],10,'title']
+};
 function placeLabels(sc){
  const v=sc.view,q=state.question,show={},at={};
  const free=state.view==='oblique'||state.view==null,s0=v.trim;
@@ -141,15 +154,15 @@ function placeLabels(sc){
   }
   if(q==='fracture'&&free){const s=Math.min(.95,s0+.2),d=section(v.progress,s);at.neck=[.3,outer(Math.PI/2,d)[1]+.05,d.z,70,-36];show.neck=v.neck>.6;}
   if(q==='stress'&&state.stress!=='mises'&&free){const d=section(v.progress,v.trim),top=outer(Math.PI/2,d)[1],late=state.stress!=='early';
-   LABELS.tension.textContent='Tension';LABELS.compression.textContent='Compression';
    at[late?'tension':'compression']=[.98,top-.2,d.z,8,-11];at[late?'compression':'tension']=[.98,0,d.z,8,-11];show.tension=show.compression=v.arrows>.6;}
  }
- for(const [k,el] of Object.entries(LABELS)){
-  const on=!!show[k]&&!showingPaper();el.classList.toggle('on',on);if(!at[k])continue;
-  const [x,y,z,dx,dy]=at[k],p=sc.project([x,y,z]),w=el.offsetWidth,h=el.offsetHeight;
-  const left=clamp(p.x+dx,8,sc.width-w-8),top=clamp(p.y+dy,8,sc.height-h-(sc.width<560?92:84));
-  el.style.transform=`translate(${left.toFixed(1)}px,${top.toFixed(1)}px)`;
- }
+ // Each label rides its point on the wire; the ring sits on the thing named and a hairline runs to the words.
+ noteAt=at;noteScene=sc;
+ const list=Object.keys(NOTE_TEXT).filter(k=>show[k]&&at[k]&&!showingPaper()).map(k=>{const [title,note,tone,dir,dist,phone]=NOTE_TEXT[k](state);
+  return {id:k,title,note,tone,dir,dist,phone,at:()=>{const v=noteAt[k];if(!v||!noteScene)return null;const p=noteScene.project([v[0],v[1],v[2]]);return {x:p.x,y:p.y};}};});
+ const key=list.map(x=>x.id+x.title+x.note).join('|');
+ if(key!==noteKey){noteKey=key;notes.show(list);}
+ notes.frame();
 }
 function onFrame(sc){
  const v=sc.view;drawSection(v.progress,v.slice,v.muted);

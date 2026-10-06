@@ -19,7 +19,8 @@
 //   priority  lower places first and wins collisions (default: order given)
 //   live      text that follows a slider: swap it without the blur
 //   onSelect  makes the text a button (hover previews, click pins); select(id) marks one as pressed
-// Options: avoid() returns circles {x,y,r} or rects {x,y,w,h} the words should stay off (usually the model itself).
+// Options: className 'is-plated' sets the words on a small dark glass plate, for scenes too busy for a halo alone.
+// avoid() returns circles {x,y,r} or rects {x,y,w,h} the words should stay off (usually the model itself).
 // The first callouts wait for the page's staged opening to finish and for the stage to be on screen.
 const SVG='http://www.w3.org/2000/svg';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),ease=t=>1-Math.pow(1-clamp(t,0,1),3),smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
@@ -132,7 +133,7 @@ export class Annotations{
       // A callout with a home keeps its words near a fixed point while its line follows the moving anchor.
       const h=spec.home?.(),base=h&&Number.isFinite(h.x)&&Number.isFinite(h.y)?h:a,rb=base===a?r:0;
       let [dx,dy]=spec.dir||[1,-.7];const n=Math.hypot(dx,dy)||1;dx/=n;dy/=n;
-      const reach=(compact?18:26)+(spec.dist||0)*(compact?.7:1)+rb,shelf=compact?8:12,gap=compact?5:6;
+      const plated=this.layer.classList.contains('is-plated'),reach=(compact?18:26)+(spec.dist||0)*(compact?.7:1)+rb,shelf=compact?8:12,gap=plated?0:compact?5:6;
       const box=(ox,oy,side)=>{const ex=base.x+ox,ey=base.y+oy,x=side>0?ex+shelf+gap:ex-shelf-gap-item.w;return {ex,ey,x,y:ey-item.titleMid,w:item.w,h:item.h,side};};
       const candidates=[[dx,dy],[-dx,dy],[dx,-dy],[-dx,-dy],[dx*1.8,dy*1.8],[-dx*1.8,dy*1.8],[dx,dy*.1],[-dx,dy*.1],...(avoid.length?[[dx*3,dy*2],[-dx*3,dy*2],[dx*4.5,dy*1.2],[-dx*4.5,dy*1.2],[dx*6,dy*.6],[-dx*6,dy*.6],[dx*2,dy*4],[-dx*2,dy*4]]:[])].map(([cx,cy])=>{
         const side=Math.abs(cx)<.12?(spec.side||1):Math.sign(cx);let b=box(cx*reach,cy*reach,side);
