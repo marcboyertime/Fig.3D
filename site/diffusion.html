@@ -7,13 +7,19 @@
   <title>Fig.3D — Diffusion in a particle</title>
   <meta name="description" content="Interactive science, from the page to the physical picture. Explore an emerging collection of companions for batteries, electrochemistry, and nanomaterials.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23080a12'/%3E%3Ctext x='5' y='24' font-family='Arial' font-size='25' font-weight='bold' fill='%237d9cff'%3Ef.%3C/text%3E%3C/svg%3E">
-  <link rel="preload" href="assets/fonts/Sora-Variable.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="preview.css"><link rel="stylesheet" href="visual-language.css"><link rel="stylesheet" href="film.css">
+  <link rel="preload" href="assets/fonts/Sora-Variable.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="preview.css"><link rel="stylesheet" href="visual-language.css"><link rel="stylesheet" href="film.css"><link rel="stylesheet" href="module-opening.css"><link rel="stylesheet" href="annotations.css"><script src="module-opening.js"></script>
   <script type="module" src="preview.js"></script>
   <script type="module" src="film.js"></script>
 </head>
-<body class="preview-page"><header class="preview-header"><a class="brand" href="index.html">Fig.<span>3D</span></a><a href="index.html#collection">Back to the collection</a></header><main><section class="film" aria-labelledby="film-title">
-  <div class="film-label section-label"><span>01 — WATCH IT HAPPEN</span><span>BLENDER FILM</span></div>
-  <div class="film-grid">
+<body class="preview-page"><header class="preview-header" data-open="1"><a class="brand" href="index.html">Fig.<span>3D</span></a><a href="index.html#collection">Back to the collection</a></header><main><section class="film" aria-labelledby="page-title">
+  <header class="module-head"><div data-open="title"><h1 id="page-title" data-open-line>Diffusion in a particle</h1><p class="fig-question" data-open-line>Why do smaller particles fill with lithium so much faster?</p></div>
+  <section class="fig-intro" aria-label="About this visualization" data-open="2">
+  <div data-open="2"><h2>The idea</h2><p>A battery electrode is a powder of tiny particles. Lithium can only get into each one through its surface, and then has to spread inward by diffusion: random hopping, with no push toward the centre. How long that takes is one of the limits on how fast the material can charge.</p></div>
+  <div data-open="3"><h2>What you’re looking at</h2><p>A round particle with a quarter cut away, so you can see inside. The cut faces are coloured by how much lithium is there, from dark purple for empty to blue for full, with contour lines at 20, 40, 60 and 80 percent. The beads are lithium. The film loops: lithium goes in, then comes back out.</p></div>
+  <div data-open="4"><h2>Try it</h2><p>Below the film, change the particle’s radius and watch its inside fill at a different pace. Diffusion time grows with the square of the distance, so half the radius takes a quarter of the time. This is an ideal sphere with one fixed diffusivity, not a measurement of a real material.</p></div>
+  </section></header>
+  <div class="film-label section-label" data-open="5"><span>01 — WATCH IT HAPPEN</span><span>BLENDER FILM</span></div>
+  <div class="film-grid" data-open="5" data-open-stage>
     <div class="film-stage">
       <video id="film-video" muted loop playsinline preload="auto" poster="assets/diffusion-film/poster.webp" aria-describedby="film-desc">
         <source src="assets/diffusion-film/diffusion-960.mp4" type="video/mp4" media="(min-width: 561px)">
@@ -22,13 +28,10 @@
         <source src="assets/diffusion-film/diffusion-640.webm" type="video/webm">
       </video>
       <p id="film-desc" class="sr-only">A sphere with one quarter cut away. The two cut faces are colored by lithium concentration, dark purple for empty and blue for full, with hairline contours at 20, 40, 60 and 80 percent. Lithium ions, drawn as small beads, enter at the surface and spread toward the center, then leave from the surface first when the surface is emptied. The film loops every 16 seconds.</p>
-      <svg class="film-leaders" id="film-leaders" aria-hidden="true"><path id="leader-surface"/><path id="leader-centre"/><circle id="dot-surface" r="2.5"/><circle id="dot-centre" r="2.5"/></svg>
-      <span class="film-tag" id="tag-surface" aria-hidden="true">Surface</span>
-      <span class="film-tag" id="tag-centre" aria-hidden="true">Center</span>
     </div>
     <div class="film-copy">
       <div class="eyebrow film-eyebrow"><span class="crosshair" aria-hidden="true">+</span> FIG. 01 <span>SPHERICAL DIFFUSION</span></div>
-      <h1 id="film-title">Lithium fills a particle from the outside in</h1>
+      <h2 id="film-title" class="film-title">Lithium fills a particle from the outside in</h2>
       <ol class="film-steps" id="film-steps">
         <li data-from="0" data-to="96"><b>The surface fills first</b><span>Lithium enters through the surface, so the outer shell is full long before the middle</span></li>
         <li data-from="96" data-to="192"><b>The center catches up slowly</b><span>Diffusion carries lithium inward. The deeper it has to go, the longer it takes</span></li>
@@ -55,7 +58,7 @@
       </div>
     </div>
   </div>
-</section>    <section id="explore" class="exploration light-section" aria-labelledby="explore-title">
+</section>    <section id="explore" class="exploration light-section" data-open="6" aria-labelledby="explore-title">
       <div class="section-label"><span>02 — TRY AN IDEA</span><span>INTERACTIVE MODEL PREVIEW</span></div>
       <div class="explore-heading"><h2 id="explore-title">Small particle<br>Different timescale</h2><p>Same material. Same elapsed time.<br>Change the radius and see what happens inside.</p></div>
       <div class="experiment">
@@ -71,10 +74,7 @@
             <path id="radius-line" d="M280 168H389" stroke="#fff" stroke-width="1.2"/>
             <circle cx="280" cy="168" r="3" fill="#fff"/>
             <text id="radius-label" x="330" y="156" fill="#fff" font-size="15" font-family="monospace">R</text>
-            <path id="surface-pointer" d="M357 91L443 47H496" fill="none" stroke="#6b7390" stroke-width=".75"/>
-            <text x="442" y="36" fill="#9aa1b8" font-size="13" font-family="monospace">c = cₛ</text>
-          </svg><button class="part-marker core-marker" data-part="core" type="button" aria-pressed="true" aria-describedby="part-explanation"><span class="marker-point" aria-hidden="true"></span><span class="marker-label">Core</span></button><button class="part-marker surface-marker" data-part="surface" type="button" aria-pressed="false" aria-describedby="part-explanation"><span class="marker-point" aria-hidden="true"></span><span class="marker-label">Surface</span></button></div>
-          <p id="part-explanation" class="part-explanation" aria-live="polite"></p>
+          </svg></div>
           <div class="concentration-key"><span>Relative concentration, c/cₛ</span><span class="color-key"><span>0</span><i aria-hidden="true"></i><span>1</span></span></div>
           <div class="profile-header"><span>FIG. 01 / B</span><span>THE SAME FIELD, AS A PROFILE</span></div>
           <svg class="profile-plot" viewBox="0 0 560 130" role="img" aria-labelledby="profile-title profile-desc">

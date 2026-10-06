@@ -1,3 +1,4 @@
+import {Annotations,projectPoint} from './annotations.mjs';
 import {CELL,ROUTES,pointAlongPolyline,graphiteGeometry,graphiteIonPath,inventoryFills} from './battery-model.mjs';
 const COLORS={lithium:0x80f3d0,electron:0xc5a0ff,carbon:0x526b8e,negative:0x7da6f8,positive:0xa786ef};
 const smooth=t=>t*t*(3-2*t),clamp01=t=>Math.max(0,Math.min(1,t)),easeOut=t=>1-Math.pow(1-clamp01(t),3);
@@ -115,59 +116,68 @@ export class BatteryScene{
     this.galleryMarker.visible=false;this.galleryGuide.visible=false;
   }
   makeLabels(){
-    const g=this.graphiteData,local=p=>CELL.graphiteOrigin.map((o,i)=>o+p[i]*CELL.graphiteScale);
+    const g=this.graphiteData,local=p=>this.vector(CELL.graphiteOrigin.map((o,i)=>o+p[i]*CELL.graphiteScale));
     const top=g.layerY.at(-1),gallery=(g.layerY[0]+g.layerY[1])/2,edge=this.galleryPath[0];
-    // Each callout names a point on the object and sits off it in a fixed screen direction, joined by a hairline.
-    const entries=[
-      ['negative','Graphite','Anode · negative −',[-3.25,-1.5,0],[-.65,1],'cell'],
-      ['positive','Cobalt oxide','Cathode · positive +',[3.25,-1.5,0],[.3,1],'cell'],
-      ['separator','Separator','Porous film',[0,1.575,0],[1,-.15],'cell',1.4],
-      ['load','Load','Energy delivered',[0,3.1,0],[0,-1],'cell'],
-      ['carbon','Carbon sheets','Hexagonal networks',local([-2.6,top,-1.1]),[-.45,-1],'inside'],
-      ['gallery','Interlayer gallery','Space for lithium',local([-3.1,gallery,1.4]),[-.35,1],'inside',1.9],
-      ['edge','Exposed edge','Entry and exit',local([edge[0]-.6,edge[1],edge[2]]),[.6,1],'inside']
-    ];
-    this.annotations=document.createElementNS(SVG,'svg');this.annotations.setAttribute('class','scene-annotations');this.annotations.setAttribute('aria-hidden','true');this.labelLayer.prepend(this.annotations);
-    for(const [key,title,sub,point,dir,view,reach=1]of entries){
-      const el=document.createElement('button');el.className=`scene-label label-${key}`;el.type='button';el.innerHTML=`<span>${title}</span><small>${sub}</small>`;el.dataset.part=key;el.setAttribute('aria-pressed','false');
-      el.addEventListener('pointerenter',()=>this.onPart(key,false));el.addEventListener('pointerleave',()=>this.onPart(null,false));el.addEventListener('focus',()=>this.onPart(key,false));el.addEventListener('blur',()=>this.onPart(null,false));el.addEventListener('click',()=>this.onPart(key,true));this.labelLayer.append(el);
-      const leader=document.createElementNS(SVG,'path'),dot=document.createElementNS(SVG,'circle');leader.setAttribute('class',`leader leader-${key}`);dot.setAttribute('class',`anchor anchor-${key}`);dot.setAttribute('r','2.2');this.annotations.append(leader,dot);
-      const n=Math.hypot(...dir);this.labels.push({key,el,leader,dot,point:this.vector(point),dir:[dir[0]/n,dir[1]/n],view,reach});
-    }
+    this.notes=new Annotations(this.labelLayer,{className:'battery-notes'});
+    this.points={negative:this.vector([-3.25,-1.5,1.5]),positive:this.vector([3.6,-1.5,1.5]),separator:this.vector([0,1.575,-1.2]),load:this.vector([.7,3.1,0]),
+      ionHome:this.vector([0,-1.5,1.5]),electronHome:this.vector([-4.2,2.15,0]),galleryHome:local(pointAlongPolyline(this.galleryPath,.5)),
+      carbon:local([-2.6,top,-1.1]),gallery:local([-3.1,gallery,1.4]),edge:local([edge[0]-.6,edge[1],edge[2]])};
     // Direction arrows: lithium ions through the electrolyte, electrons around the circuit, lithium along a gallery.
+    this.annotations=document.createElementNS(SVG,'svg');this.annotations.setAttribute('class','scene-annotations');this.annotations.setAttribute('aria-hidden','true');this.labelLayer.prepend(this.annotations);
     this.arrows=['ion','electron','gallery'].map(kind=>{
-      const group=document.createElementNS(SVG,'g'),line=document.createElementNS(SVG,'path'),head=document.createElementNS(SVG,'path'),text=document.createElementNS(SVG,'text');
-      group.setAttribute('class',`flow-arrow flow-${kind}`);line.setAttribute('class','line');head.setAttribute('class','head');text.setAttribute('class','tag');
-      text.innerHTML=kind==='electron'?'e<tspan dy="-6" font-size="10">−</tspan>':'Li<tspan dy="-6" font-size="10">+</tspan>';
-      group.append(line,head,text);this.annotations.append(group);return {kind,group,line,head,text};
+      const group=document.createElementNS(SVG,'g'),line=document.createElementNS(SVG,'path'),head=document.createElementNS(SVG,'path');
+      group.setAttribute('class',`flow-arrow flow-${kind}`);line.setAttribute('class','line');head.setAttribute('class','head');
+      group.append(line,head);this.annotations.append(group);return {kind,group,line,head};
     });
+    this.riders={ion:{index:0,hold:0},electron:{index:0,hold:0},gallery:{}};
+  }
+  // The callout that rides a moving ion follows one ion across, lets go as it reaches the far electrode, and picks up
+  // the next one entering, so the words stay still while the ring travels.
+  rider(kind,markers,from,to){
+    const r=this.riders[kind],now=performance.now(),forward=(this.state?.direction||1)>0;
+    const travel=m=>{const f=((this.phase+(kind==='ion'?markers.indexOf(m)*.618034:markers.indexOf(m)/9))%1+1)%1;return forward?f:1-f;};
+    let m=markers[r.index],t=travel(m);
+    if(t<from||t>to){
+      if(!r.hold)r.hold=now+260;
+      if(now<r.hold)return null;
+      // The newest marker already on its way becomes the one we follow.
+      let best=null,bt=2;markers.forEach((c,i)=>{const ct=travel(c);if(ct>=from&&ct<to&&ct<bt){bt=ct;best=i;}});
+      if(best===null)return null;r.index=best;r.hold=0;m=markers[best];
+    }else r.hold=0;
+    return m;
   }
   project(point){const p=point.clone().project(this.camera);return [(p.x*.5+.5)*this.width,(-p.y*.5+.5)*this.height,p.z];}
   layoutLabels(z){
-    const W=this.width,H=this.height,placed=[];this.annotations.setAttribute('viewBox',`0 0 ${W} ${H}`);
-    for(const label of this.labels){
-      const opacity=label.view==='cell'?1-smooth(clamp01(z/.22)):smooth(clamp01((z-.78)/.22));
-      label.el.hidden=opacity<.02;label.el.style.opacity=opacity.toFixed(3);label.el.style.pointerEvents=opacity>.6?'':'none';
-      label.leader.style.opacity=label.dot.style.opacity=(opacity*.9).toFixed(3);if(label.el.hidden)continue;
-      const [ax,ay]=this.project(label.point),w=label.el.offsetWidth||120,h=label.el.offsetHeight||40,[dx,dy]=label.dir,reach=(W<520?22:30)*label.reach,edge=W<520?12:6;
-      let cx=ax+dx*(reach+w/2),cy=ay+dy*(reach+h/2);
-      // Keep the whole callout inside the frame, then step it clear of callouts already placed.
-      const fit=()=>{cx=Math.max(w/2+edge,Math.min(W-w/2-edge,cx));cy=Math.max(h/2+4,Math.min(H-h/2-4,cy));};fit();
-      for(let pass=0;pass<3;pass++)for(const o of placed){const ox=(w+o.w)/2+6-Math.abs(cx-o.cx),oy=(h+o.h)/2+4-Math.abs(cy-o.cy);if(ox>0&&oy>0){cy+=(cy>=o.cy?1:-1)*oy;fit();}}
-      placed.push({cx,cy,w,h});label.el.style.left=`${cx}px`;label.el.style.top=`${cy}px`;
-      // The hairline runs from the anchor to the nearest edge of the text block.
-      const vx=ax-cx,vy=ay-cy,t=Math.min(Math.abs(vx)>1e-6?(w/2+5)/Math.abs(vx):Infinity,Math.abs(vy)>1e-6?(h/2+3)/Math.abs(vy):Infinity);
-      const ex=cx+vx*Math.min(1,t),ey=cy+vy*Math.min(1,t),len=Math.hypot(ax-ex,ay-ey);
-      if(t>=1||len<7){label.leader.setAttribute('d','');}else{const ux=(ex-ax)/len,uy=(ey-ay)/len;label.leader.setAttribute('d',`M${(ax+ux*4).toFixed(1)} ${(ay+uy*4).toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}`);}
-      label.dot.setAttribute('cx',ax.toFixed(1));label.dot.setAttribute('cy',ay.toFixed(1));
+    if(!this.state||!this.notes)return;
+    const cellFade=()=>1-smooth(clamp01(this.zoom/.3)),insideFade=()=>smooth(clamp01((this.zoom-.7)/.3)),discharge=this.state.mode==='discharge';
+    const at=(p,r)=>()=>projectPoint(this.T,this.camera,p,this.width,this.height,r);
+    const ride=(kind,markers,from,to,radius)=>()=>{const m=this.rider(kind,markers,from,to);if(!m)return {x:0,y:0,visible:false};const p=m.getWorldPosition(new this.T.Vector3());return projectPoint(this.T,this.camera,p,this.width,this.height,radius*m.scale.x);};
+    const key=`${this.state.mode}:${this.zoom>.5}`;
+    if(this.noteKey!==key){
+      this.noteKey=key;const P=this.points,pick=this.onPart;
+      const ox=this.state.oxidation==='negative';
+      this.notes.show(this.zoom<.5?[
+        {id:'ion',title:'Lithium ion',note:discharge?'Crosses the electrolyte to the oxide':'Pulled back across to graphite',tone:'#80f3d0',at:ride('ion',this.ionMarkers,.22,.78,.075),home:at(P.ionHome),dir:[-.55,1],dist:10,fade:cellFade,phone:'note',priority:0},
+        {id:'electron',title:'Electron',note:discharge?'Takes the wire, through the load':'Driven round the wire by the charger',tone:'#c5a0ff',at:ride('electron',this.electronMarkers,discharge?.03:.69,discharge?.31:.97,.058),home:at(P.electronHome),dir:[-1,-.25],dist:8,fade:cellFade,phone:'note',priority:1},
+        {id:'negative',title:'Graphite',note:ox?'Anode now: gives up lithium':'Cathode now: takes lithium back',tone:'#8fb2ff',at:at(P.negative),dir:[-.7,1],fade:cellFade,onSelect:pick,label:'Graphite, negative electrode. Select for explanation.',priority:2},
+        {id:'positive',title:'Cobalt oxide',note:ox?'Cathode now: takes lithium in':'Anode now: gives lithium up',tone:'#b398f5',at:at(P.positive),dir:[.6,1],fade:cellFade,onSelect:pick,label:'Cobalt oxide, positive electrode. Select for explanation.',priority:3},
+        {id:'separator',title:'Separator',note:'Lets ions through, blocks electrons',tone:'#c5cee0',at:at(P.separator),dir:[1,-.35],dist:18,fade:cellFade,onSelect:pick,phone:false,priority:4},
+        {id:'load',title:discharge?'Load':'Charger',note:discharge?'Where the energy is delivered':'Supplies the energy stored',tone:'#c5cee0',at:at(P.load),dir:[1,-.4],fade:cellFade,onSelect:pick,priority:5}
+      ]:[
+        {id:'gallery-ion',title:'Lithium ion',note:discharge?'Slides out between two sheets':'Slides in between two sheets',tone:'#80f3d0',at:()=>{const f=((this.phase%1)+1)%1,t=discharge?f:1-f;if(t<.06||t>.94)return {x:0,y:0,visible:false};const p=this.galleryMarker.getWorldPosition(new this.T.Vector3());return projectPoint(this.T,this.camera,p,this.width,this.height,.2*CELL.graphiteScale);},home:at(P.galleryHome),dir:[.25,1],dist:44,fade:insideFade,phone:'note',priority:0},
+        {id:'edge',title:'Exposed edge',note:discharge?'The way out of the host':'The way into the host',tone:'#80f3d0',at:at(P.edge),dir:[.7,.9],fade:insideFade,onSelect:pick,priority:1},
+        {id:'carbon',title:'Carbon sheet',note:'Rings of carbon that stay put',tone:'#8fb2ff',at:at(P.carbon),dir:[-.5,-1],fade:insideFade,onSelect:pick,priority:2},
+        {id:'gallery',title:'Gallery',note:'The gap where lithium sits',tone:'#80f3d0',at:at(P.gallery),dir:[-1,-.2],fade:insideFade,onSelect:pick,phone:false,priority:3}
+      ]);
     }
+    this.notes.frame();
   }
   layoutArrows(z){
     if(!this.state)return;const forward=this.state.mode==='discharge',draw=this.arrowDraw,cellOpacity=1-smooth(clamp01(z/.22)),insideOpacity=smooth(clamp01((z-.78)/.22));
     const g=this.graphiteData,local=p=>this.vector(CELL.graphiteOrigin.map((o,i)=>o+p[i]*CELL.graphiteScale)),path=this.galleryPath;
     const lift=(g.layerY[1]-g.layerY[0])*.28,site=path[1],outer=path[0];
     const spans={
-      ion:[this.vector([-.85,-2.35,1.5]),this.vector([1.45,-2.35,1.5]),cellOpacity],
+      ion:[this.vector([.25,-2.35,1.5]),this.vector([2.05,-2.35,1.5]),cellOpacity],
       electron:[this.vector([-3.5,3.22,0]),this.vector([-1.25,3.22,0]),cellOpacity],
       // Discharge: out of the gallery toward the edge. Charge: in from the edge.
       gallery:[local([site[0]+(outer[0]-site[0])*.28,site[1]+lift,site[2]]),local([site[0]+(outer[0]-site[0])*.92,site[1]+lift,site[2]]),insideOpacity]
@@ -180,9 +190,6 @@ export class BatteryScene{
       a.line.setAttribute('d',`M${sx.toFixed(1)} ${sy.toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}`);
       const k=.55+.45*headP,len=9*k,half=3.6*k,notch=6.2*k,bx=tx-ux*len,by=ty-uy*len;
       a.head.setAttribute('d',headP>0?`M${tx} ${ty}L${bx-uy*half} ${by+ux*half}L${tx-ux*notch} ${ty-uy*notch}L${bx+uy*half} ${by-ux*half}Z`:'');a.head.style.opacity=headP.toFixed(3);
-            // The tag leads the arrow, written just behind its tail: "Li⁺ →" or "← Li⁺".
-      const gap=(a.kind==='electron'?12:17)+(Math.abs(ux)>.5?0:4),mx=sx-ux*gap,my=sy-uy*gap;
-      a.text.setAttribute('x',mx.toFixed(1));a.text.setAttribute('y',(my+4.5).toFixed(1));a.text.style.opacity=clamp01(draw/.5).toFixed(3);
     }
   }
   replayArrows(){this.arrowDraw=this.reduced.matches?1:0;this.dirty=true;}
@@ -213,16 +220,7 @@ export class BatteryScene{
     this.galleryMarker.visible=this.zoom>.65;this.galleryGuide.visible=this.zoom>.65;
     this.sourcePlus.visible=this.sourceBar.visible=state.mode==='charge';
     this.deviceBand.scale.x=state.mode==='charge'?.28:1;this.deviceBand.position.x=state.mode==='charge'?-.43:0;this.deviceBand.material.color.setHex(state.mode==='charge'?COLORS.electron:COLORS.lithium).convertSRGBToLinear();this.deviceBand.material.emissive.copy(this.deviceBand.material.color);
-    if(this.labelMode!==state.mode){
-      this.labels.forEach(l=>{if(['negative','positive','load'].includes(l.key)&&this.labelMode){l.el.classList.remove('is-swapped');void l.el.offsetWidth;l.el.classList.add('is-swapped');}});const device=this.labels.find(l=>l.key==='load');if(device){device.el.querySelector('span').textContent=state.mode==='charge'?'Charging source':'Load';device.el.querySelector('small').textContent=state.mode==='charge'?'Energy supplied':'Energy delivered';}
-      for(const [key,material,polarity,sign] of [['negative','Graphite','negative','−'],['positive','Cobalt oxide','positive','+']]){
-        const label=this.labels.find(l=>l.key===key);if(!label)continue;
-        const role=state.oxidation===key?'Anode':'Cathode',reaction=state.oxidation===key?'oxidation':'reduction';
-        label.el.querySelector('small').innerHTML=`${role} · <span class="polarity-word">${polarity} </span>${sign}`;
-        label.el.setAttribute('aria-label',`${material}, ${polarity} electrode: ${role.toLowerCase()}, ${reaction} during ${state.mode}. Select for explanation.`);
-      }
-      this.labelMode=state.mode;this.replayArrows();
-    }
+    if(this.labelMode!==state.mode){this.labelMode=state.mode;this.replayArrows();}
     this.dirty=true;
   }
   setFlow(phase){this.phase=phase;if(this.state)this.setState(this.state);}
@@ -231,7 +229,7 @@ export class BatteryScene{
     // Unwind whole turns first, so the reset takes the short way back to the front view.
     this.spin=0;this.rotation.x=wrapAngle(this.rotation.x);this.targetRotation={x:0,y:0};if(reduced)this.rotation={x:0,y:0};this.dirty=true;
   }
-  select(part){this.labels.forEach(l=>l.el.setAttribute('aria-pressed',String(l.key===part)));}
+  select(part){this.notes?.select(part);}
   pick(event,pin){
     const r=this.canvas.getBoundingClientRect();this.pointer.set((event.clientX-r.left)/r.width*2-1,-(event.clientY-r.top)/r.height*2+1);this.raycaster.setFromCamera(this.pointer,this.camera);
     const hits=this.raycaster.intersectObjects(this.pickMeshes,false).filter(hit=>hit.object.visible&&(this.zoom<.5?!['carbon','lithium'].includes(hit.object.userData.part):['carbon','lithium'].includes(hit.object.userData.part)));
@@ -255,7 +253,8 @@ export class BatteryScene{
     const fade=1-smooth(Math.min(1,z*1.6));this.fadeMaterials.forEach(({mat,opacity})=>mat.opacity=opacity*fade);this.cell.visible=fade>.001;
     if(this.state)inventoryFills(this.state.positive).forEach((fill,i)=>this.inventoryPositive[i].material.opacity=fill*fade);
     this.galleryGuide.visible=z>.7;this.galleryMarker.visible=z>.7;
-    if(this.labels.length){this.layoutLabels(z);this.layoutArrows(z);}
+    if(this.notes){this.layoutArrows(z);}
     this.renderer.render(this.scene,this.camera);
+    if(this.notes)this.layoutLabels(z);
   }
 }

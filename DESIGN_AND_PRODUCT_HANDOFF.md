@@ -4,6 +4,32 @@
 
 This is the living product/design guide, not only a historical handoff. At the user's explicit request (3 October 2026), record every new critique, preference and improvement here in the same work session. Fold durable principles into the guide, date concrete examples, and distinguish requested work from verified implementation. Read this section before future design or interaction changes. Earlier implementation/status claims below describe their original handoff and may be superseded by current code and verification reports.
 
+### 6 October 2026 — labels that point to and move with what they name
+
+Marcky's request: "within each visual/animation i'd actually like text/labels/explanations that point to and/or move with what they reference in the visual. again, ensure its extremely clean, sleek, beautiful."
+
+The problem was explanation that lived beside the visual (captions, legends, floating tags) instead of on the thing it explained. Durable principles:
+
+- Every visual names its parts in place. A callout is a ring or pin on the object, a thin hairline that bends into a short shelf, a title in the object's colour, and at most one muted line saying what it does or why it matters. Use one style site-wide: `site/annotations.mjs` and `site/annotations.css`, or the same drawing in canvas (the homepage hero).
+- Moving things carry their label with them. A rider keeps its words still near a fixed home while the hairline follows the ion, electron or contour. The note changes with the stage of the motion, and it may only claim what the paper or model supports.
+- Words never cover what they name. Prefer the clear space beside a large object, with the hairline reaching in. In busy scenes, set the words on a small dark glass plate. Avoid other rings, the model's silhouette and the stage controls.
+- Labels arrive after the staged opening and when the stage is on screen: the ring opens, the line draws, then the words. Removal fades. Reduced motion shows them at once.
+- On phones, show titles only unless the note is essential, and drop secondary callouts.
+- This is a standing rule for new modules.
+
+Implemented on branch `claude/anchored-labels-icvxii` across the homepage hero and the battery, diffusion (Blender film and particle model), rocksalt, nanoparticle, silicon nanowire, interwoven battery and fast ion diffusion pages. Verified in headless Chromium at 1512×982 and 390×844 with screenshots and review videos. Safari, Firefox and real phones are unchecked.
+
+### 5 October 2026 — every module needs a real introduction and a staged first opening
+
+Marcky, on the silicon nanowires module and then for **all modules**: “there also needs to be a much better textual introduction to what the heck is going on in figure/paper, what we're looking at, so user can get an understanding.” And: “when user opens any module for first time, the opening should not be everything at once. Maybe an epic fade-in of the topic name or question at hand, then a gradual fading in and natural progression of the different elements until the page is built out. just so you don't get overwhelmed all at once at first.”
+
+**Durable principles:**
+- **Name the question, then orient the reader before the visual.** Under each module title, state the question the page answers in plain words. Follow it with a short introduction in three parts: what the paper or idea is about and why it matters, what the reader is literally looking at (panels, colours, symbols, what is real and what is a model), and how to use the page. Plain language, no unexplained jargon, every claim checked against the source, and the model's limits stated once. It complements the paper-first figure block; it does not repeat it.
+- **First visit opens in stages.** The title and question appear alone, centred and slightly enlarged, then settle into their place in the layout. The rest of the page builds in reading order: navigation and eyebrow, the introduction column by column, then controls and the live stage, then everything below. Any input brings the whole page in at once. Later visits, deep links (a URL hash), reduced motion and the pages' `?reduced`/`?fallback` review modes skip it. Page-specific openings (figure lifts, films, guided tours) wait until the stage has actually appeared.
+- **One shared implementation.** `site/module-opening.js` and `site/module-opening.css` define the sequence and the introduction styles; a page opts in with `data-open` attributes (see the comment at the top of the script). `?opening` forces the sequence for review; `?no-opening` suppresses it for checks.
+
+Implemented on battery, diffusion, rocksalt, nanoparticle and the interwoven battery (5 October 2026, draft PR). The silicon nanowires module is owned by its own thread. The homepage hero was left unchanged: it is the collection's front page rather than a module, and the user previously said the front page was looking great. Desktop and phone evidence are headless Chromium with software WebGL, where revealing a 3D stage stalls for many seconds; real-GPU timing, Safari, Firefox and a physical phone are untested.
+
 ### 5 October 2026 — silicon nanowire companion: user critique of the first version
 
 Marcky reviewed the Codex-built silicon nanowire companion (PR #9) and said: **“nothing looks smooth, page looks cluttered, unnatural navigation. need you to fix and fully take to next level.”** Observed in the browser before the rebuild: the opening zoom spilled outside its frame and landed a 3D section at the wrong size over panel d; two stacked rows of tabs plus a figure row, zoom buttons, “Enter the wire”, “Explore now” and “Pause” all competed under the stage; every control change (question, field, stress stage, slider) snapped the geometry and camera instead of moving.

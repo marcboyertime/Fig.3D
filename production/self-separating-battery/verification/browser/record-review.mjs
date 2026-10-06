@@ -17,7 +17,7 @@ await page.addInitScript(()=>{
  window.cancelAnimationFrame=i=>pending.delete(i);
  window.__step=ms=>{t+=ms;const cbs=[...pending.values()];pending.clear();for(const cb of cbs)try{cb(t);}catch(e){console.error(e);}};
 });
-await page.goto('http://localhost:4173/self-separating-battery.html');
+await page.goto('http://localhost:4173/self-separating-battery.html?no-opening');
 await page.waitForFunction(()=>window.figState);
 // Let assets and figure textures load before the clock starts.
 for(let i=0;i<40;i++){await page.evaluate(()=>window.__step(0));await page.waitForTimeout(100);}

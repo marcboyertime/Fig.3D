@@ -60,3 +60,7 @@
 .explanation h2.is-long{font-size:min(36px,8.4cqi)}
 @media(max-width:800px){.explanation h2.is-long{font-size:min(30px,calc((100cqi - 30px)/2/11.6))}}
 @media(max-width:520px){.explanation h2.is-long{font-size:min(30px,calc(100cqi/11.6))}}
+
+/* Introduction above the explorer */
+.lesson-title .fig-question{max-width:44ch}
+main>.fig-intro{margin:0 0 34px;--fig-intro-line:var(--line)}
