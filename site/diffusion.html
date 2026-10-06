@@ -7,7 +7,7 @@
   <title>Fig.3D — Diffusion in a particle</title>
   <meta name="description" content="Interactive science, from the page to the physical picture. Explore an emerging collection of companions for batteries, electrochemistry, and nanomaterials.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23080a12'/%3E%3Ctext x='5' y='24' font-family='Arial' font-size='25' font-weight='bold' fill='%237d9cff'%3Ef.%3C/text%3E%3C/svg%3E">
-  <link rel="preload" href="assets/fonts/Sora-Variable.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="preview.css"><link rel="stylesheet" href="visual-language.css"><link rel="stylesheet" href="film.css"><link rel="stylesheet" href="module-opening.css"><script src="module-opening.js"></script>
+  <link rel="preload" href="assets/fonts/Sora-Variable.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="preview.css"><link rel="stylesheet" href="visual-language.css"><link rel="stylesheet" href="film.css"><link rel="stylesheet" href="module-opening.css"><link rel="stylesheet" href="annotations.css"><script src="module-opening.js"></script>
   <script type="module" src="preview.js"></script>
   <script type="module" src="film.js"></script>
 </head>
@@ -28,9 +28,6 @@
         <source src="assets/diffusion-film/diffusion-640.webm" type="video/webm">
       </video>
       <p id="film-desc" class="sr-only">A sphere with one quarter cut away. The two cut faces are colored by lithium concentration, dark purple for empty and blue for full, with hairline contours at 20, 40, 60 and 80 percent. Lithium ions, drawn as small beads, enter at the surface and spread toward the center, then leave from the surface first when the surface is emptied. The film loops every 16 seconds.</p>
-      <svg class="film-leaders" id="film-leaders" aria-hidden="true"><path id="leader-surface"/><path id="leader-centre"/><circle id="dot-surface" r="2.5"/><circle id="dot-centre" r="2.5"/></svg>
-      <span class="film-tag" id="tag-surface" aria-hidden="true">Surface</span>
-      <span class="film-tag" id="tag-centre" aria-hidden="true">Center</span>
     </div>
     <div class="film-copy">
       <div class="eyebrow film-eyebrow"><span class="crosshair" aria-hidden="true">+</span> FIG. 01 <span>SPHERICAL DIFFUSION</span></div>
@@ -77,10 +74,7 @@
             <path id="radius-line" d="M280 168H389" stroke="#fff" stroke-width="1.2"/>
             <circle cx="280" cy="168" r="3" fill="#fff"/>
             <text id="radius-label" x="330" y="156" fill="#fff" font-size="15" font-family="monospace">R</text>
-            <path id="surface-pointer" d="M357 91L443 47H496" fill="none" stroke="#6b7390" stroke-width=".75"/>
-            <text x="442" y="36" fill="#9aa1b8" font-size="13" font-family="monospace">c = cₛ</text>
-          </svg><button class="part-marker core-marker" data-part="core" type="button" aria-pressed="true" aria-describedby="part-explanation"><span class="marker-point" aria-hidden="true"></span><span class="marker-label">Core</span></button><button class="part-marker surface-marker" data-part="surface" type="button" aria-pressed="false" aria-describedby="part-explanation"><span class="marker-point" aria-hidden="true"></span><span class="marker-label">Surface</span></button></div>
-          <p id="part-explanation" class="part-explanation" aria-live="polite"></p>
+          </svg></div>
           <div class="concentration-key"><span>Relative concentration, c/cₛ</span><span class="color-key"><span>0</span><i aria-hidden="true"></i><span>1</span></span></div>
           <div class="profile-header"><span>FIG. 01 / B</span><span>THE SAME FIELD, AS A PROFILE</span></div>
           <svg class="profile-plot" viewBox="0 0 560 130" role="img" aria-labelledby="profile-title profile-desc">

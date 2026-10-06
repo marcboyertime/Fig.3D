@@ -56,3 +56,4 @@
 .module-head .fig-question{max-width:40ch}
 .module-head .fig-intro{margin-top:34px;--fig-intro-line:#ffffff1f;--fig-muted:#a7adc0}
 @media(max-width:560px){.module-head{padding:14px 0 28px}.module-head h1{font-size:38px}}
+.film-notes{--ann-bg:var(--black)}

@@ -1,6 +1,7 @@
 // Keeps the page in step with the Blender film: the caption steps, readouts,
 // live profile and hairline labels all read the same solved field the film
 // was rendered from (assets/diffusion-film/film.json), one entry per frame.
+import {Annotations} from './annotations.mjs';
 const $ = id => document.getElementById(id);
 const video = $('film-video');
 const stage = video.closest('.film-stage');
@@ -25,23 +26,49 @@ function drawProfile(c) {
   $('film-profile-fill').setAttribute('d', `${line}L352,64L28,64Z`);
 }
 
+// The film's camera, as set up in blender/diffusion/scene.py, so a point on the cut face can be found on screen in
+// any frame: the hairline labels sit exactly on the contour they name.
+const CAMERA = {frames: 384, dist: 4.55, elev: 21 * Math.PI / 180, lens: 58 / 36, target: [0, 0, -0.04]};
+function project(f, p) {
+  const t = 2 * Math.PI * f / CAMERA.frames, az = -Math.PI / 4 + Math.PI / 12 * Math.sin(t), el = CAMERA.elev + Math.PI / 45 * Math.sin(2 * t + .6);
+  const c = [CAMERA.dist * Math.cos(el) * Math.cos(az), CAMERA.dist * Math.cos(el) * Math.sin(az), CAMERA.dist * Math.sin(el)];
+  const sub = (a, b) => a.map((v, i) => v - b[i]), dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]], unit = a => { const n = Math.hypot(...a); return a.map(v => v / n); };
+  const fwd = unit(sub(CAMERA.target, c)), right = unit(cross(fwd, [0, 0, 1])), up = cross(right, fwd), v = sub(p, c), z = dot(v, fwd);
+  return [.5 + CAMERA.lens * dot(v, right) / z, .5 - CAMERA.lens * dot(v, up) / z];
+}
+// A point on the left cut face (the plane x = 0) at radius x along the labelled direction.
+const RAY = .62, onFace = (f, x) => project(f, [0, -x * Math.cos(RAY), x * Math.sin(RAY)]);
+const notes = new Annotations(stage, {className: 'film-notes', compactWidth: 420});
+function toStage([x, y]) {
+  const w = stage.clientWidth, h = stage.clientHeight, side = Math.min(w, h);
+  return {x: (w - side) / 2 + x * side, y: (h - side) / 2 + y * side};
+}
+// Where the half-full contour crosses the labelled direction, or null when the whole face is above or below half.
+function halfLine(f) {
+  const c = data.c[f];
+  for (let i = c.length - 1; i > 0; i--) {
+    const a = c[i - 1], b = c[i];
+    if ((a - .5) * (b - .5) <= 0 && a !== b) return (i - 1 + (.5 - a) / (b - a)) / (c.length - 1);
+  }
+  return null;
+}
+let notePhase = '';
 function placeLabels(f) {
-  const w = stage.clientWidth, h = stage.clientHeight;
-  // The video is square and covers the stage; map frame fractions to pixels.
-  const side = Math.min(w, h), ox = (w - side) / 2, oy = (h - side) / 2;
-  const at = ([x, y]) => [ox + x * side, oy + y * side];
-  const [sx, sy] = at(data.anchors.surface[f]);
-  const [cx, cy] = at(data.anchors.centre[f]);
-  const elbowX = sx - side * .055, elbowY = sy - side * .075, endX = ox + side * .03;
-  $('leader-surface').setAttribute('d', `M${sx},${sy}L${elbowX},${elbowY}H${endX}`);
-  $('dot-surface').setAttribute('cx', sx); $('dot-surface').setAttribute('cy', sy);
-  const tagS = $('tag-surface');
-  tagS.style.transform = `translate(${endX}px, ${elbowY - 22}px)`;
-  const bottom = oy + side * .925;
-  $('leader-centre').setAttribute('d', `M${cx},${cy}V${bottom}`);
-  $('dot-centre').setAttribute('cx', cx); $('dot-centre').setAttribute('cy', cy);
-  const tagC = $('tag-centre');
-  tagC.style.transform = `translate(${cx - tagC.offsetWidth / 2}px, ${bottom + 4}px)`;
+  const goingIn = f < data.half, phase = goingIn ? 'in' : 'out';
+  if (phase !== notePhase) {
+    notePhase = phase;
+    notes.show([
+      {id: 'surface', title: 'Surface', note: goingIn ? 'Held full, so lithium enters here' : 'Held empty, so lithium leaves here', tone: '#c9d5f5',
+        at: () => frame >= 0 ? {...toStage(onFace(frame, 1))} : null, home: () => toStage([.0, .07]), dir: [1, 0], dist: -6},
+      {id: 'half', title: 'Half-full line', note: goingIn ? 'Moves in as lithium spreads' : 'Moves in as lithium drains', tone: '#9db5ff',
+        at: () => { if (frame < 0) return null; const x = halfLine(frame); return x === null || x < .04 || x > .97 ? {x: 0, y: 0, visible: false} : {...toStage(onFace(frame, x)), r: 3}; },
+        home: () => toStage([.0, .9]), dir: [1, 0], dist: -6},
+      {id: 'centre', title: 'Center', note: goingIn ? 'Farthest in, so it fills last' : 'Farthest in, so it empties last', tone: '#c9d5f5',
+        at: () => frame >= 0 ? toStage(onFace(frame, 0)) : null, home: () => toStage([.5, .93]), dir: [1, 0], dist: -12, phone: false}
+    ], {stagger: 420});
+  }
+  notes.frame();
 }
 
 function show(f) {
@@ -107,7 +134,6 @@ new IntersectionObserver(entries => {
   if (onScreen) play(); else video.pause();
 }, {threshold: .25}).observe(stage);
 document.addEventListener('visibilitychange', () => document.hidden ? video.pause() : play());
-new ResizeObserver(() => frame >= 0 && placeLabels(frame)).observe(stage);
 
 // Start on the poster frame, and only play once that seek has landed.
 let ready = false;

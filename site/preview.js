@@ -1,31 +1,30 @@
 import {concentration, particleState} from './model.mjs';
+import {Annotations, svgPoint} from './annotations.mjs';
 
 const $ = id => document.getElementById(id);
 let currentState = particleState(50);
-let selectedPart = 'core';
-function explainPart(part = selectedPart) {
-  selectedPart = part;
-  document.querySelectorAll('[data-part]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.part === part)));
-  $('part-explanation').textContent = part === 'core'
-    ? `Core — farthest from the surface. Its relative concentration is ${concentration(0,currentState.tau).toFixed(3)} at this radius and elapsed time.`
-    : 'Surface — held at a relative concentration of 1.000 for every radius. This boundary condition drives diffusion into the sphere.';
+// Callouts on the cross section: the surface sets the boundary, the core shows how far lithium has got.
+const stage = document.querySelector('.particle-stage'), svg = $('particle');
+const notes = new Annotations(stage, {className: 'particle-notes', compactWidth: 380});
+let visualRadius = 105;
+function explainParts() {
+  const core = concentration(0, currentState.tau);
+  notes.show([
+    {id: 'surface', title: 'Surface, c = c<sub>s</sub>', note: 'Held full: lithium enters here', tone: '#c9d5f5', live: true,
+      at: () => svgPoint(svg, 280 + visualRadius * .72, 168 - visualRadius * .72, stage), dir: [1, -.6], dist: 0},
+    {id: 'core', title: `Core, c = ${core.toFixed(2)} c<sub>s</sub>`, note: core > .9 ? 'Nearly full already' : core > .4 ? 'Filling, but behind the surface' : 'Barely reached yet', tone: '#9db5ff', live: true,
+      at: () => svgPoint(svg, 280, 168, stage), dir: [-1, .55], dist: 30 + visualRadius * .25, phone: 'note'}
+  ], {stagger: 300});
 }
-document.querySelectorAll('[data-part]').forEach(button => {
-  for (const event of ['pointerenter','focus','click']) button.addEventListener(event, () => explainPart(button.dataset.part));
-});
-
 function updateParticle() {
   const radius = Number($('radius').value);
   currentState = particleState(radius);
   $('radius-value').innerHTML = `${radius} <span>nm</span>`;
   $('scale-value').innerHTML = `${currentState.relativeTime.toFixed(2)}<span>×</span>`;
-  const visualRadius = 70 + radius * .7;
+  visualRadius = 70 + radius * .7;
   $('particle-outline').setAttribute('r', visualRadius);
   $('radius-line').setAttribute('d', `M280 168H${280 + visualRadius}`);
   $('radius-label').setAttribute('x', 280 + visualRadius / 2);
-  document.querySelector('.surface-marker').style.left = `${(280 + visualRadius) / 560 * 100}%`;
-  explainPart();
-  $('surface-pointer').setAttribute('d', `M${280 + visualRadius * .72} ${168 - visualRadius * .72}L443 47H496`);
   const low = [23, 36, 69], high = [125, 156, 255];
   const stops = [];
   for (let i = 0; i <= 60; i++) {
@@ -47,8 +46,8 @@ function updateParticle() {
   $('profile-fill').setAttribute('d', `${path}L538,99L34,99Z`);
   $('particle-desc').textContent = `Circular cross section at radius ${radius} nanometers. At fixed diffusivity and elapsed time, characteristic diffusion time is ${currentState.relativeTime.toFixed(2)} times the value for a 50 nanometer particle. Color shows normalized concentration from zero to one, with rings at 20, 40, 60 and 80 percent; not measured cathode data. Displayed particle size is schematic.`;
 }
-$('radius').addEventListener('input', updateParticle);
-updateParticle();
+$('radius').addEventListener('input', () => { updateParticle(); explainParts(); });
+updateParticle(); explainParts();
 
 const concepts = {
   diffusion: {title:'How far does lithium have to go?', intro:'A concentration profile connects a small physical object to an abstract transport equation. The first new companion planned for Fig.3D.', list:['Meet an active-material particle and distinguish its surface from its interior.','Predict how changing particle size changes diffusion time under a declared model.','Link a cutaway view to its radial concentration profile.','See why a simple particle model does not predict whole-cell performance.']},

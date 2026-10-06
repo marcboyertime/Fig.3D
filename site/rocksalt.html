@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <!-- Working copy of references/rocksalt-li-pathways-user-original.html (kept unchanged). Edits follow context/space/Companion-001/Claim-Trace-2026-09-30.md: tetrahedral-site wording, 9% small-crystal note, 9% conditions. --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}</style></head><body>
-<link rel="stylesheet" href="module-opening.css"><script src="module-opening.js"></script><nav class="fig-bar" aria-label="Fig.3D" data-open="1"><a class="fig-brand" href="index.html" aria-label="Fig.3D home">Fig.<span>3D</span></a><span class="fig-tag">COMPANION PREVIEW</span><a class="fig-back" href="index.html#next-title">Back to the collection</a></nav>
+<link rel="stylesheet" href="module-opening.css"><link rel="stylesheet" href="annotations.css"><script src="module-opening.js"></script><nav class="fig-bar" aria-label="Fig.3D" data-open="1"><a class="fig-brand" href="index.html" aria-label="Fig.3D home">Fig.<span>3D</span></a><span class="fig-tag">COMPANION PREVIEW</span><a class="fig-back" href="index.html#next-title">Back to the collection</a></nav>
 <title>Rocksalt Li Pathways — Fig.3D</title>
 <link rel="preload" href="assets/fonts/Sora-Variable.ttf" as="font" type="font/ttf" crossorigin>
 <style>
@@ -66,6 +66,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:20px;align-items
 .ui-br{right:12px;bottom:12px;color:var(--stage-dim);text-align:right}
 .tag{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font:500 11px var(--font-mono);color:var(--stage-ink);background:var(--stage-chip);border:1px solid var(--stage-line);padding:2px 6px;border-radius:4px;pointer-events:none}
 .tag.big{font-size:12.5px;padding:3px 8px;border-width:1.5px}
+.rocksalt-notes{--ann-bg:var(--stage)}
 #tip{position:absolute;display:none;font:11.5px var(--font-mono);background:var(--stage-chip);border:1px solid var(--stage-line);color:var(--stage-ink);padding:4px 8px;border-radius:5px;pointer-events:none;white-space:nowrap;z-index:3}
 .nogl{display:none;position:absolute;inset:0;align-items:center;justify-content:center;padding:24px;text-align:center;color:var(--stage-ink)}
 .viewer.failed .nogl{display:flex}
@@ -732,7 +733,7 @@ function setCyl(mesh,i,a,b,r){_v.subVectors(b,a);const len=_v.length();_q.setFro
 function inst(geo,mat,n){const m=new THREE.InstancedMesh(geo,mat,Math.max(1,n));m.count=n;m.frustumCulled=false;return m}
 const phong=(color,extra)=>new THREE.MeshPhongMaterial(Object.assign({color,shininess:55,specular:0x445544},extra||{}));
 function ball(g,p,r,color,opts){opts=opts||{};const mat=phong(color,opts.emissive?{emissive:opts.emissive}:{});if(opts.opacity!==undefined&&opts.opacity<1){mat.transparent=true;mat.opacity=opts.opacity;mat.depthWrite=false}
-  const m=new THREE.Mesh(G.sphere,mat);m.position.copy(p);m.scale.setScalar(r);g.add(m);return m}
+  const m=new THREE.Mesh(G.sphere,mat);m.position.copy(p);m.scale.setScalar(r);g.add(m);if(!(opts.opacity<.5))noteBodies.push([p.clone(),r]);return m}
 function glowTexture(){const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d'),gr=g.createRadialGradient(32,32,0,32,32,32);
   gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(.3,'rgba(255,255,255,.35)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.fillRect(0,0,64,64);return new THREE.CanvasTexture(c)}
 const glowTex=GL?glowTexture():null;
@@ -771,9 +772,14 @@ function pick(e,objects){const r=canvas.getBoundingClientRect();raycaster.setFro
 // ---------- stage lifecycle ----------
 let stageGroup=null,sceneName=null,time=0,tags=[];
 function disposeGroup(g){g.traverse(o=>{if(o.geometry&&!(o.geometry.userData&&o.geometry.userData.shared))o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose())}})}
-function newStage(){stopWalker(true);if(stageGroup){scene.remove(stageGroup);disposeGroup(stageGroup)}stageGroup=new THREE.Group();scene.add(stageGroup);tags=[];$('#labels').innerHTML='';return stageGroup}
-function addTag(pos,text,color,big){const el=document.createElement('div');el.className='tag'+(big?' big':'');el.textContent=text;if(color!==undefined)el.style.borderColor=hex(color);$('#labels').appendChild(el);const t={pos:pos.clone(),el,hidden:false};tags.push(t);return t}
-function updateTags(){for(const t of tags){const p=project(t.pos);t.el.style.left=p.x+'px';t.el.style.top=p.y+'px';t.el.style.display=p.vis&&!t.hidden?'':'none'}}
+function newStage(){stopWalker(true);if(stageGroup){scene.remove(stageGroup);disposeGroup(stageGroup)}stageGroup=new THREE.Group();scene.add(stageGroup);callouts=[];noteRadius=0;noteBodies=[];return stageGroup}
+// Callouts: a ring on the atom or site, a hairline, and a short explanation. They ride the model as it turns.
+// pos is a point or a function returning one; r is the object's radius in model units.
+let callouts=[],notes=null,notesKey='',noteRadius=0,noteBodies=[];
+import('./annotations.mjs').then(m=>{notes=new m.Annotations(viewer,{className:'rocksalt-notes',compactWidth:520,avoid:()=>{const v=viewer.getBoundingClientRect(),ui=[...viewer.querySelectorAll('.ui-bl,.ui-tr,.ui-tl,.ui-br')].filter(e=>e.offsetParent).map(e=>{const r=e.getBoundingClientRect();return{x:r.left-v.left-6,y:r.top-v.top-6,w:r.width+12,h:r.height+12}});const f=viewer.clientHeight/(2*Math.tan(camera.fov*Math.PI/360));return[...noteBodies.map(([p,r])=>{const c=project(p);return{x:c.x,y:c.y,r:r*f/camera.position.distanceTo(p)+3}}),...ui]}});window.__notesModule=m;flushNotes(true)});
+function callout(id,pos,title,note,o){o=o||{};callouts.push({id,title,note,tone:o.tone!==undefined?hex(o.tone):'#dbe8e5',dir:o.dir||[1,-.7],dist:o.dist||0,phone:o.phone,priority:o.priority,live:o.live,fade:o.fade,
+  at:()=>{const v=typeof pos==='function'?pos():pos;if(!v)return null;const p=project(v);const out={x:p.x,y:p.y,visible:p.vis};if(o.r){const d=camera.position.distanceTo(v),f=viewer.clientHeight/(2*Math.tan(camera.fov*Math.PI/360));out.r=o.r*f/d}return out}})}
+function flushNotes(force){if(!notes)return;const key=callouts.map(c=>c.id+'|'+c.title+'|'+(c.note||'')).join('#');if(!force&&key===notesKey)return;notesKey=key;notes.show(callouts)}
 function legend(items){$('#legend').innerHTML=items.map(([c,t,shape])=>`<div class="lg"><i class="${shape||''}" style="${shape==='ring'?'':'background:'+c}"></i>${t}</div>`).join('')}
 function setVtitle(t,h){$('#vtitle').textContent=t;$('#hint').innerHTML=h||'drag to rotate · scroll to zoom'}
 
@@ -787,7 +793,7 @@ const T_O=[[0,0,0],[1,1,0],[1,0,1],[0,1,1]],T_C=[[1,0,0],[0,1,0],[0,0,1],[1,1,1]
 const same=(a,b)=>a[0]===b[0]&&a[1]===b[1]&&a[2]===b[2];
 function octaPoints(c){const p=fp(...c),S=FR.S;return[V(S,0,0),V(-S,0,0),V(0,S,0),V(0,-S,0),V(0,0,S),V(0,0,-S)].map(d=>d.add(p))}
 function buildFrame(kind){
-  const g=newStage(),tet=kind==='tet',S=FR.S;
+  const g=newStage(),tet=kind==='tet',S=FR.S;noteRadius=S*1.7;
   lines(g,cubeEdges(S),0x3a5359,.8);
   if(tet){ // the small cube around the chosen tetrahedral site
     const sc=[];for(const a of[[0,0,0],[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1]])for(const d of[[1,0,0],[0,1,0],[0,0,1]]){const b=[a[0]+d[0],a[1]+d[1],a[2]+d[2]];if(b.every(v=>v<=1))sc.push([fp(...a),fp(...b)])}
@@ -807,7 +813,10 @@ function buildFrame(kind){
   if(!tet){
     if(FR.octa){const P=octaPoints([1,1,1]);solids(g,[{P,F:OCT_F,E:OCT_E,color:COL.octa}],{opacity:.55,edgeOpacity:.95});
       lines(g,P.map(p=>[fp(1,1,1),p]),0xffffff,.35,true);
-      addTag(fp(1,1,1).add(V(0,S*1.3,0)),'octahedral site: 6 O around one metal',COL.octa,true)}
+      callout('octa',fp(1,1,1),'Octahedral site','One metal between six oxygens',{tone:COL.octa,r:.46,dir:[1,-.75],dist:30})}
+    if(FR.showO)callout('oxygen',fp(1,1,1).add(V(0,0,S)),'Oxygen','The fixed scaffold, the same in all three',{tone:COL.o,r:.27,dir:[-1,.55],dist:20});
+    callout('metal',fp(0,0,1),'Metal site','Holds either Li or a transition metal',{r:.34,dir:[-1,-.6],dist:10});
+    flushNotes();
     legend([[hex(COL.site),'Metal site (Li or TM)'],[hex(COL.o),'Oxygen'],[hex(COL.octa),'Octahedron of 6 O','tri']]);
     setVtitle('one rocksalt unit cell · oxygen and metal grids interlock');
   }else{
@@ -822,8 +831,10 @@ function buildFrame(kind){
         solids(g,[{P:face,F:[[0,1,2]],E:[[0,1],[1,2],[0,2]],color:tint[n]}],{opacity:.85,edgeOpacity:1,edgeLighten:.6})});
     }
     if(FR.all){for(const a of[0,1])for(const b of[0,1])for(const c of[0,1]){if(!a&&!b&&!c)continue;ball(g,fp(a+.5,b+.5,c+.5),.17,COL.td,{emissive:0x0d4a24})}}
-    TC.forEach((c,n)=>addTag(c.clone().add(V(0,.75,0)),'metal site '+(n+1)));
-    addTag(T.clone().add(V(0,-.55,0)),'tetrahedral site',COL.td,true);
+    callout('td',T,'Tetrahedral site','A smaller gap inside four oxygens',{tone:COL.td,r:.24,dir:[1,.75],dist:34});
+    callout('corner',TC[3],'Neighbouring metal site','One of four, each a face away',{r:.46,dir:[1,-.6],dist:10});
+    callout('o4',P[0],'Oxygen','Four of them wall the gap in',{tone:COL.o,r:.36,dir:[-1,.6],dist:10,phone:false});
+    flushNotes();
     const lg=[[hex(COL.td),'Tetrahedral site'],[hex(COL.o4),'Tetrahedron of 4 O','tri'],[hex(COL.site),'Its 4 metal-site neighbours'],[hex(COL.o),'Oxygen']];
     if(FR.four)lg.push(['#b892ff','Octahedra sharing a face','tri']);legend(lg);
     setVtitle('the same cell · one small cube highlighted');
@@ -853,7 +864,7 @@ function hopDerive(){const v=hop.vert,A=v.indexOf('Li');let B=-1;for(let i=0;i<4
   return{A,B,n,spect,vacN,barrier:HB[n]+SPECT*spect}}
 const hopEnergy=(b,s)=>b*Math.pow(Math.sin(Math.PI*s),2);
 function buildHop(){
-  const g=newStage();
+  const g=newStage();noteRadius=H*1.45;
   lines(g,cubeEdges(H),0x3a5359,.8);
   solids(g,[{P:HO,F:TET_F,E:TET_E,color:COL.o4}],{opacity:.28,edgeOpacity:.9});
   HO.forEach(p=>ball(g,p,.34,COL.o));
@@ -865,10 +876,9 @@ function buildHop(){
     const ghost=new THREE.Mesh(G.low,new THREE.MeshBasicMaterial({color:COL.ghost,wireframe:true,transparent:true,opacity:.5}));ghost.position.copy(p);ghost.scale.setScalar(.6);g.add(ghost);
     const hit=new THREE.Mesh(G.sphere,new THREE.MeshBasicMaterial({visible:false}));hit.position.copy(p);hit.scale.setScalar(.95);hit.userData.site=i;g.add(hit);
     const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints([p,V(0,0,0)]),new THREE.LineDashedMaterial({color:0xff5a5f,dashSize:.18,gapSize:.1,transparent:true,opacity:0}));line.computeLineDistances();g.add(line);
-    return{solid,ghost,hit,line,tag:addTag(p.clone().add(V(0,1.05,0)),'')}});
+    return{solid,ghost,hit,line}});
   const mover=ball(g,V(0,0,0),.55,COL.li,{emissive:0x1e4a1a});
   const glow=makeGlow(COL.gold,3.2);g.add(glow);
-  addTag(V(0,-.6,0),'tetrahedral site',COL.td);
   hop.g={sites,mover,glow,wins};
   legend([[hex(COL.li),'Li'],[hex(COL.tm),'Transition metal'],[hex(COL.ghost),'Empty site','ring'],[hex(COL.o),'Oxygen (drawn small)'],[hex(COL.win),'O window the Li squeezes through','tri'],[hex(COL.td),'Tetrahedral site']]);
   view.target.set(0,0,0);setHome(H*2.5,.75,.42);
@@ -907,6 +917,16 @@ function drawHopChart(all){
   s+=`<text x="${X(0)}" y="${Hh-10}" text-anchor="start">octahedral</text><text x="${X(.5)}" y="${Hh-10}" text-anchor="middle">tetrahedral</text><text x="${X(1)}" y="${Hh-10}" text-anchor="end">octahedral</text><text x="${l-4}" y="${t+6}" text-anchor="end">E</text>`;
   $('#hopChart').innerHTML=s;
 }
+// The moving Li carries its own callout; the corners that matter for this hop name themselves.
+function hopNotes(s,d,g){
+  callouts=[];
+  if(d.A>=0){const where=s<.12?['In its octahedral site','About to leave through an O window']:s>.88?(d.B>=0?['In the new octahedral site','One hop done']:['Back where it started','No empty corner to land in']):Math.abs(s-.5)<.1?['At the tetrahedral site','The squeeze point, the highest energy']:s<.5?['Slipping through an O window','Between three oxygens']:['Leaving the tetrahedral site','Through the next O window'];
+    callout('mover',()=>g.mover.position,'Li · '+where[0].charAt(0).toLowerCase()+where[0].slice(1),where[1],{tone:COL.li,r:.55,dir:[1,.8],dist:36,live:true,priority:0,phone:'note'})}
+  if(d.B>=0)callout('land',HV[d.B],'Empty site','Where the Li lands',{tone:COL.ghost,r:.6,dir:[1,-.6],dist:8,priority:1});
+  const tm=hop.vert.indexOf('TM');if(tm>=0)callout('tm',HV[tm],'Transition metal','Its charge pushes on the Li at the gap',{tone:COL.tm,r:.6,dir:[-1,-.6],dist:8,priority:2});
+  const stay=hop.vert.findIndex((x,i)=>x==='Li'&&i!==d.A);if(stay>=0&&d.A>=0)callout('stay',HV[stay],'Li that stays','Adds a little extra repulsion',{tone:COL.li,r:.6,dir:[-1,.6],dist:8,priority:3,phone:false});
+  flushNotes();
+}
 function hopFrame(){
   const g=hop.g,d=hop.d;if(!g||!d)return;
   if(hop.playing){const T=6.5,u=(time%T)/T;let s;
@@ -924,7 +944,8 @@ function hopFrame(){
     const ln=x.line;ln.visible=push&&(d.A>=0||d.n===4);const pos=ln.geometry.attributes.position;
     const tp=d.A>=0?g.mover.position:O;pos.setXYZ(1,tp.x,tp.y,tp.z);pos.needsUpdate=true;ln.computeLineDistances();
     ln.material.color.setHex(st==='TM'?0xff5a5f:0xffd166);ln.material.opacity=d.A>=0?.12+.85*w:.5;
-    x.tag.el.textContent=(i+1)+' · '+(i===d.A?'Li, moves':i===d.B?'empty, lands here':st==='vac'?'empty':st==='TM'?'TM':'Li, stays')});
+});
+  hopNotes(s,d,g);
   const dot=$('#hopDot');if(dot){const{W,l,r,t,b,ymax}=HC;dot.setAttribute('cx',l+s*(W-l-r));dot.setAttribute('cy',t+(1-hopEnergy(d.barrier,s)/ymax)*(HC.H-t-b))}
 }
 
@@ -933,7 +954,7 @@ function hopFrame(){
 // =====================================================================
 const GR={N:24,p:.5,seed:7};
 function buildGrid(recentre){
-  const g=newStage(),N=GR.N,rnd=mulberry32(GR.seed*131+N),rank=Float64Array.from({length:N*N},rnd);
+  const g=newStage(),N=GR.N,_nr=(noteRadius=GR.N*.55),rnd=mulberry32(GR.seed*131+N),rank=Float64Array.from({length:N*N},rnd);
   const open=Uint8Array.from(rank,r=>r<GR.p?1:0),par=Int32Array.from({length:N*N},(_,i)=>i);
   const find=a=>{while(par[a]!==a){par[a]=par[par[a]];a=par[a]}return a};const uni=(a,b)=>{a=find(a);b=find(b);if(a!==b)par[a]=b};
   const id=(x,y)=>y*N+x,P=(x,y)=>V(x-(N-1)/2,0,y-(N-1)/2);
@@ -945,12 +966,20 @@ function buildGrid(recentre){
   const ranked=[...size.entries()].filter(([r,c])=>c>=2&&!spanning.has(r)).sort((a,b)=>b[1]-a[1]),cmap=new Map(ranked.map(([r],k)=>[r,ISLAND[k%ISLAND.length]]));
   const colOf=i=>{const r=find(i);return spanning.has(r)?COL.li:size.get(r)<2?COL.liDim:cmap.get(r)};
   const openM=inst(G.sphere,phong(0xffffff),nOpen),shut=inst(G.low,phong(COL.closed),N*N-nOpen);let a=0,b=0,nb=0;
-  for(let y=0;y<N;y++)for(let x=0;x<N;x++){const i=id(x,y);if(open[i]){setSphere(openM,a,P(x,y),.3);openM.setColorAt(a,_c.setHex(colOf(i)));a++;if(x+1<N&&open[id(x+1,y)])nb++;if(y+1<N&&open[id(x,y+1)])nb++}else{setSphere(shut,b++,P(x,y),.1)}}
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){const i=id(x,y);if(open[i]){setSphere(openM,a,P(x,y),.3);noteBodies.push([P(x,y),.3]);openM.setColorAt(a,_c.setHex(colOf(i)));a++;if(x+1<N&&open[id(x+1,y)])nb++;if(y+1<N&&open[id(x,y+1)])nb++}else{setSphere(shut,b++,P(x,y),.1)}}
   const bonds=inst(G.cyl,new THREE.MeshPhongMaterial({color:0xffffff,shininess:20}),nb);let k=0;
   for(let y=0;y<N;y++)for(let x=0;x<N;x++){const i=id(x,y);if(!open[i])continue;
     for(const[dx,dy]of[[1,0],[0,1]]){const X=x+dx,Y=y+dy;if(X<N&&Y<N&&open[id(X,Y)]){setCyl(bonds,k,P(x,y),P(X,Y),.1);bonds.setColorAt(k,_c.setHex(colOf(i)));k++}}}
   [openM,shut,bonds].forEach(m=>{m.instanceMatrix.needsUpdate=true;if(m.instanceColor)m.instanceColor.needsUpdate=true;g.add(m)});
   const hN=N/2;lines(g,[[V(-hN,0,-hN),V(hN,0,-hN)],[V(hN,0,-hN),V(hN,0,hN)],[V(hN,0,hN),V(-hN,0,hN)],[V(-hN,0,hN),V(-hN,0,-hN)]],0x3a5359,1);
+  // Name one dot of the spanning island, one of the biggest other island, and one blocked spot, all near the middle.
+  const near=f=>{let best=-1,bd=1e9;for(let y=0;y<N;y++)for(let x=0;x<N;x++){const i=id(x,y);if(!f(i))continue;const dd=(x-(N-1)/2)**2+(y-(N-1)/2)**2;if(dd<bd){bd=dd;best=i}}return best};
+  const span=near(i=>open[i]&&spanning.has(find(i))),isle=ranked.length?near(i=>open[i]&&find(i)===ranked[0][0]):-1,shutI=near(i=>!open[i]);
+  const at=i=>P(i%N,Math.floor(i/N));
+  if(span>=0)callout('span',at(span),'Spanning island','Connects one edge to the other',{tone:COL.li,r:.3,dir:[1,-.8],dist:20});
+  if(isle>=0)callout('isle',at(isle),'Island','Open, but cut off from the rest',{tone:ISLAND[0],r:.3,dir:[-1,-.8],dist:20});
+  if(shutI>=0)callout('shut',at(shutI),'Blocked','A hop that is closed',{tone:'#8da3a0',r:.12,dir:[1,.8],dist:24,phone:false});
+  flushNotes();
   const big=Math.max(0,...size.values());
   $('#gVal').textContent=Math.round(GR.p*100)+'%';$('#gOpen').textContent=`${nOpen} of ${N*N}`;$('#gBig').textContent=nOpen?`${big} dots (${Math.round(big/nOpen*100)}% of open)`:'—';
   const v=$('#gVerdict');if(spanning.size){v.className='pill ok';v.textContent='Connected: one island spans edge to edge'}else{v.className='pill bad';v.textContent=nOpen?`Not connected: ${size.size} separate islands`:'Nothing open'}
@@ -1036,14 +1065,14 @@ function pickExamples(an){
   return chosen;
 }
 function buildCrystal(recentre){
-  const g=newStage(),lat=CR.lat,sp=CR.sp,an=CR.an=analyse(lat,sp,CR.maxTM,lat.axes,lat.tol),mode=CR.mode;
+  const g=newStage(),_nr=(noteRadius=CR.lat.radius*.85),lat=CR.lat,sp=CR.sp,an=CR.an=analyse(lat,sp,CR.maxTM,lat.axes,lat.tol),mode=CR.mode;
   const cut=lat.ymax-(lat.ymax-lat.ymin)*CR.peel/100+1e-3,shown=i=>lat.pos[i].y<=cut;
   const li=[],tm=[];for(let i=0;i<sp.length;i++)if(shown(i))(sp[i]===0?li:tm).push(i);
   const isl=[...an.size.entries()].filter(([r,c])=>c>=2&&r!==an.big).sort((a,b)=>b[1]-a[1]),islCol=new Map(isl.map(([r],k)=>[r,ISLAND[k%ISLAND.length]]));
   const netCol=i=>{const r=an.find(i);if(an.size.get(r)<2)return COL.liDim;return r===an.big?COL.li:islCol.get(r)};
   CR.pick=[];
   const atoms=(idx,color,r,opacity,kind)=>{if(!idx.length)return;const mat=phong(0xffffff);if(opacity<1){mat.transparent=true;mat.opacity=opacity;mat.depthWrite=false}
-    const m=inst(G.sphere,mat,idx.length);idx.forEach((i,k)=>{setSphere(m,k,lat.pos[i],r);m.setColorAt(k,_c.setHex(typeof color==='function'?color(i):color))});
+    const m=inst(G.sphere,mat,idx.length);if(opacity>=.5)idx.forEach(i=>noteBodies.push([lat.pos[i],r]));idx.forEach((i,k)=>{setSphere(m,k,lat.pos[i],r);m.setColorAt(k,_c.setHex(typeof color==='function'?color(i):color))});
     m.instanceMatrix.needsUpdate=true;if(m.instanceColor)m.instanceColor.needsUpdate=true;m.renderOrder=opacity<1?1:0;g.add(m);CR.pick.push({mesh:m,idx,kind})};
   const tetItem=ti=>({P:lat.tets[ti].v.map(v=>lat.pos[v]),F:TET_F,E:TET_E,color:TMCOL[an.tmCount[ti]]});
   if(mode==='cations'){atoms(li,COL.li,.38,1,'li');atoms(tm,COL.tm,.38,1,'tm')}
@@ -1052,7 +1081,7 @@ function buildCrystal(recentre){
     atoms(li.filter(i=>corner.has(i)),COL.li,.34,1,'li');atoms(tm.filter(i=>corner.has(i)),COL.tm,.34,1,'tm');
     atoms(li.filter(i=>!corner.has(i)),COL.li,.15,.3,'li');atoms(tm.filter(i=>!corner.has(i)),COL.tm,.15,.22,'tm');
     solids(g,ex.map(tetItem),{shrink:.97,opacity:1,edgeOpacity:1,edgeLighten:.55});
-    ex.forEach(ti=>{const n=an.tmCount[ti];addTag(lat.tpos[ti].clone().add(V(0,1.05,0)),`${n}-TM`+(n<=CR.maxTM?' · open':''),TMCOL[n],true)});
+    ex.forEach((ti,k)=>{const n=an.tmCount[ti];callout('ex'+n,lat.tpos[ti],`${n}-TM tetrahedron`,n<=CR.maxTM?'Open: Li can hop through':'Closed: too much repulsion',{tone:TMCOL[n],r:.7,dir:k%2?[-1,-.6]:[1,-.6],dist:12,phone:k<3?'title':false})});
   }else if(mode==='tetra'){
     atoms(li,COL.li,.2,1,'li');atoms(tm,COL.tm,.2,1,'tm');
     const list=[];lat.tets.forEach((t,ti)=>{if(CR.vis[an.tmCount[ti]]&&t.v.every(shown))list.push(ti)});
@@ -1067,6 +1096,19 @@ function buildCrystal(recentre){
   }
   if(CR.showO){const an2=lat.anions.filter(p=>p.y<=cut);const oM=inst(G.sphere,phong(COL.o,{transparent:true,opacity:.5,depthWrite:false}),an2.length);an2.forEach((p,i)=>setSphere(oM,i,p,.16));oM.instanceMatrix.needsUpdate=true;oM.renderOrder=1;g.add(oM)}
   CR.adj=new Map();an.active.forEach(ti=>{const L=lat.tets[ti].v.filter(v=>sp[v]===0);L.forEach(v=>{if(!CR.adj.has(v))CR.adj.set(v,[]);CR.adj.get(v).push({ti,others:L.filter(o=>o!==v)})})});
+  // Label an atom near the top middle, which stays in view as the crystal turns.
+  const top=list=>{let best=-1,bs=-1e9;for(const i of list){const p=lat.pos[i];const sc=p.y-.35*Math.hypot(p.x,p.z);if(sc>bs){bs=sc;best=i}}return best};
+  if(mode==='cations'||mode==='tetra'){
+    const txt={layered:[['Lithium plane','Li fills every other layer'],['Metal plane','Transition metals fill the rest']],spinel:[['Lithium','Placed in an ordered 3D pattern'],['Transition metal','Also ordered, as in spinel']],drx:[['Lithium','Placed at random'],['Transition metal','Also at random']]}[CR.kind];
+    const a=top(li),b=top(tm);if(a>=0)callout('li',lat.pos[a],txt[0][0],txt[0][1],{tone:COL.li,r:mode==='tetra'?.2:.38,dir:[1,-.7],dist:16});if(b>=0)callout('tm',lat.pos[b],txt[1][0],txt[1][1],{tone:COL.tm,r:mode==='tetra'?.2:.38,dir:[-1,-.7],dist:16});
+  }else if(mode==='network'){
+    const big=li.filter(i=>an.find(i)===an.big&&an.size.get(an.big)>=2),lone=li.filter(i=>an.size.get(an.find(i))<2);
+    const a=top(big),b=top(lone);
+    if(a>=0)callout('net',lat.pos[a],'Largest network',an.spans.some(Boolean)?'Li can cross the whole crystal':'Li linked by open gates',{tone:COL.li,r:.3,dir:[1,-.7],dist:16});
+    if(b>=0)callout('lone',lat.pos[b],'Stranded Li','No open gate next to it',{tone:COL.liDim,r:.2,dir:[-1,-.7],dist:16,phone:false});
+  }
+  if(walker.on)callout('walker',()=>walker.mesh.position,'Released Li','Hops only through open gates',{tone:COL.gold,r:.55,dir:[1,.7],dist:24,priority:-1});
+  flushNotes();
   if(recentre){view.target.set(0,0,0);setHome(lat.radius,CR.kind==='layered'?.62:.75,CR.kind==='layered'?.1:.4)}
   crystalLegend();renderReadouts();
   const vt={layered:'layered R-3m · 5 planes, stacking axis (c) vertical',spinel:'spinel Fd-3m on the rocksalt frame · 2 × 2 × 2 spinel cells',drx:`disordered rocksalt Fm-3m · ${drx.L} × ${drx.L} × ${drx.L} rocksalt cells`}[CR.kind];
@@ -1121,7 +1163,7 @@ function ensureWalkerObjects(){
   walker.line=new THREE.Line(g,new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:.95}));walker.line.frustumCulled=false;walker.line.renderOrder=4;
 }
 function stopWalker(silent){
-  walker.on=false;if(walker.mesh)[walker.mesh,walker.glow,walker.line].forEach(o=>{if(o.parent)o.parent.remove(o)});
+  walker.on=false;if(callouts.some(c=>c.id==='walker')){callouts=callouts.filter(c=>c.id!=='walker');flushNotes()}if(walker.mesh)[walker.mesh,walker.glow,walker.line].forEach(o=>{if(o.parent)o.parent.remove(o)});
   if(!silent)$('#walkInfo').textContent='Stopped. Release another ion, or click any Li.';
 }
 function startWalker(site){
@@ -1130,6 +1172,7 @@ function startWalker(site){
   ensureWalkerObjects();scene.add(walker.mesh,walker.glow,walker.line);
   Object.assign(walker,{on:true,site,start:site,seg:null,t:0,visited:new Set([site]),hops:0,trail:[CR.lat.pos[site].clone()]});
   walker.mesh.position.copy(CR.lat.pos[site]);nextHop();updateWalkInfo();
+  callouts=callouts.filter(c=>c.id!=='walker');callout('walker',()=>walker.mesh.position,'Released Li','Hops only through open gates',{tone:COL.gold,r:.55,dir:[1,.7],dist:24,priority:-1});flushNotes();
 }
 function nextHop(){const opts=CR.adj.get(walker.site),o=opts[(Math.random()*opts.length)|0],to=o.others[(Math.random()*o.others.length)|0],lat=CR.lat;
   walker.seg={a:lat.pos[walker.site].clone(),m:lat.tpos[o.ti].clone(),b:lat.pos[to],to};walker.t=0}
@@ -1271,7 +1314,7 @@ function frame(now){
   if(view.auto)view.yaw+=dt*(sceneName==='grid'?.05:.14);
   placeCamera();
   const sc=STEPS[step].scene;if(sc==='hop')hopFrame();else if(sc==='crystal')walkerFrame(dt);
-  updateTags();renderer.render(scene,camera);requestAnimationFrame(frame);
+  renderer.render(scene,camera);if(notes)notes.frame();requestAnimationFrame(frame);
 }
 renderNav();resize();
 const wanted=(location.hash||'').replace('#','')||store.get('rocksalt-step')||'frame';
