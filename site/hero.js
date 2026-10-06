@@ -111,26 +111,30 @@ function paintCard() {
 }
 
 // ---------- Labels ----------
-const labelFont = () => `500 ${size.narrow ? 11.5 : 12.5}px Sora, Arial, sans-serif`;
+// Callouts in the site-wide style (see annotations.mjs): a ring on the atom or site, a hairline that bends into a
+// short shelf, a title in the thing's colour and, on wider stages, one muted line saying what it is.
+const titleFont = () => `500 ${size.narrow ? 11.5 : 13}px Sora, Arial, sans-serif`;
+const noteFont = () => `400 ${size.narrow ? 10.5 : 11.5}px Sora, Arial, sans-serif`;
 const labelSide = {};
 // Greedy placement: each label tries its preferred side, then the mirrored and vertical sides, and takes the first
-// spot inside the stage that is clear of labels already placed and, if possible, of the atoms too (the text halo
-// keeps a label readable over an edge or an atom; two labels on top of each other never are). A label keeps its side
-// while that side still works, so nothing hops back and forth as the model turns.
+// spot inside the stage that is clear of labels already placed and, if possible, of the atoms too. A label keeps its
+// side while that side still works, so nothing hops back and forth as the model turns.
 function placeLabels(items, obstacles) {
- ctx.font = labelFont();
- const boxes = [], reach = size.narrow ? 14 : 22;
+ const boxes = [], reach = size.narrow ? 14 : 30, shelf = size.narrow ? 8 : 11, gap = 5;
  const inside = b => b.x >= 3 && b.x + b.w <= size.w - 3 && b.y >= 3 && b.y + b.h <= size.h - 3;
- const free = b => !boxes.some(o => b.x < o.x + o.w && b.x + b.w > o.x && b.y < o.y + o.h && b.y + b.h > o.y);
+ const free = b => !boxes.some(o => b.x < o.x + o.w + 6 && b.x + b.w + 6 > o.x && b.y < o.y + o.h + 4 && b.y + b.h + 4 > o.y);
  const open = b => !obstacles.some(c => Math.hypot(Math.max(b.x, Math.min(c.x, b.x + b.w)) - c.x, Math.max(b.y, Math.min(c.y, b.y + b.h)) - c.y) < c.r + 2);
  const clear = b => inside(b) && free(b) && open(b), usable = b => inside(b) && free(b);
  return items.filter(i => i.p && i.opacity > .01).map(item => {
-  const {p, dir, text} = item, tw = ctx.measureText(text).width;
-  const sides = [dir, [-dir[0], dir[1]], [dir[0], -dir[1]], [-dir[0], -dir[1]], [0, -1], [0, 1]];
+  const {p, dir} = item, note = size.narrow ? '' : item.note || '';
+  ctx.font = titleFont(); const tw = ctx.measureText(item.text).width; ctx.font = noteFont(); const nw = note ? ctx.measureText(note).width : 0;
+  const w = Math.max(tw, nw), h = note ? 31 : 16;
+  const sides = item.home ? [dir] : [dir, [-dir[0], dir[1]], [dir[0], -dir[1]], [-dir[0], -dir[1]], [.35, -1], [.35, 1]];
   const geometry = d => {
-   const len = Math.hypot(d[0], d[1]) || 1, ux = d[0] / len, uy = d[1] / len, x1 = p.x + ux * (p.r + reach), y1 = p.y + uy * (p.r + reach);
-   const across = Math.abs(ux) > .3, tx = across ? (ux > 0 ? x1 + 6 : x1 - 6 - tw) : x1 - tw / 2, ty = across ? y1 + 4 : uy < 0 ? y1 - 6 : y1 + 14;
-   return {from: [p.x + ux * (p.r + 5), p.y + uy * (p.r + 5)], to: [x1, y1], tx, ty, box: {x: tx - 2, y: ty - 12, w: tw + 4, h: 16}};
+   const len = Math.hypot(d[0], d[1]) || 1, ux = d[0] / len, uy = d[1] / len, side = ux < -.2 ? -1 : 1;
+   const h = item.home, ex = h ? h.x : p.x + ux * (p.r + reach), ey = h ? h.y : p.y + uy * (p.r + reach), sx = ex + side * shelf, tx = sx + side * gap;
+   const hl = Math.hypot(ex - p.x, ey - p.y) || 1, fx = h ? (ex - p.x) / hl : ux, fy = h ? (ey - p.y) / hl : uy;
+   return {from: [p.x + fx * (p.r + 5), p.y + fy * (p.r + 5)], elbow: [ex, ey], to: [sx, ey], tx, ty: ey + 4.5, side, note, box: {x: side > 0 ? tx - 2 : tx - w - 2, y: ey - 9, w: w + 4, h}};
   };
   const kept = labelSide[item.key];
   let side = kept !== undefined && usable(geometry(sides[kept]).box) ? kept : sides.findIndex(d => clear(geometry(d).box));
@@ -140,15 +144,17 @@ function placeLabels(items, obstacles) {
   const g = geometry(sides[side]);
   // Last resort: slide the text back inside the stage.
   const dx = Math.max(3 - g.box.x, Math.min(0, size.w - 3 - g.box.x - g.box.w));
-  g.tx += dx; g.box.x += dx; boxes.push(g.box);
+  g.tx += dx; g.box.x += dx; g.to[0] += dx; boxes.push(g.box);
   return {...item, ...g};
  });
 }
-function drawLabel({text, opacity, color = '#d5ddf3', from, to, tx, ty}) {
- ctx.save(); ctx.globalAlpha = opacity; ctx.font = labelFont();
- ctx.strokeStyle = 'rgba(160,176,220,.55)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(...from); ctx.lineTo(...to); ctx.stroke();
- ctx.lineJoin = 'round'; ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(8,10,18,.88)'; ctx.strokeText(text, tx, ty);
- ctx.fillStyle = color; ctx.textAlign = 'left'; ctx.fillText(text, tx, ty);
+function drawLabel({text, note, opacity, color = '#d5ddf3', p, from, elbow, to, tx, ty, side}) {
+ ctx.save(); ctx.globalAlpha = opacity; ctx.strokeStyle = color; ctx.lineWidth = 1;
+ ctx.globalAlpha = opacity * .85; ctx.beginPath(); ctx.arc(p.x, p.y, p.r + 3, 0, Math.PI * 2); ctx.stroke();
+ ctx.globalAlpha = opacity * .6; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(...from); ctx.lineTo(...elbow); ctx.lineTo(...to); ctx.stroke();
+ ctx.globalAlpha = opacity; ctx.textAlign = side < 0 ? 'right' : 'left'; ctx.lineJoin = 'round'; ctx.strokeStyle = 'rgba(8,10,18,.9)';
+ ctx.font = titleFont(); ctx.lineWidth = 4; ctx.strokeText(text, tx, ty); ctx.fillStyle = color; ctx.fillText(text, tx, ty);
+ if (note) { ctx.font = noteFont(); ctx.strokeText(note, tx, ty + 15); ctx.fillStyle = '#9aa6bf'; ctx.fillText(note, tx, ty + 15); }
  ctx.restore();
 }
 function drawLabels(q, pts) {
@@ -160,11 +166,14 @@ function drawLabels(q, pts) {
  const obstacles = [pts.li, pts.tm, ...pts.oxygen.filter(o => o.visible)];
  // Phones have room for one octahedral label: it names the site lithium last occupied, and moves on with it.
  const atB = clamp((q.hop - .6) / .15);
+ const liNote = q.hop < .3 ? 'Leaving its octahedral site' : q.hop < .7 ? 'Through the tetrahedral site' : q.hop < 1 ? 'Into the empty octahedral site' : 'One hop complete';
  placeLabels([
-  {key: 'a', p: pts.a, text: 'Octahedral site', opacity: q.labels * (size.narrow ? 1 - atB : q.hop < .5 ? 1 : .8), dir: away(pts.a)},
-  {key: 'b', p: pts.b, text: 'Octahedral site', opacity: q.labels * (size.narrow ? atB : .55 + .45 * clamp((q.hop - .7) / .2)), dir: away(pts.b)},
-  {key: 't', p: pts.t, text: 'Tetrahedral site', opacity: q.labels, dir: [-1, .9], color: '#c9e6d0'},
-  {key: 'tm', p: pts.tm, text: 'Transition metal', opacity: Math.max(q.tm, inspect === 'tm' ? 1 : 0), dir: [.9, .55], color: '#e3c6f5'},
+  // The lithium's words stay put above the model; the hairline follows the ion through its hop.
+  {key: 'li', p: size.narrow ? null : pts.li, text: 'Li⁺', note: liNote, opacity: q.labels, dir: [-1, 0], color: '#bfeec4', home: (() => { const o = pts.oxygen.filter(o => o.visible); if (!o.length) return null; const x0 = Math.min(...o.map(o => o.x)), y0 = Math.min(...o.map(o => o.y)); return {x: x0 + 18, y: y0 - 4}; })()},
+  {key: 'a', p: pts.a, text: 'Octahedral site', note: 'Six oxygen neighbours', opacity: q.labels * (size.narrow ? 1 - atB : q.hop < .5 ? 1 : .8), dir: away(pts.a)},
+  {key: 'b', p: pts.b, text: 'Octahedral site', note: 'Empty, waiting for lithium', opacity: q.labels * (size.narrow ? atB : .55 + .45 * clamp((q.hop - .7) / .2)), dir: away(pts.b)},
+  {key: 't', p: pts.t, text: 'Tetrahedral site', note: 'Four oxygen neighbours', opacity: q.labels, dir: [-1, .9], color: '#c9e6d0'},
+  {key: 'tm', p: pts.tm, text: 'Transition metal', note: 'One nearby: tolerable repulsion', opacity: Math.max(q.tm, inspect === 'tm' ? 1 : 0), dir: [.9, -.3], color: '#e3c6f5'},
   {key: 'c', p: inspect === 'sites' ? pts.c : null, text: 'Second vacancy', opacity: 1, dir: away(pts.c)},
  ], obstacles).forEach(drawLabel);
 }
