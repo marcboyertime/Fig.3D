@@ -17,6 +17,7 @@ node site/hop-verification.mjs
 node site/hero-controller-verification.mjs
 node site/battery-verification.mjs
 node site/battery-controller-verification.mjs
+node site/fast-ion-diffusion-verification.mjs
 ```
 
 Project context lives in `START_HERE.md`, `ENGINEERING_STATE.md`, `DESIGN_AND_PRODUCT_HANDOFF.md` and `context/`. Screenshots and check output from the handoff are in `evidence/`.

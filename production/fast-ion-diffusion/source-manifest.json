@@ -1,0 +1,62 @@
+{
+  "sources/he-zhu-mo-2017-si.pdf": {
+    "sha256": "59990602038d91f81f7cae7f1e45fa615930fafdc65f6a1b461b8530538ea3bd",
+    "bytes": 2120758
+  },
+  "sources/he-zhu-mo-2017.pdf": {
+    "sha256": "1c1ecf6babe4ce97de819eafde63d04f8c41f5de3ad8d424668957dabc593921",
+    "bytes": 998643
+  },
+  "site/assets/fast-ion-diffusion/collection.webp": {
+    "sha256": "e1d448b1ba985d21f0ee37f71d96ffce95253956c966b461f361d54be9bbb175",
+    "bytes": 42994
+  },
+  "site/assets/fast-ion-diffusion/curves.json": {
+    "sha256": "03185efd3a2b3773a87af86fd6765bd7619b3add530c2ec656eb2bac2e18003e",
+    "bytes": 6508
+  },
+  "site/assets/fast-ion-diffusion/fig4-model.json": {
+    "sha256": "e08b3d7f69d559c91b8e578d6b9c566eca4677053bb7d35bd1304fac88013449",
+    "bytes": 142593
+  },
+  "site/assets/fast-ion-diffusion/figure-1.webp": {
+    "sha256": "db825b9d7a0240d9681e43ae1931209f6e4e4a951088e59a721a69cbae167eed",
+    "bytes": 108162
+  },
+  "site/assets/fast-ion-diffusion/figure-2.webp": {
+    "sha256": "e67e1650d9b97d1a1b3cea08bc8dfd9a5cccf5dbceede82a6d5f8321b4d66be6",
+    "bytes": 237892
+  },
+  "site/assets/fast-ion-diffusion/figure-2e.webp": {
+    "sha256": "666bf8566f4d7bf2dd3c90313adc37d7a545e73d91048a988d4322c5f5f5d005",
+    "bytes": 30380
+  },
+  "site/assets/fast-ion-diffusion/figure-3.webp": {
+    "sha256": "fe74f62808238e1b27aed04eeeb2c2cffe10c149e1540b575692a4b10d9282a2",
+    "bytes": 151814
+  },
+  "site/assets/fast-ion-diffusion/figure-3b-inset.webp": {
+    "sha256": "437b930a3dfddfb5382ac5df3ef5eef1c3ce61fd612bca29ad6d467f9b1ec51a",
+    "bytes": 25708
+  },
+  "site/assets/fast-ion-diffusion/figure-3b.webp": {
+    "sha256": "732f77a08931f454c87006d552b26c87b36594b421719ebf2291cdef3f2cb941",
+    "bytes": 23054
+  },
+  "site/assets/fast-ion-diffusion/figure-3e.webp": {
+    "sha256": "c6e850af4164d8e16fa0d182f5ac21649a48a424fc6f140ae9b4730fb0f549c3",
+    "bytes": 21130
+  },
+  "site/assets/fast-ion-diffusion/figure-4.webp": {
+    "sha256": "aba7f324ffde16154615a2e2bec216cfcd52a48de5af90b790c35460c36faed9",
+    "bytes": 75668
+  },
+  "site/assets/fast-ion-diffusion/figures.json": {
+    "sha256": "b9aa5eb1e696768954f982028175e6211b182176a73db0cf1576a270342be6c0",
+    "bytes": 1894
+  },
+  "site/assets/fast-ion-diffusion/llzo-scene.json": {
+    "sha256": "233131c9bdaabd4b3d2cc5d2f3d8778c6ad78714ae13bd2dd2fb5714bac55a1f",
+    "bytes": 12013
+  }
+}
