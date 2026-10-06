@@ -3,4 +3,5 @@ sources/*-p*.png
 sources/*.txt
 geometry.json
 teaser.png
+card-2x.png
 *.blend1

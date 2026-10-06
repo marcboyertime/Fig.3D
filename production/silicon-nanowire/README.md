@@ -15,8 +15,9 @@ Open http://127.0.0.1:8790/silicon-nanowire.html. `?reduced` exercises the stati
 ## Files and boundaries
 
 - `silicon-nanowire-model.mjs`: deterministic schematic geometry and state reducer.
-- `silicon-nanowire-scene.mjs`: state-driven rendering via indexed meshes, clipped quarter cutaway, slice and orbit. Geometry is generated, not an imported decorative model.
-- `silicon-nanowire-opening.mjs`: native source image → focused section → end-on model → paper lift and wire view.
+- `silicon-nanowire-scene.mjs`: state-driven rendering. Displayed values ease toward the requested state every frame; the lid (upper half, as in Fig. 5b) and the main body index the same vertex buffers, so there is no clipping and no seam. Geometry is generated, not an imported decorative model.
+- `silicon-nanowire-opening.mjs`: original Figure 5 zooms until panel a's printed wire sits exactly on the model at the fitted pose, the same pixels hand over to WebGL, panel a dissolves to reveal the model and the page tips away.
+- `registration/fit-panel-a.py`: silhouette fit of the model to the printed wire of Fig. 5a (pose, scale, origin and length; IoU 0.905), with `panel-a-overlay.png` (red = print, green = model).
 - `silicon-nanowire.js`: one state shared by the wire, section, captions, controls and original figures.
 - `site/references/silicon-nanowire/scientific-notes.md`: claim ledger and bounded model specification.
 - `sources/`: archived PDFs and public supplement inventory. Rendered-page PNGs/text are local extraction intermediates and ignored by Git.
@@ -26,7 +27,7 @@ Open http://127.0.0.1:8790/silicon-nanowire.html. `?reduced` exercises the stati
 
 Install PyMuPDF and Pillow in a temporary Python environment. Run `python production/silicon-nanowire/extract-figures.py`. The original embedded image bytes and source PDFs have SHA-256 hashes in `source-manifest.json`. Crops preserve panel identities; full figures retain all scales and axes.
 
-The collection artwork uses the browser's pure geometry evaluator:
+The collection card is rendered from the live WebGL model: `node production/silicon-nanowire/render-card.mjs` (server on :4173), then convert `card-2x.png` to 1200×900 WebP at quality 92. The older Blender route below used the first version's geometry and palette and is kept for reference:
 
 ```sh
 node production/silicon-nanowire/export-geometry.mjs
@@ -43,3 +44,7 @@ node site/silicon-nanowire-controller-verification.mjs
 ```
 
 The first verifies geometry and mathematical orbit behavior; the second runs the real controller against a small fake DOM and renderer. Neither replaces browser inspection, proves physical kinetics or validates a stress solver. The explorer does not claim those calculations.
+
+## Browser review
+
+`verification/browser/tour.mjs <w> <h> <prefix> [dpr]` captures every state on a virtual clock (rAF, `performance.now` and CSS animations are stepped). `verification/browser/record-review.mjs desktop|phone out.mp4` records review videos at authored speed. Both need a server on :4173 serving `site/`. Headless SwiftShader is slow: a stills tour takes 10–20 minutes, a video about a second per frame.
