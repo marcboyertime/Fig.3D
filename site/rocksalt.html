@@ -814,8 +814,8 @@ function buildFrame(kind){
     if(FR.octa){const P=octaPoints([1,1,1]);solids(g,[{P,F:OCT_F,E:OCT_E,color:COL.octa}],{opacity:.55,edgeOpacity:.95});
       lines(g,P.map(p=>[fp(1,1,1),p]),0xffffff,.35,true);
       callout('octa',fp(1,1,1),'Octahedral site','One metal between six oxygens',{tone:COL.octa,r:.46,dir:[1,-.75],dist:30})}
-    if(FR.showO)callout('oxygen',fp(1,1,1).add(V(0,0,S)),'Oxygen','The fixed scaffold, the same in all three',{tone:COL.o,r:.27,dir:[-1,.55],dist:20});
-    callout('metal',fp(0,0,1),'Metal site','Holds either Li or a transition metal',{r:.34,dir:[-1,-.6],dist:10});
+    if(FR.showO)callout('oxygen',fp(1,1,1).add(V(0,0,S)),'Oxygen','',{tone:COL.o,r:.27,dir:[-1,.55],dist:20});
+    callout('metal',fp(0,0,1),'Metal site','',{r:.34,dir:[-1,-.6],dist:10});
     flushNotes();
     legend([[hex(COL.site),'Metal site (Li or TM)'],[hex(COL.o),'Oxygen'],[hex(COL.octa),'Octahedron of 6 O','tri']]);
     setVtitle('one rocksalt unit cell · oxygen and metal grids interlock');
@@ -832,8 +832,7 @@ function buildFrame(kind){
     }
     if(FR.all){for(const a of[0,1])for(const b of[0,1])for(const c of[0,1]){if(!a&&!b&&!c)continue;ball(g,fp(a+.5,b+.5,c+.5),.17,COL.td,{emissive:0x0d4a24})}}
     callout('td',T,'Tetrahedral site','A smaller gap inside four oxygens',{tone:COL.td,r:.24,dir:[1,.75],dist:34});
-    callout('corner',TC[3],'Neighbouring metal site','One of four, each a face away',{r:.46,dir:[1,-.6],dist:10});
-    callout('o4',P[0],'Oxygen','Four of them wall the gap in',{tone:COL.o,r:.36,dir:[-1,.6],dist:10,phone:false});
+    callout('corner',TC[3],'Neighbouring metal site','',{r:.46,dir:[1,-.6],dist:10});
     flushNotes();
     const lg=[[hex(COL.td),'Tetrahedral site'],[hex(COL.o4),'Tetrahedron of 4 O','tri'],[hex(COL.site),'Its 4 metal-site neighbours'],[hex(COL.o),'Oxygen']];
     if(FR.four)lg.push(['#b892ff','Octahedra sharing a face','tri']);legend(lg);
@@ -921,10 +920,10 @@ function drawHopChart(all){
 function hopNotes(s,d,g){
   callouts=[];
   if(d.A>=0){const where=s<.12?['In its octahedral site','About to leave through an O window']:s>.88?(d.B>=0?['In the new octahedral site','One hop done']:['Back where it started','No empty corner to land in']):Math.abs(s-.5)<.1?['At the tetrahedral site','The squeeze point, the highest energy']:s<.5?['Slipping through an O window','Between three oxygens']:['Leaving the tetrahedral site','Through the next O window'];
-    callout('mover',()=>g.mover.position,'Li · '+where[0].charAt(0).toLowerCase()+where[0].slice(1),where[1],{tone:COL.li,r:.55,dir:[1,.8],dist:36,live:true,priority:0,phone:'note'})}
-  if(d.B>=0)callout('land',HV[d.B],'Empty site','Where the Li lands',{tone:COL.ghost,r:.6,dir:[1,-.6],dist:8,priority:1});
-  const tm=hop.vert.indexOf('TM');if(tm>=0)callout('tm',HV[tm],'Transition metal','Its charge pushes on the Li at the gap',{tone:COL.tm,r:.6,dir:[-1,-.6],dist:8,priority:2});
-  const stay=hop.vert.findIndex((x,i)=>x==='Li'&&i!==d.A);if(stay>=0&&d.A>=0)callout('stay',HV[stay],'Li that stays','Adds a little extra repulsion',{tone:COL.li,r:.6,dir:[-1,.6],dist:8,priority:3,phone:false});
+    callout('mover',()=>g.mover.position,'Li⁺',where[0],{tone:COL.li,r:.55,dir:[1,.8],dist:36,live:true,priority:0,phone:'note'})}
+  if(d.B>=0&&s<.85)callout('land',HV[d.B],'Empty site','',{tone:COL.ghost,r:.6,dir:[1,-.6],dist:8,priority:1});
+  const tm=hop.vert.indexOf('TM');if(tm>=0)callout('tm',HV[tm],'Transition metal','',{tone:COL.tm,r:.6,dir:[-1,-.6],dist:8,priority:2});
+  
   flushNotes();
 }
 function hopFrame(){
@@ -977,8 +976,7 @@ function buildGrid(recentre){
   const span=near(i=>open[i]&&spanning.has(find(i))),isle=ranked.length?near(i=>open[i]&&find(i)===ranked[0][0]):-1,shutI=near(i=>!open[i]);
   const at=i=>P(i%N,Math.floor(i/N));
   if(span>=0)callout('span',at(span),'Spanning island','Connects one edge to the other',{tone:COL.li,r:.3,dir:[1,-.8],dist:20});
-  if(isle>=0)callout('isle',at(isle),'Island','Open, but cut off from the rest',{tone:ISLAND[0],r:.3,dir:[-1,-.8],dist:20});
-  if(shutI>=0)callout('shut',at(shutI),'Blocked','A hop that is closed',{tone:'#8da3a0',r:.12,dir:[1,.8],dist:24,phone:false});
+  if(isle>=0)callout('isle',at(isle),'Island','',{tone:ISLAND[0],r:.3,dir:[-1,-.8],dist:20});
   flushNotes();
   const big=Math.max(0,...size.values());
   $('#gVal').textContent=Math.round(GR.p*100)+'%';$('#gOpen').textContent=`${nOpen} of ${N*N}`;$('#gBig').textContent=nOpen?`${big} dots (${Math.round(big/nOpen*100)}% of open)`:'—';
@@ -1081,7 +1079,7 @@ function buildCrystal(recentre){
     atoms(li.filter(i=>corner.has(i)),COL.li,.34,1,'li');atoms(tm.filter(i=>corner.has(i)),COL.tm,.34,1,'tm');
     atoms(li.filter(i=>!corner.has(i)),COL.li,.15,.3,'li');atoms(tm.filter(i=>!corner.has(i)),COL.tm,.15,.22,'tm');
     solids(g,ex.map(tetItem),{shrink:.97,opacity:1,edgeOpacity:1,edgeLighten:.55});
-    ex.forEach((ti,k)=>{const n=an.tmCount[ti];callout('ex'+n,lat.tpos[ti],`${n}-TM tetrahedron`,n<=CR.maxTM?'Open: Li can hop through':'Closed: too much repulsion',{tone:TMCOL[n],r:.7,dir:k%2?[-1,-.6]:[1,-.6],dist:12,phone:k<3?'title':false})});
+    ex.slice(0,2).forEach((ti,k)=>{const n=an.tmCount[ti];callout('ex'+n,lat.tpos[ti],`${n}-TM tetrahedron`,n<=CR.maxTM?'Open: Li can hop through':'Closed: too much repulsion',{tone:TMCOL[n],r:.7,dir:k%2?[-1,-.6]:[1,-.6],dist:12,phone:k<3?'title':false})});
   }else if(mode==='tetra'){
     atoms(li,COL.li,.2,1,'li');atoms(tm,COL.tm,.2,1,'tm');
     const list=[];lat.tets.forEach((t,ti)=>{if(CR.vis[an.tmCount[ti]]&&t.v.every(shown))list.push(ti)});
@@ -1100,12 +1098,12 @@ function buildCrystal(recentre){
   const top=list=>{let best=-1,bs=-1e9;for(const i of list){const p=lat.pos[i];const sc=p.y-.35*Math.hypot(p.x,p.z);if(sc>bs){bs=sc;best=i}}return best};
   if(mode==='cations'||mode==='tetra'){
     const txt={layered:[['Lithium plane','Li fills every other layer'],['Metal plane','Transition metals fill the rest']],spinel:[['Lithium','Placed in an ordered 3D pattern'],['Transition metal','Also ordered, as in spinel']],drx:[['Lithium','Placed at random'],['Transition metal','Also at random']]}[CR.kind];
-    const a=top(li),b=top(tm);if(a>=0)callout('li',lat.pos[a],txt[0][0],txt[0][1],{tone:COL.li,r:mode==='tetra'?.2:.38,dir:[1,-.7],dist:16});if(b>=0)callout('tm',lat.pos[b],txt[1][0],txt[1][1],{tone:COL.tm,r:mode==='tetra'?.2:.38,dir:[-1,-.7],dist:16});
+    const a=top(li),b=top(tm);if(a>=0)callout('li',lat.pos[a],txt[0][0],txt[0][1],{tone:COL.li,r:mode==='tetra'?.2:.38,dir:[1,-.7],dist:16});if(b>=0)callout('tm',lat.pos[b],txt[1][0],'',{tone:COL.tm,r:mode==='tetra'?.2:.38,dir:[-1,-.7],dist:16});
   }else if(mode==='network'){
     const big=li.filter(i=>an.find(i)===an.big&&an.size.get(an.big)>=2),lone=li.filter(i=>an.size.get(an.find(i))<2);
     const a=top(big),b=top(lone);
     if(a>=0)callout('net',lat.pos[a],'Largest network',an.spans.some(Boolean)?'Li can cross the whole crystal':'Li linked by open gates',{tone:COL.li,r:.3,dir:[1,-.7],dist:16});
-    if(b>=0)callout('lone',lat.pos[b],'Stranded Li','No open gate next to it',{tone:COL.liDim,r:.2,dir:[-1,-.7],dist:16,phone:false});
+    if(b>=0)callout('lone',lat.pos[b],'Stranded Li','',{tone:COL.liDim,r:.2,dir:[-1,-.7],dist:16,phone:false});
   }
   if(walker.on)callout('walker',()=>walker.mesh.position,'Released Li','Hops only through open gates',{tone:COL.gold,r:.55,dir:[1,.7],dist:24,priority:-1});
   flushNotes();

@@ -59,12 +59,12 @@ function placeLabels(f) {
   if (phase !== notePhase) {
     notePhase = phase;
     notes.show([
-      {id: 'surface', title: 'Surface', note: goingIn ? 'Held full, so lithium enters here' : 'Held empty, so lithium leaves here', tone: '#c9d5f5',
+      {id: 'surface', title: goingIn ? 'Surface, held full' : 'Surface, held empty', tone: '#c9d5f5',
         at: () => frame >= 0 ? {...toStage(onFace(frame, 1))} : null, home: () => toStage([.0, .07]), dir: [1, 0], dist: -6},
       {id: 'half', title: 'Half-full line', note: goingIn ? 'Moves in as lithium spreads' : 'Moves in as lithium drains', tone: '#9db5ff',
         at: () => { if (frame < 0) return null; const x = halfLine(frame); return x === null || x < .04 || x > .97 ? {x: 0, y: 0, visible: false} : {...toStage(onFace(frame, x)), r: 3}; },
         home: () => toStage([.0, .9]), dir: [1, 0], dist: -6},
-      {id: 'centre', title: 'Center', note: goingIn ? 'Farthest in, so it fills last' : 'Farthest in, so it empties last', tone: '#c9d5f5',
+      {id: 'centre', title: goingIn ? 'Center fills last' : 'Center empties last', tone: '#c9d5f5',
         at: () => frame >= 0 ? toStage(onFace(frame, 0)) : null, home: () => toStage([.5, .93]), dir: [1, 0], dist: -12, phone: false}
     ], {stagger: 420});
   }

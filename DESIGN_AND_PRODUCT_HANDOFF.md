@@ -4,6 +4,21 @@
 
 This is the living product/design guide, not only a historical handoff. At the user's explicit request (3 October 2026), record every new critique, preference and improvement here in the same work session. Fold durable principles into the guide, date concrete examples, and distinguish requested work from verified implementation. Read this section before future design or interaction changes. Earlier implementation/status claims below describe their original handoff and may be superseded by current code and verification reports.
 
+### 7 October 2026 — labels must be calm in motion and few (supersedes parts of 6 October)
+
+Marcky's critique of the first labelled version: "you did not do a great job, the labels appear glitchy upon motion and slide all over the place. needs to be integrated much more seamlessly, and without making the figures too busy".
+
+Measured causes: labels re-chose their side every frame and eased toward the new spot, so they slid and flipped; riders kept their words at a fixed home while long hairlines swung after the moving ion; some riders hopped between ions; moving labels changed their wording mid-motion; and the escape positions for crowded labels could fling words across the figure. Durable principles, replacing the 6 October rider rule:
+
+- A label is rigidly attached to its object. It moves exactly with the object, with a short constant hairline, and never eases or slides on its own.
+- A label picks its side once, when it appears. It changes side only if it has been badly blocked for a while, and then it fades out and back in on the new side. It never glides across.
+- If the thing a label follows jumps (a new ion, a camera cut), the label fades out at the old place and in at the new one.
+- Few labels. Name only what the visual is about, mostly with titles alone, and give each visual at most one or two notes on the key idea. Captions and the page text carry the rest.
+- Moving things keep a constant title. Stage-by-stage explanation belongs in the caption, not on a label riding the motion (the rocksalt hop's mover note is the one remaining exception, as the hop's stages are its subject).
+- Long leaders are acceptable only where the anchor moves slowly (the Blender diffusion film's margin labels).
+
+Built on branch `claude/anchored-labels-icvxii` (new draft PR after PR #13). Checked in motion with contact strips in headless Chromium; Safari, Firefox and real phones are unchecked.
+
 ### 6 October 2026 — labels that point to and move with what they name
 
 Marcky's request: "within each visual/animation i'd actually like text/labels/explanations that point to and/or move with what they reference in the visual. again, ensure its extremely clean, sleek, beautiful."

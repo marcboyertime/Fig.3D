@@ -191,16 +191,6 @@ function spotFor(phase,g){
  const p=sc.project(sc.network.localToWorld(new window.THREE.Vector3(...spot.p)).toArray());
  return {x:p.x,y:p.y,visible:fw[spot.axis]*spot.sign>.08};
 }
-// On a wide stage the words for a large object sit in the clear space beside it and the hairline reaches in.
-function beside(corners,anchor,toLocal=x=>x){
- return ()=>{
-  if(!scene||scene.width<720)return null;const a=anchor();if(!a)return null;
-  const pts=corners().map(c=>scene.project(toLocal(c))),x0=Math.min(...pts.map(p=>p.x)),x1=Math.max(...pts.map(p=>p.x));
-  const side=a.x<(x0+x1)/2?-1:1;return {x:side<0?x0-6:x1+6,y:a.y};
- };
-}
-const cubeCorners=()=>{const out=[];for(const x of [-3,3])for(const y of [-3,3])for(const z of [-3,3-(scene.geometryState(state).cut*3)])out.push([x,y,z]);return out;};
-const toWorld=c=>scene.network.localToWorld(new window.THREE.Vector3(...c)).toArray();
 const at3=p=>()=>{if(!scene)return null;const q=scene.project(typeof p==='function'?p():p);return {x:q.x,y:q.y};};
 function noteSpecs(){
  const d=state.deep,list=[];if(!scene?.ready||showingPaper(state)||fallbackMode)return list;
@@ -208,9 +198,9 @@ function noteSpecs(){
  if(d){
   if(d.topic==='connectivity'&&scene.deep?.connectionPeak&&scene.deep.link){const sideBehind=scene.deep.link.path.some(p=>p[2]>Math.round(d.slice));list.push({id:'joined',title:'Joined out of plane',note:`These patches meet ${scene.deep.link.maxOffset} samples ${sideBehind?'behind':'in front of'} the cut`,tone:'#ffe2a8',at:at3(()=>scene.deep.connectionPeak.toArray()),dir:[-.5,1],dist:24,fade});}
   if(d.topic==='length'){const h=1.4*d.length;
-   list.push({id:'len-cathode',title:'Cathode',note:'Electrode plate',tone:'#7fb6ec',at:at3([-2.7,h/2+.17,1.7]),dir:[-1,-.35],fade});
+   list.push({id:'len-cathode',title:'Cathode',note:'',tone:'#7fb6ec',at:at3([-2.7,h/2+.17,1.7]),dir:[-1,-.35],fade});
    list.push({id:'len-ion',title:'Ion conductor',note:'Resistance grows with L',tone:'#e7ecf6',at:at3([-2.7,0,1.7]),dir:[-1,0],fade});
-   list.push({id:'len-anode',title:'Anode',note:'Electrode plate',tone:'#a9aeb8',at:at3([-2.7,-h/2-.17,1.7]),dir:[-1,.35],fade});}
+   list.push({id:'len-anode',title:'Anode',note:'',tone:'#a9aeb8',at:at3([-2.7,-h/2-.17,1.7]),dir:[-1,.35],fade});}
   if(d.topic==='formation'&&scene.deep?.bench?.state){const b=scene.deep.bench,bs=b.state,used=new Set([bs.plus,bs.minus]),onTone='#eef3ff',offTone='#8995ab';
    for(const a of b.anchors()){if(a.kind==='mode')continue;
     const spec={id:'bench-'+a.id,at:at3(a.at),dir:a.align==='start'?[1,-.25]:[-1,-.25],dist:a.id==='device'?6:0,fade};
@@ -224,37 +214,36 @@ function noteSpecs(){
  }
  if(state.view==='interface'){
   const L=scene.layers,front=1.65,x=2.2,mid=k=>[x,(L[k][0]+L[k][1])/2+wallY(x),front],show=k=>state.layer==='all'||state.layer===k;
-  if(show('cathode'))list.push({id:'i-poly',title:'PAQEDOT',note:'Cathode: takes Li⁺ in',tone:PHASES.cathode.swatch,at:at3(mid('cathode')),dir:[1,-.5],fade});
+  if(show('cathode'))list.push({id:'i-poly',title:'PAQEDOT · cathode',note:'',tone:PHASES.cathode.swatch,at:at3(mid('cathode')),dir:[1,-.5],fade});
   if(show('sei'))list.push({id:'i-sei',title:'SEI',note:'Passes Li⁺, blocks electrons',tone:PHASES.sei.swatch,at:at3(mid('sei')),dir:[1,0],fade});
-  if(show('carbon'))list.push({id:'i-carbon',title:'Carbon',note:'Anode: gives up Li⁺ and electrons',tone:'#b4b9c3',at:at3(mid('carbon')),dir:[1,.5],fade});
+  if(show('carbon'))list.push({id:'i-carbon',title:'Carbon · anode',note:'',tone:'#b4b9c3',at:at3(mid('carbon')),dir:[1,.5],fade});
   if(state.layer==='all'){
-   list.push({id:'i-ion',title:'Li⁺ ion',note:'Crosses the SEI directly',tone:'#f3c36a',at:()=>rider('ion'),home:at3([.65,1.25,1.72]),dir:[1,-.6],dist:4,fade,priority:-1});
-   list.push({id:'i-electron',title:'Electron',note:'Has to go round, through the wire',tone:'#e6eeff',at:()=>rider('electron'),home:at3([-2.6,2.15,0]),dir:[1,-.4],dist:0,fade,priority:-1});
+   list.push({id:'i-ion',title:'Li⁺',note:'',phone:false,tone:'#f3c36a',at:()=>rider('ion'),dir:[1,-.6],dist:4,fade,priority:-1});
+   list.push({id:'i-electron',title:'e⁻',note:'Goes round through the wire',phone:false,tone:'#e6eeff',at:()=>rider('electron'),dir:[1,-.4],dist:0,fade,priority:-1});
   }
   return list;
  }
  if(state.view==='architecture'&&state.architecture==='layered'){
   const sl=scene.layers,y=k=>(sl[k][0]+sl[k][1])/2,show=k=>state.layer==='all'||state.layer===k;
-  const slabCorners=()=>{const out=[];for(const x of [-2.7,2.7])for(const yy of [sl.carbon[0],sl.cathode[1]])for(const z of [-1.75,1.75])out.push([x,yy,z]);return out;};
-  const slab=(id,k,title,note,tone,pt,dy)=>{const at=at3(pt),home=beside(slabCorners,at);list.push({id,title,note,tone,at,home,dir:()=>{const h=home(),a=at();return h&&a?[h.x<a.x?-1:1,dy*.6]:[1,dy];},fade,onSelect:pick(k)});};
-  if(show('cathode'))slab('s-cathode','cathode','Cathode','A flat electrode sheet',PHASES.cathode.swatch,[1.2,y('cathode'),1.75],-.55);
-  if(show('sei'))slab('s-sep','sei','Separator','Holds the two sheets apart',PHASES.sei.swatch,[1.9,y('sei'),1.75],.05);
-  if(show('carbon'))slab('s-anode','carbon','Anode','The other electrode sheet','#b4b9c3',[1.2,y('carbon'),1.75],.55);
+  const slab=(id,k,title,note,tone,pt,dy)=>{const at=at3(pt);list.push({id,title,note,tone,at,dir:[1,dy],fade,onSelect:pick(k)});};
+  if(show('cathode'))slab('s-cathode','cathode','Cathode','',PHASES.cathode.swatch,[1.2,y('cathode'),1.75],-.55);
+  if(show('sei'))slab('s-sep','sei','Separator','The gap ions must cross',PHASES.sei.swatch,[1.9,y('sei'),1.75],.05);
+  if(show('carbon'))slab('s-anode','carbon','Anode','','#b4b9c3',[1.2,y('carbon'),1.75],.55);
   return list;
  }
  // The sample cube: architecture or one fabrication stage.
  const fab=state.view==='fabrication',stage=fab?state.stage:'sei',spot=k=>()=>scene&&spotFor(k,g);
  const TEXT=fab?{
-  hybrid:{carbon:['Resol-rich domain','Becomes the carbon',PHASES.precursor.swatch],template:['Template domain','Removed on heating',PHASES.template.swatch]},
-  carbon:{carbon:['Carbon','The framework that stays','#b4b9c3'],pore:['Open pores','About 90 nm on average','#8fa6c8']},
-  cathode:{carbon:['Carbon','Still touching the coating','#b4b9c3'],cathode:['PAQEDOT','Grown onto the pore walls',PHASES.cathode.swatch]},
-  sei:{carbon:['Carbon','The anode','#b4b9c3'],sei:['SEI','Formed between the two',PHASES.sei.swatch],cathode:['PAQEDOT','The cathode',PHASES.cathode.swatch]}
- }[stage]:{carbon:['Carbon','Anode and its own wire','#b4b9c3'],sei:['SEI','The separator, grown inside',PHASES.sei.swatch],cathode:['PAQEDOT','Cathode coating the pores',PHASES.cathode.swatch]};
+  hybrid:{carbon:['Resol-rich domain','Becomes the carbon',PHASES.precursor.swatch],template:['Template','Removed on heating',PHASES.template.swatch]},
+  carbon:{carbon:['Carbon','','#b4b9c3'],pore:['Open pores','About 90 nm across','#8fa6c8']},
+  cathode:{carbon:['Carbon','','#b4b9c3'],cathode:['PAQEDOT','Grown on the pore walls',PHASES.cathode.swatch]},
+  sei:{carbon:['Carbon · anode','','#b4b9c3'],sei:['SEI','Formed between the two',PHASES.sei.swatch],cathode:['PAQEDOT · cathode','',PHASES.cathode.swatch]}
+ }[stage]:{carbon:['Carbon · anode','','#b4b9c3'],sei:['SEI','The separator, grown inside',PHASES.sei.swatch],cathode:['PAQEDOT · cathode','',PHASES.cathode.swatch]};
  const dirs={carbon:[-1,.5],template:[1,-.6],pore:[1,-.6],cathode:[1,-.6],sei:[1,.45]};
  for(const [k,[title,note,tone]] of Object.entries(TEXT)){
   if(state.route&&k!==state.route)continue;
-  const at=spot(k),home=beside(cubeCorners,at,toWorld);
-  list.push({id:'m-'+k,title,note,tone,at,home,dir:()=>{const h=home(),a=at();return h&&a?[h.x<a.x?-1:1,dirs[k][1]*.6]:dirs[k];},dist:4,fade,...(!fab?{onSelect:pick(k)}:{})});
+  const at=spot(k);
+  list.push({id:'m-'+k,title,note,tone,at,dir:dirs[k],dist:4,fade,...(!fab?{onSelect:pick(k)}:{})});
  }
  if(state.route&&scene.meta){const path=scene.meta.paths[state.route],mid=path[Math.floor(path.length/2)];
   list.push({id:'route',title:state.route==='carbon'?'One unbroken carbon route':'One unbroken cathode route',note:'Face to face without leaving it',tone:'#ffe2a8',at:()=>{const q=scene.project(scene.network.localToWorld(new window.THREE.Vector3(...mid)).toArray());return {x:q.x,y:q.y};},dir:[.3,1],dist:20,fade,priority:-1});}
@@ -266,7 +255,7 @@ function rider(kind){
  const sc=scene,t=sc.time,now=performance.now(),r=riders[kind];
  const q=kind==='ion'?i=>(t*.11+i/3)%1:i=>(t*.09+i/3)%1,objs=kind==='ion'?sc.ions:sc.electrons.slice(3,6),[lo,hi]=kind==='ion'?[.2,.82]:[.06,.94];
  const inside=i=>{const v=q(i);return v>=lo&&v<=hi;};
- if(r.i<0||!inside(r.i)&&now>r.until){let pickI=-1,bestQ=2;for(let i=0;i<objs.length;i++)if(inside(i)&&q(i)<bestQ){bestQ=q(i);pickI=i;}if(pickI>=0){r.i=pickI;r.until=now+260;}}
+ if(r.i<0||!inside(r.i)&&now>r.until){let pickI=-1,bestQ=2;for(let i=0;i<objs.length;i++)if(inside(i)&&q(i)<bestQ){bestQ=q(i);pickI=i;}if(pickI>=0){r.i=pickI;r.until=now+420;}}
  const o=objs[r.i];if(!o||!o.visible)return null;
  const p=sc.project(sc.local.localToWorld(o.position.clone()).toArray());return {x:p.x,y:p.y,r:kind==='ion'?6:4,visible:inside(r.i)};
 }

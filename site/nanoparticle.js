@@ -73,15 +73,11 @@ function notesFor(){
  if(state.view==='surfaces'){
   const face=m.facets.find(f=>f.id===state.faceId),centre=representative(m,'face',state.faceId);
   list.push({id:'face',title:face.family==='100'?'{100} face':'{111} face',note:face.family==='100'?'A square grid: each atom has 8 neighbours':'Close-packed triangles: each atom has 9',tone:face.family==='100'?'#d6dcec':violet,at:atAtom(centre),dir:[1,-.6],dist:40,phone:'note'});
-  const other=m.facets.filter(f=>f.family!==face.family).sort((a,b)=>facing(b.center)-facing(a.center))[0];
-  if(other){const a=representative(m,'face',other.id);list.push({id:'other',title:other.family==='100'?'{100} face':'{111} face',note:'The other pattern on the same crystal',tone:'#b8ad8f',at:atAtom(a),dir:[-1,.6],dist:40,phone:false});}
-  const corner=representative(m,'corner');list.push({id:'corner',title:'Corner atom',note:'Only 5 neighbours: the most exposed',tone:gold,at:atAtom(corner),dir:[1,.7],dist:30,phone:false});
+  const corner=representative(m,'corner');list.push({id:'corner',title:'Corner atom',tone:gold,at:atAtom(corner),dir:[1,.7],dist:30,phone:false});
  }
  if(state.view==='neighbors'&&state.selected){
   const a=m.byId.get(state.selected);
-  list.push({id:'atom',title:siteDescription(a),note:a.cn===12?'12 neighbours: fully surrounded':`${a.cn} neighbours, ${12-a.cn} missing compared with the inside`,tone:blue,at:atAtom(a,.6),dir:[1,-.65],dist:46,phone:'note',live:true});
-  const nb=a.neighbors.map(id=>m.byId.get(id)).sort((x,y)=>facing(y.p)-facing(x.p))[0];
-  if(nb)list.push({id:'neighbour',title:'Nearest neighbour',note:'Touching it: one of the bonds counted',tone:'#759fe5',at:atAtom(nb,.5),dir:[-1,.6],dist:40,phone:false});
+  list.push({id:'atom',title:siteDescription(a),tone:blue,at:atAtom(a,.6),dir:[1,-.65],dist:46,phone:'note',live:true});
  }
  if(state.view==='size'){
   list.push({id:'surface',title:'Surface atoms',note:`${(m.surfaceFraction*100).toFixed(0)}% of all ${m.atoms.length.toLocaleString()} at this size`,tone:gold,at:atAtom(representative(m,'edge')),dir:[1,-.6],dist:40,live:true,phone:'note'});
@@ -89,7 +85,7 @@ function notesFor(){
  if(state.view==='binding'){
   const site=bindingSites(m,state.faceId)[state.site];
   if(site)list.push({id:'site',title:`${names[state.site]} site`,note:SITE_NOTES[state.site],tone:violet,at:atPoint(add(site.p,mul(site.normal,1.52)),.42),dir:[1,-.6],dist:40,phone:'note'});
-  if(site&&state.stacking&&site.underlying){const u=m.byId.get(site.underlying);list.push({id:'under',title:'Atom in the layer below',note:state.site==='hcp'?'Sits right under the site':'Offset from the site',tone:'#e4d9ff',at:atAtom(u,.5),dir:[-1,.6],dist:40,phone:false});}
+  if(site&&state.stacking&&site.underlying){const u=m.byId.get(site.underlying);list.push({id:'under',title:'Atom in the layer below',tone:'#e4d9ff',at:atAtom(u,.5),dir:[-1,.6],dist:40,phone:false});}
  }
  const key=JSON.stringify(list.map(x=>[x.id,x.title,x.note]))+state.selected+state.faceId;
  if(key!==noteKey){noteKey=key;notes.show(list);}
