@@ -164,16 +164,11 @@ function drawLabels(q, pts) {
  // Sides are chosen afresh each time the labels come in.
  if (q.labels <= 0 && !inspect) for (const k in labelSide) delete labelSide[k];
  const obstacles = [pts.li, pts.tm, ...pts.oxygen.filter(o => o.visible)];
- // Phones have room for one octahedral label: it names the site lithium last occupied, and moves on with it.
- const atB = clamp((q.hop - .6) / .15);
- const liNote = q.hop < .3 ? 'Leaving its octahedral site' : q.hop < .7 ? 'Through the tetrahedral site' : q.hop < 1 ? 'Into the empty octahedral site' : 'One hop complete';
  placeLabels([
-  // The lithium's words stay put above the model; the hairline follows the ion through its hop.
-  {key: 'li', p: size.narrow ? null : pts.li, text: 'Li⁺', note: liNote, opacity: q.labels, dir: [-1, 0], color: '#bfeec4', home: (() => { const o = pts.oxygen.filter(o => o.visible); if (!o.length) return null; const x0 = Math.min(...o.map(o => o.x)), y0 = Math.min(...o.map(o => o.y)); return {x: x0 + 18, y: y0 - 4}; })()},
-  {key: 'a', p: pts.a, text: 'Octahedral site', note: 'Six oxygen neighbours', opacity: q.labels * (size.narrow ? 1 - atB : q.hop < .5 ? 1 : .8), dir: away(pts.a)},
-  {key: 'b', p: pts.b, text: 'Octahedral site', note: 'Empty, waiting for lithium', opacity: q.labels * (size.narrow ? atB : .55 + .45 * clamp((q.hop - .7) / .2)), dir: away(pts.b)},
-  {key: 't', p: pts.t, text: 'Tetrahedral site', note: 'Four oxygen neighbours', opacity: q.labels, dir: [-1, .9], color: '#c9e6d0'},
-  {key: 'tm', p: pts.tm, text: 'Transition metal', note: 'One nearby: tolerable repulsion', opacity: Math.max(q.tm, inspect === 'tm' ? 1 : 0), dir: [.9, -.3], color: '#e3c6f5'},
+  {key: 'li', p: size.narrow ? null : pts.li, text: 'Lithium ion', opacity: q.labels, dir: [-1, -.7], color: '#bfeec4'},
+  {key: 'b', p: pts.b, text: 'Empty octahedral site', opacity: q.labels * (1 - clamp((q.hop - .8) / .15)), dir: away(pts.b)},
+  {key: 't', p: pts.t, text: 'Tetrahedral site', opacity: q.labels * (1 - clamp((q.hop - .25) / .1) + clamp((q.hop - .7) / .1)), dir: [-1, .9], color: '#c9e6d0'},
+  {key: 'tm', p: pts.tm, text: 'Transition metal', opacity: Math.max(q.tm, inspect === 'tm' ? 1 : 0), dir: [.9, -.3], color: '#e3c6f5'},
   {key: 'c', p: inspect === 'sites' ? pts.c : null, text: 'Second vacancy', opacity: 1, dir: away(pts.c)},
  ], obstacles).forEach(drawLabel);
 }

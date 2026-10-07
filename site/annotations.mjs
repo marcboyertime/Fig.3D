@@ -24,7 +24,7 @@
 // The first callouts wait for the page's staged opening to finish and for the stage to be on screen.
 const SVG='http://www.w3.org/2000/svg';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),ease=t=>1-Math.pow(1-clamp(t,0,1),3),smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
-const reducedQuery=matchMedia('(prefers-reduced-motion: reduce)');
+const reducedQuery=matchMedia('(prefers-reduced-motion: reduce)'),SWITCH=320;
 
 export class Annotations{
   constructor(stage,options={}){
@@ -86,7 +86,7 @@ export class Annotations{
       label.addEventListener('click',()=>item.spec.onSelect(item.spec.id,true));
     }
     label.innerHTML='<b></b><span></span>';this.layer.append(label);
-    const item={spec,g,lead,ring,pin,label,p:0,vis:0,off:null,choice:0,measured:false,leaving:false,start:0};
+    const item={spec,g,lead,ring,pin,label,p:0,vis:0,off:null,choice:null,measured:false,leaving:false,start:0};
     this.items.set(spec.id,item);this.write(item,false);return item;
   }
   write(item,swap){
@@ -127,15 +127,27 @@ export class Annotations{
       if(item.leaving&&item.vis<.01){this.remove(item);continue;}
       const shown=item.vis>.01&&item.a;
       item.g.style.display=shown?'':'none';item.label.style.visibility=shown?'':'hidden';
-      if(!shown)continue;
+      if(!shown){item.wasHidden=true;item.prevA=null;item.sw=null;continue;}
       if(!item.measured){item.w=item.label.offsetWidth;item.h=item.label.offsetHeight;const b=item.label.querySelector('b');item.titleMid=b.offsetTop+b.offsetHeight/2;item.measured=true;}
-      const a=item.a,r=Math.max(0,a.r||0),spec=item.spec;
+      const spec=item.spec;
+      // A jump of the anchor (a rider moving on to the next ion, a pin moving to another face) is never drawn as a
+      // slide: the callout fades out where it was and fades back in at the new place.
+      const live=item.a,prev=item.prevA;item.prevA={x:live.x,y:live.y,r:live.r};
+      if(!reduced&&prev&&item.vis>.02&&!item.sw&&Math.hypot(live.x-prev.x,live.y-prev.y)>Math.max(46,(live.r||0)*3))item.sw={t:now,from:prev,jump:true};
+      let sf=1,a=live;
+      if(item.sw){
+        const u=clamp((now-item.sw.t)/SWITCH,0,1);busy=true;
+        if(u<.5){sf=1-smooth(u*2);if(item.sw.from)a=item.sw.from;}
+        else{sf=smooth(u*2-1);if(!item.sw.done){item.sw.done=true;item.choice=item.sw.next??null;}}
+        if(u>=1)item.sw=null;
+      }
+      const r=Math.max(0,a.r||0);
       // A callout with a home keeps its words near a fixed point while its line follows the moving anchor.
       const h=spec.home?.(),base=h&&Number.isFinite(h.x)&&Number.isFinite(h.y)?h:a,rb=base===a?r:0;
       let [dx,dy]=(typeof spec.dir==='function'?spec.dir():spec.dir)||[1,-.7];const n=Math.hypot(dx,dy)||1;dx/=n;dy/=n;
       const plated=this.layer.classList.contains('is-plated'),reach=(compact?18:26)+(spec.dist||0)*(compact?.7:1)+rb,shelf=compact?8:12,gap=plated?0:compact?5:6;
       const box=(ox,oy,side)=>{const ex=base.x+ox,ey=base.y+oy,x=side>0?ex+shelf+gap:ex-shelf-gap-item.w;return {ex,ey,x,y:ey-item.titleMid,w:item.w,h:item.h,side};};
-      const candidates=[[dx,dy],[-dx,dy],[dx,-dy],[-dx,-dy],[dx*1.8,dy*1.8],[-dx*1.8,dy*1.8],[dx,dy*.1],[-dx,dy*.1],...(avoid.length?[[dx*3,dy*2],[-dx*3,dy*2],[dx*4.5,dy*1.2],[-dx*4.5,dy*1.2],[dx*6,dy*.6],[-dx*6,dy*.6],[dx*2,dy*4],[-dx*2,dy*4]]:[])].map(([cx,cy])=>{
+      const candidates=[[dx,dy],[-dx,dy],[dx,-dy],[-dx,-dy],[dx*1.8,dy*1.8],[-dx*1.8,dy*1.8],[dx,dy*.1],[-dx,dy*.1],...(avoid.length?[[dx*2.4,dy*1.6],[-dx*2.4,dy*1.6],[dx*1.4,dy*2.6],[-dx*1.4,dy*2.6]]:[])].map(([cx,cy])=>{
         const side=Math.abs(cx)<.12?(spec.side||1):Math.sign(cx);let b=box(cx*reach,cy*reach,side);
         // Slide vertically to stay inside the frame; the hairline absorbs the difference.
         const shift=clamp(b.y,margin,H-margin-b.h)-b.y;if(shift)b=box(cx*reach,cy*reach+shift,side);
@@ -154,28 +166,32 @@ export class Annotations{
         for(const o of anchors){if(o===item)continue;const p=o.a,rr=(p.r||3)+4;if(p.x>b.x-rr&&p.x<b.x+b.w+rr&&p.y>b.y-rr&&p.y<b.y+b.h+rr)s+=12;}
         return s;
       };
-      // Keep the current side while it still works, so callouts do not flicker between positions.
-      let choice=item.choice,best=score(candidates[choice]);
-      if(best>0)candidates.forEach((c,i)=>{const s=score(c)+(i===item.choice?0:6);if(s<best-.01){best=s;choice=i;}});
-      item.choice=choice;let target=candidates[choice];
+      const pick=()=>{let bi=0,bs=Infinity;candidates.forEach((c,i)=>{const v=score(c);if(v<bs-.01){bs=v;bi=i;}});return [bi,bs];};
+      // The side is chosen when the callout appears and then held: the words travel rigidly with their anchor.
+      // Only a side that stays clearly bad (off frame, on another label) is changed, by a fade, never a slide.
+      if(item.choice==null||item.wasHidden){item.choice=pick()[0];item.bad=0;}
+      else if(!item.sw){
+        const now_=score(candidates[item.choice]);item.bad=now_>24?(item.bad||0)+(dt||16):0;
+        if(item.bad>420){const [bi,bs]=pick();if(bi!==item.choice&&bs<now_*.5-4)item.sw={t:now,next:bi};item.bad=0;}
+      }
+      item.wasHidden=false;
+      let target=candidates[item.choice]||candidates[0];
       // Out of frame horizontally even at its best: pin the text inside and let the line bend to it.
       if(target.x<margin||target.x+target.w>W-margin){const x=clamp(target.x,margin,W-margin-target.w),d=x-target.x;target={...target,x,ex:target.ex+d};}
-      const goal=[target.ex-base.x,target.ey-base.y,target.x-base.x,target.y-base.y,target.side];
-      if(!item.off||reduced)item.off=goal.slice();
-      else{const f=dt===0?0:1-Math.exp(-dt/150);for(let i=0;i<4;i++){const d=goal[i]-item.off[i];item.off[i]+=d*f;if(Math.abs(d)>.4)busy=true;}item.off[4]=goal[4];}
       placed.push(target);
-      const ex=base.x+item.off[0],ey=base.y+item.off[1],lx=base.x+item.off[2],ly=base.y+item.off[3],side=item.off[4];
+      const {ex,ey,x:lx,y:ly,side}=target;
       const sx=ex+side*shelf,ux=ex-a.x,uy=ey-a.y,len=Math.hypot(ux,uy)||1,start=r>0?r+2.5:3.4;
       const ax=a.x+ux/len*start,ay=a.y+uy/len*start;
       item.lead.setAttribute('d',len>start+2?`M${ax.toFixed(1)} ${ay.toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}H${sx.toFixed(1)}`:`M${ex.toFixed(1)} ${ey.toFixed(1)}H${sx.toFixed(1)}`);
       const p=item.p,ringP=ease(p/.3),lineP=smooth((p-.12)/.5),textP=ease((p-.45)/.55);
-      item.lead.style.strokeDashoffset=(1-lineP).toFixed(3);
+      item.lead.style.strokeDashoffset=(1-lineP).toFixed(3);item.lead.style.opacity=item.sw&&!item.sw.jump?sf.toFixed(3):'';
       item.ring.setAttribute('cx',a.x.toFixed(1));item.ring.setAttribute('cy',a.y.toFixed(1));item.ring.setAttribute('r',((r>0?r+2.5:5.2)*(.6+.4*ringP)).toFixed(2));
       item.pin.setAttribute('cx',a.x.toFixed(1));item.pin.setAttribute('cy',a.y.toFixed(1));item.pin.setAttribute('r',r>0?0:(2.1*ringP).toFixed(2));
-      item.g.style.opacity=(item.vis*ringP).toFixed(3);item.g.classList.toggle('has-ring',r>0);
+      item.g.style.opacity=(item.vis*ringP*(item.sw?.jump?sf:1)).toFixed(3);item.g.classList.toggle('has-ring',r>0);
       const pressed=this.selected===spec.id;item.g.classList.toggle('is-pressed',pressed);
-      item.label.style.opacity=(item.vis*textP).toFixed(3);
-      item.label.style.transform=`translate3d(${Math.round(lx+(1-textP)*side*-6)}px,${Math.round(ly)}px,0)`;
+      item.label.style.opacity=(item.vis*textP*sf).toFixed(3);
+      // Sub-pixel placement so the words keep exact step with the ring when the anchor moves.
+      item.label.style.transform=`translate3d(${(lx+(1-textP)*side*-6).toFixed(2)}px,${ly.toFixed(2)}px,0)`;
       item.label.classList.toggle('is-left',side<0);
       item.label.style.pointerEvents=spec.onSelect&&item.vis*textP>.6?'auto':'none';
     }

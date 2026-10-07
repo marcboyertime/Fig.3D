@@ -138,7 +138,7 @@ export class BatteryScene{
     const travel=m=>{const f=((this.phase+(kind==='ion'?markers.indexOf(m)*.618034:markers.indexOf(m)/9))%1+1)%1;return forward?f:1-f;};
     let m=markers[r.index],t=travel(m);
     if(t<from||t>to){
-      if(!r.hold)r.hold=now+260;
+      if(!r.hold)r.hold=now+420;
       if(now<r.hold)return null;
       // The newest marker already on its way becomes the one we follow.
       let best=null,bt=2;markers.forEach((c,i)=>{const ct=travel(c);if(ct>=from&&ct<to&&ct<bt){bt=ct;best=i;}});
@@ -157,17 +157,14 @@ export class BatteryScene{
       this.noteKey=key;const P=this.points,pick=this.onPart;
       const ox=this.state.oxidation==='negative';
       this.notes.show(this.zoom<.5?[
-        {id:'ion',title:'Lithium ion',note:discharge?'Crosses the electrolyte to the oxide':'Pulled back across to graphite',tone:'#80f3d0',at:ride('ion',this.ionMarkers,.22,.78,.075),home:at(P.ionHome),dir:[-.55,1],dist:10,fade:cellFade,phone:'note',priority:0},
-        {id:'electron',title:'Electron',note:discharge?'Takes the wire, through the load':'Driven round the wire by the charger',tone:'#c5a0ff',at:ride('electron',this.electronMarkers,discharge?.03:.69,discharge?.31:.97,.058),home:at(P.electronHome),dir:[-1,-.25],dist:8,fade:cellFade,phone:'note',priority:1},
-        {id:'negative',title:'Graphite',note:ox?'Anode now: gives up lithium':'Cathode now: takes lithium back',tone:'#8fb2ff',at:at(P.negative),dir:[-.7,1],fade:cellFade,onSelect:pick,label:'Graphite, negative electrode. Select for explanation.',priority:2},
-        {id:'positive',title:'Cobalt oxide',note:ox?'Cathode now: takes lithium in':'Anode now: gives lithium up',tone:'#b398f5',at:at(P.positive),dir:[.6,1],fade:cellFade,onSelect:pick,label:'Cobalt oxide, positive electrode. Select for explanation.',priority:3},
-        {id:'separator',title:'Separator',note:'Lets ions through, blocks electrons',tone:'#c5cee0',at:at(P.separator),dir:[1,-.35],dist:18,fade:cellFade,onSelect:pick,phone:false,priority:4},
-        {id:'load',title:discharge?'Load':'Charger',note:discharge?'Where the energy is delivered':'Supplies the energy stored',tone:'#c5cee0',at:at(P.load),dir:[1,-.4],fade:cellFade,onSelect:pick,priority:5}
+        {id:'ion',title:'Lithium ion',note:discharge?'Through the electrolyte':'Back to graphite',tone:'#80f3d0',at:ride('ion',this.ionMarkers,.22,.78,.075),dir:[.6,-1],dist:4,fade:cellFade,live:true,priority:0},
+        {id:'electron',title:'Electron',tone:'#c5a0ff',at:ride('electron',this.electronMarkers,discharge?.03:.69,discharge?.31:.97,.058),dir:[-1,-.5],dist:4,fade:cellFade,phone:false,priority:1},
+        {id:'negative',title:'Graphite',tone:'#8fb2ff',at:at(P.negative),dir:[-.7,1],fade:cellFade,onSelect:pick,label:'Graphite, negative electrode. Select for explanation.',priority:2},
+        {id:'positive',title:'Cobalt oxide',tone:'#b398f5',at:at(P.positive),dir:[.6,1],fade:cellFade,onSelect:pick,label:'Cobalt oxide, positive electrode. Select for explanation.',priority:3}
       ]:[
-        {id:'gallery-ion',title:'Lithium ion',note:discharge?'Slides out between two sheets':'Slides in between two sheets',tone:'#80f3d0',at:()=>{const f=((this.phase%1)+1)%1,t=discharge?f:1-f;if(t<.06||t>.94)return {x:0,y:0,visible:false};const p=this.galleryMarker.getWorldPosition(new this.T.Vector3());return projectPoint(this.T,this.camera,p,this.width,this.height,.2*CELL.graphiteScale);},home:at(P.galleryHome),dir:[.25,1],dist:44,fade:insideFade,phone:'note',priority:0},
-        {id:'edge',title:'Exposed edge',note:discharge?'The way out of the host':'The way into the host',tone:'#80f3d0',at:at(P.edge),dir:[.7,.9],fade:insideFade,onSelect:pick,priority:1},
-        {id:'carbon',title:'Carbon sheet',note:'Rings of carbon that stay put',tone:'#8fb2ff',at:at(P.carbon),dir:[-.5,-1],fade:insideFade,onSelect:pick,priority:2},
-        {id:'gallery',title:'Gallery',note:'The gap where lithium sits',tone:'#80f3d0',at:at(P.gallery),dir:[-1,-.2],fade:insideFade,onSelect:pick,phone:false,priority:3}
+        {id:'gallery-ion',title:'Lithium ion',note:discharge?'Slides out between two sheets':'Slides in between two sheets',tone:'#80f3d0',at:()=>{const f=((this.phase%1)+1)%1,t=discharge?f:1-f;if(t<.06||t>.94)return {x:0,y:0,visible:false};const p=this.galleryMarker.getWorldPosition(new this.T.Vector3());return projectPoint(this.T,this.camera,p,this.width,this.height,.2*CELL.graphiteScale);},dir:[.5,-1],dist:6,fade:insideFade,live:true,priority:0},
+        {id:'edge',title:'Exposed edge',tone:'#80f3d0',at:at(P.edge),dir:[.7,.9],fade:insideFade,onSelect:pick,priority:1},
+        {id:'gallery',title:'Gallery',tone:'#80f3d0',at:at(P.gallery),dir:[-1,-.2],fade:insideFade,onSelect:pick,phone:false,priority:3}
       ]);
     }
     this.notes.frame();

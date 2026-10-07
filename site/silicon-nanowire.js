@@ -132,13 +132,12 @@ const notes=new Annotations($('stage'),{className:'wire-notes is-plated',compact
 let noteAt={},noteScene=null,noteKey='';
 // Title, explanation, colour, direction, reach and phone behaviour for each label.
 const NOTE_TEXT={
- shell:()=>['Lithiated shell','Silicon that has taken up lithium and swelled','#ff8a7a',[1,-.6],18,'note'],
- core:()=>['Crystalline core','Silicon not yet reached, shrinking','#8fb2ff',[1,-.7],26,'note'],
- front:()=>['Reaction front','Where silicon is turning to Li–Si now','#e6ebf6',[-1,-.6],22,false],
- supply:()=>['Lithium enters','From the source at this end','#e6ebf6',[-1,.55],22,false],
- neck:()=>['Crack path, after Fig. 5f','Tension pulls the surface indent open','#e6ebf6',[1,-.6],30,'note'],
- tension:()=>['Tension','Pulled apart here','#ff9f6b',[1,-.4],10,'title'],
- compression:()=>['Compression','Squeezed here','#7fb0ff',[1,.4],10,'title']
+ shell:()=>['Lithiated shell','','#ff8a7a',[1,-.6],18,'title'],
+ core:()=>['Crystalline core','','#8fb2ff',[1,-.7],26,'title'],
+ front:()=>['Reaction front','Silicon turning into Li–Si now','#e6ebf6',[-1,-.6],22,'title'],
+ neck:()=>['Crack path, Fig. 5f','Tension pulls this notch open','#e6ebf6',[1,-.6],30,'note'],
+ tension:()=>['Tension','','#ff9f6b',[1,-.4],10,'title'],
+ compression:()=>['Compression','','#7fb0ff',[1,.4],10,'title']
 };
 function placeLabels(sc){
  const v=sc.view,q=state.question,show={},at={};
