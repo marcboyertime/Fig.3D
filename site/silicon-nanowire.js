@@ -1,6 +1,7 @@
 import {initialState,reduce,FIGURES,DISPLAYS,HOME,VIEWS,section,outer,contour,frontAt,clamp,smooth} from './silicon-nanowire-model.mjs';
 import {WireScene,PALETTE} from './silicon-nanowire-scene.mjs';
 import {Annotations} from './annotations.mjs';
+import {swapFigure,fitStage} from './figure-swap.mjs';
 import {PaperEmergence,PROFILE} from './silicon-nanowire-opening.mjs';
 const $=id=>document.getElementById(id),all=s=>[...document.querySelectorAll(s)],BASE='assets/silicon-nanowire/';
 const reducedQuery=matchMedia('(prefers-reduced-motion: reduce)'),params=new URLSearchParams(location.search);
@@ -43,12 +44,15 @@ const DEPTH={
 
 // ————— Display state —————
 const showingPaper=()=>state.display!=='model';
-function figureFor(key){const f=FIGURES[key],img=$('paper-image'),src=BASE+f.file;if(!img.src.endsWith(src)){img.src=src;img.width=f.width;img.height=f.height;img.alt=`Original ${f.title}. ${f.caption}`;}$('paper-original').href=src;$('paper-caption').textContent=f.caption;}
-function saveFigure(){if(showingPaper()){const v=figureViews[state.display],p=$('paper-viewport');v.x=p.scrollLeft;v.y=p.scrollTop;}}
+function figureFor(key){const f=FIGURES[key],img=$('paper-image'),src=BASE+f.file;swapFigure(img,key,src,()=>{img.width=f.width;img.height=f.height;img.alt=`Original ${f.title}. ${f.caption}`;sizeFigure();const v=figureViews[key];$('paper-viewport').scrollTo(v.x,v.y);});$('paper-original').href=src;$('paper-caption').textContent=f.caption;}
+// The figure on screen, which lags the chosen one while the next file decodes.
+const shownFigure=()=>FIGURES[$('paper-image').dataset.key]?$('paper-image').dataset.key:state.display;
+function saveFigure(){if(showingPaper()){const v=figureViews[shownFigure()],p=$('paper-viewport');v.x=p.scrollLeft;v.y=p.scrollTop;}}
 function sizeFigure(){
  if(!showingPaper())return;
- const p=$('paper-viewport'),img=$('paper-image'),v=figureViews[state.display],f=FIGURES[state.display];
- const fit=Math.min(p.clientWidth,p.clientHeight*(f.width/f.height),f.width*1.6);
+ const p=$('paper-viewport'),img=$('paper-image'),k=shownFigure(),v=figureViews[k],f=FIGURES[k],st=$('stage');
+ const room=fitStage(st,state.opening||st.classList.contains('is-emerging')?null:{w:f.width,h:f.height,cap:1.6},{view:$('paper-view'),opening:state.opening||st.classList.contains('is-emerging')})??p.clientHeight;
+ const fit=Math.min(p.clientWidth,room*(f.width/f.height),f.width*1.6);
  img.style.width=Math.max(1,fit*v.zoom)+'px';p.classList.toggle('zoomed',v.zoom>1);
  $('figure-out').disabled=v.zoom<=1;$('figure-in').disabled=v.zoom>=4;
  $('figure-help').textContent=v.zoom===1?'Original figure · Liu et al. 2011':'Drag or scroll to inspect · '+Math.round(v.zoom*100)+'%';
@@ -75,7 +79,7 @@ function sync(){
  if(key!==lastCaption){$('caption-kicker').textContent=c.kicker;$('caption-title').textContent=c.title;$('caption-copy').textContent=c.copy;$('caption-copy').hidden=!c.copy;const el=document.querySelector('.caption');el.classList.remove('changing');void el.offsetWidth;if(lastCaption&&!state.reduced)el.classList.add('changing');lastCaption=key;}
  $('caption-note').textContent=paper?'':c.note||'';
  $('paper-details').hidden=!paper||state.opening;$('controls').classList.toggle('dimmed',paper||state.opening);
- if(paper){figureFor(state.display);sizeFigure();}
+ if(paper){figureFor(state.display);sizeFigure();}else fitStage($('stage'),null);
  // Toolbar
  all('[data-question]').forEach(b=>{const on=b.dataset.question===state.question;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
  $('inspection').setAttribute('aria-labelledby','tab-'+state.question);
@@ -187,7 +191,7 @@ function setDisplay(key){
  if(state.opening)stopOpening();
  if(key===state.display){sync();return;}
  saveFigure();state=reduce(state,{type:'display',value:key});sync();
- if(key!=='model')requestAnimationFrame(()=>{const v=figureViews[key];$('paper-viewport').scrollTo(v.x,v.y);});else scene?.wake();
+ if(key!=='model')requestAnimationFrame(()=>{if(shownFigure()!==key)return;const v=figureViews[key];$('paper-viewport').scrollTo(v.x,v.y);});else scene?.wake();
 }
 function managePlay(){
  if(!scene||!state.playing){playStop?.();playStop=null;return;}if(playStop)return;
@@ -245,7 +249,7 @@ $('explore').addEventListener('click',()=>{stopOpening();sync();});
 $('opening-pause').addEventListener('click',()=>{state={...state,openingPaused:!state.openingPaused};if(emergence)emergence.paused=state.openingPaused;sync();});
 $('figure-in').addEventListener('click',()=>zoomFigure(1.5));$('figure-out').addEventListener('click',()=>zoomFigure(1/1.5));$('figure-fit').addEventListener('click',()=>zoomFigure(0));
 {let pan=null;const p=$('paper-viewport');p.addEventListener('pointerdown',e=>{if(state.opening){stopOpening();sync();}if(figureViews[state.display]?.zoom>1&&e.pointerType!=='touch'){pan={x:e.clientX,y:e.clientY,l:p.scrollLeft,t:p.scrollTop};p.setPointerCapture(e.pointerId);p.classList.add('panning');}});p.addEventListener('pointermove',e=>{if(pan){p.scrollLeft=pan.l-(e.clientX-pan.x);p.scrollTop=pan.t-(e.clientY-pan.y);}});const end=()=>{if(pan){pan=null;p.classList.remove('panning');saveFigure();}};p.addEventListener('pointerup',end);p.addEventListener('pointercancel',end);p.addEventListener('scroll',()=>{if(!pan)saveFigure();},{passive:true});}
-$('paper-image').addEventListener('load',()=>{if(showingPaper()){sizeFigure();const v=figureViews[state.display];$('paper-viewport').scrollTo(v.x,v.y);}});
+$('paper-image').addEventListener('load',()=>{if(showingPaper()){sizeFigure();const v=figureViews[shownFigure()];$('paper-viewport').scrollTo(v.x,v.y);}});
 // Any input on the stage during the opening hands it over; capture phase reaches the zooming figure too.
 $('stage').addEventListener('pointerdown',e=>{if(state.opening&&!e.target.closest('.stage-bar')){stopOpening();sync();}},{capture:true});
 $('wire').addEventListener('keydown',()=>{if(state.opening){stopOpening();sync();}});

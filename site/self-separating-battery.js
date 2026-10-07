@@ -1,5 +1,6 @@
 import {Emergence} from './self-separating-battery-emergence.mjs?v=5';
 import {Annotations} from './annotations.mjs';
+import {swapFigure,fitStage} from './figure-swap.mjs';
 import {updateDepthUI,formationWall} from './self-separating-battery-depth-ui.mjs?v=5';
 import {initialState,reduce,caption,PHASES,PAPER_POSE,HOME,anchorFor,showingPaper,openingSchedule,OPENING_END,phaseAt} from './self-separating-battery-model.mjs?v=5';
 const $=id=>document.getElementById(id),all=s=>[...document.querySelectorAll(s)];
@@ -18,15 +19,18 @@ const figureViews=Object.fromEntries(Object.keys(FIGURES).map(k=>[k,{zoom:1,x:0,
 const figureNumber=()=>Number(state.display);
 function loadFigure(n){
  const img=$('paper-image'),f=FIGURES[n],src=`assets/self-separating-battery/figure-${n}.jpg`;
- if(!img.src.endsWith(src)){img.src=src;[img.width,img.height]=f.size;img.alt=f.alt;}
+ swapFigure(img,String(n),src,()=>{[img.width,img.height]=f.size;img.alt=f.alt;sizeFigure();const v=figureViews[n];$('paper-viewport').scrollTo(v.x,v.y);});
  $('paper-original').href=src;
 }
-function saveFigure(){if(showingPaper(state)){const v=figureViews[state.display],p=$('paper-viewport');v.x=p.scrollLeft;v.y=p.scrollTop;}}
+// The figure on screen, which lags the chosen one while the next file decodes.
+const shownFigure=()=>FIGURES[$('paper-image').dataset.key]?$('paper-image').dataset.key:state.display;
+function saveFigure(){if(showingPaper(state)){const v=figureViews[shownFigure()],p=$('paper-viewport');v.x=p.scrollLeft;v.y=p.scrollTop;}}
 function sizeFigure(){
  if(!showingPaper(state))return;
- const p=$('paper-viewport'),img=$('paper-image'),v=figureViews[state.display],[w,h]=FIGURES[state.display].size;
- const fit=Math.min(p.clientWidth,p.clientHeight*(w/h),w*1.6);
- img.style.width=Math.max(1,fit*v.zoom)+'px';
+ const p=$('paper-viewport'),img=$('paper-image'),k=shownFigure(),v=figureViews[k],[w,h]=FIGURES[k].size,st=$('scene-stage');
+ const room=fitStage(st,state.opening||st.classList.contains('emerging-from-paper')?null:{w,h,cap:1.6},{view:$('paper-view'),opening:state.opening||st.classList.contains('emerging-from-paper')})??p.clientHeight;
+ const fit=Math.min(p.clientWidth,room*(w/h),w*1.6);
+ img.style.width=Math.max(1,fit*v.zoom)+'px';p.classList.toggle('zoomed',v.zoom>1);
  $('figure-out').disabled=v.zoom<=1;$('figure-in').disabled=v.zoom>=4;
  $('figure-help').textContent=v.zoom===1?'Original figure · Tait et al. 2026':'Drag or scroll to inspect · '+Math.round(v.zoom*100)+'%';
 }
@@ -54,7 +58,7 @@ function render(){
  $('explorer').classList.toggle('showing-paper',paper);$('explorer').dataset.topic=state.deep?.topic||'';
  $('scene-content').inert=paper;$('scene-content').setAttribute('aria-hidden',String(paper));
  $('paper-view').hidden=!paper;$('figure-tools').hidden=!paper||state.opening;$('paper-details').hidden=!paper||state.opening;$('controls').hidden=paper||!!state.deep;
- if(paper){loadFigure(state.display);sizeFigure();}
+ if(paper){loadFigure(state.display);sizeFigure();}else fitStage($('scene-stage'),null);
  all('[data-display]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.display===state.display)));
  $('display-model').hidden=fallbackMode;
  all('[data-view]').forEach(b=>{const on=b.dataset.view===state.view;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});$('inspection').setAttribute('aria-labelledby','tab-'+state.view);
@@ -321,7 +325,7 @@ $('figure-in').addEventListener('click',()=>zoomFigure(1.6));$('figure-out').add
 // Pan an enlarged figure by dragging, as well as by scrolling.
 {let pan=null;const p=$('paper-viewport');p.addEventListener('pointerdown',e=>{if(figureViews[state.display]?.zoom>1&&e.pointerType!=='touch'){pan={x:e.clientX,y:e.clientY,l:p.scrollLeft,t:p.scrollTop};p.setPointerCapture(e.pointerId);p.classList.add('panning');}});p.addEventListener('pointermove',e=>{if(pan){p.scrollLeft=pan.l-(e.clientX-pan.x);p.scrollTop=pan.t-(e.clientY-pan.y);}});const end=()=>{if(pan){pan=null;p.classList.remove('panning');saveFigure();}};p.addEventListener('pointerup',end);p.addEventListener('pointercancel',end);p.addEventListener('scroll',()=>{if(!pan)saveFigure();},{passive:true});}
 new ResizeObserver(sizeFigure).observe($('paper-viewport'));
-$('paper-image').addEventListener('load',()=>{if(showingPaper(state)){sizeFigure();const v=figureViews[state.display];$('paper-viewport').scrollTo(v.x,v.y);}});
+$('paper-image').addEventListener('load',()=>{if(showingPaper(state)){sizeFigure();const v=figureViews[shownFigure()];$('paper-viewport').scrollTo(v.x,v.y);}});
 let overviewPose=null;
 $('depth-toggle').addEventListener('click',()=>{
  if(emergence?.active)emergence.finish();

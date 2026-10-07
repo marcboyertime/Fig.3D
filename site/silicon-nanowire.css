@@ -181,3 +181,15 @@ noscript{display:block;margin:30px 5vw;color:#b6c3d9}
 @keyframes build-line{from{border-bottom-color:transparent}to{border-bottom-color:var(--line)}}
 @keyframes build-title{from{opacity:0;filter:blur(14px);transform:translateY(22px);letter-spacing:-.015em}to{opacity:1;filter:blur(0);transform:none;letter-spacing:-.05em}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.scene-content,.paper-view,.display-switch button,.caption.changing{transition:none;animation:none}}
+/* Paper figures sit at the top left of the stage, level with the heading beside them, and the text column closes up
+   under its heading instead of keeping the room the 3D view's longer copy needs. */
+.fits-figure .paper-sheet img{align-self:flex-start;margin:0 auto 0 0}
+/* Unzoomed, the figure always fits; while the stage settles it may be briefly taller, which should clip, not scroll. */
+.paper-viewport:not(.zoomed){overflow:hidden}
+body:has(.showing-paper) .caption{min-height:0}
+/* A wide figure closes the stage up around itself (figure-swap.mjs); the 3D layer keeps its full height meanwhile. */
+.stage{transition:height 360ms cubic-bezier(.22,.7,.2,1)}
+.scene-content{bottom:auto;height:var(--stage-full,100%)}
+@media(prefers-reduced-motion:reduce){.stage{transition:none}}
+/* The stage changes height under the reader; the page must not scroll to compensate, or everything visibly jumps. */
+html{overflow-anchor:none}
