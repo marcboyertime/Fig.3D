@@ -4,6 +4,12 @@
 
 This is the living product/design guide, not only a historical handoff. At the user's explicit request (3 October 2026), record every new critique, preference and improvement here in the same work session. Fold durable principles into the guide, date concrete examples, and distinguish requested work from verified implementation. Read this section before future design or interaction changes. Earlier implementation/status claims below describe their original handoff and may be superseded by current code and verification reports.
 
+### 8 October 2026 — homepage cards must not look alike back to back
+
+- **Critique:** after the "Why some crystals let lithium fly" card went live, Marcky said the collection "gets cluttered with these looking too similar back to back". It sat directly above "Lithium that moves together", and both used yellow sulfur, green lithium, pale green polyhedra on dark navy, and the same "Paper companion · Solid electrolytes" kicker. In the same screenshot the new card's subtitle ran past the right edge of the window. This could not be reproduced in Chromium at 800–1414 px, so it may be browser zoom or the screenshot crop.
+- **Principle:** each card in the collection needs its own visual identity, with a different composition and dominant form and not only different words. Two cards for neighbouring topics never sit next to each other. A card image is designed for the card rather than taken as a screenshot of the explorer's default view, and it still shows that paper's main idea.
+- **Applied (draft, 8 October):** the bcc card is now a Blender render of the bcc tetrahedral-site network, shown as a lattice of cages, with one lithium streak along a chain of face-sharing hops. Its kicker reads "Crystal design". The card order is now bcc companion, silicon nanowires, then fast ion diffusion. The card text column also has `min-width:0` and wraps long words, so it cannot overflow.
+
 ### 7 October 2026 — labels must be calm in motion and few (supersedes parts of 6 October)
 
 Marcky's critique of the first labelled version: "you did not do a great job, the labels appear glitchy upon motion and slide all over the place. needs to be integrated much more seamlessly, and without making the figures too busy".
