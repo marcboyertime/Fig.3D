@@ -1,5 +1,6 @@
 // Frame-exact review recording on a virtual clock (rAF, performance.now and CSS animations),
 // so motion plays at its authored speed even though SwiftShader renders slowly (about 1 s per frame).
+// Web Animations that reach their end are finished, not left paused, so code awaiting `finished` (figure swaps) continues.
 // Serve site/ on :4173, then: node record-review.mjs desktop|phone|opening out.mp4 [fps]
 import {chromium} from '/opt/node22/lib/node_modules/playwright/index.mjs';
 import fs from 'node:fs';
@@ -12,7 +13,7 @@ const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftsh
 const page=await browser.newPage(desktop?{viewport:{width:1512,height:982}}:{viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true});
 page.on('pageerror',e=>console.log('pageerror',e.message));
 await page.addInitScript(()=>{let t=0,id=0;const pending=new Map();performance.now=()=>t;window.requestAnimationFrame=cb=>{pending.set(++id,cb);return id;};window.cancelAnimationFrame=i=>pending.delete(i);
- window.__step=ms=>{t+=ms;for(const an of document.getAnimations()){an.pause();an.currentTime=(an.currentTime||0)+ms;}const cbs=[...pending.values()];pending.clear();for(const cb of cbs)try{cb(t);}catch(e){console.error(e);}};});
+ window.__step=ms=>{t+=ms;for(const an of document.getAnimations()){an.pause();const end=an.effect?.getComputedTiming().endTime,next=(an.currentTime||0)+ms;if(Number.isFinite(end)&&next>=end)an.finish();else an.currentTime=next;}const cbs=[...pending.values()];pending.clear();for(const cb of cbs)try{cb(t);}catch(e){console.error(e);}};});
 await page.goto('http://localhost:4173/anion-framework.html?intro');
 await page.waitForFunction(()=>document.documentElement.dataset.ready==='true');
 await page.evaluate(()=>{for(const an of document.getAnimations()){an.pause();an.currentTime=0;}});
@@ -24,7 +25,8 @@ const click=async sel=>{await page.evaluate(s=>{const e=document.querySelector(s
 const drag=async(dx,dy,seconds=1.4)=>{const b=await box('#lattice');const x=b.x+b.width/2,y=b.y+b.height*.62,n=Math.round(seconds*FPS);await page.mouse.move(x,y);await page.mouse.down();for(let i=1;i<=n;i++){const u=i/n,e=u<.5?2*u*u:1-(-2*u+2)**2/2;await page.mouse.move(x+dx*e,y+dy*e);await step(1/FPS);}await page.mouse.up();};
 const slide=async(sel,from,to,seconds)=>{const n=Math.round(seconds*FPS);for(let i=0;i<=n;i++){await page.evaluate(([s,v])=>{const e=document.querySelector(s);e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}));},[sel,from+(to-from)*i/n]);await step(1/FPS);}await page.evaluate(s=>document.querySelector(s).dispatchEvent(new Event('change',{bubbles:true})),sel);};
 const glide=async(sel,seconds=1.4,offset=14)=>{const y0=await page.evaluate(()=>scrollY),y1=await page.evaluate(([s,o])=>{const e=document.querySelector(s);return Math.max(0,e.getBoundingClientRect().top+scrollY-o);},[sel,offset]);const n=Math.round(seconds*FPS);for(let i=1;i<=n;i++){const u=i/n,e=u<.5?2*u*u:1-(-2*u+2)**2/2;await page.evaluate(y=>{document.documentElement.style.scrollBehavior='auto';scrollTo(0,y);},y0+(y1-y0)*e);await step(1/FPS);}};
-const tap=async sel=>{await click(sel);};
+// On the phone the sticky stage can sit over a control while the page scrolls, so taps there go to the control itself.
+const tap=sel=>page.evaluate(s=>document.querySelector(s).click(),sel);
 if(kind==='opening'){
  await step(6.4);await glide('#explorer',1.6);await step(+(process.env.OPEN_SECONDS||40));
 }else if(desktop){
@@ -52,11 +54,11 @@ if(kind==='opening'){
  await drag(-120,0);await step(1);
  await slide('#progress',0,1000,3);await step(.8);
  await glide('#caption-title',1.2,10);await step(4);await glide('#plot',1,20);await step(2);
- await click('[data-lattice="fcc"]');await glide('#explorer',1,10);await step(1.4);await page.evaluate(()=>document.getElementById('play').click());await step(7);
- await glide('#explorer',1,10);await click('[data-question="volume"]');await glide('#explorer',.6,10);await step(1);
+ await tap('[data-lattice="fcc"]');await glide('#explorer',1,10);await step(1.4);await page.evaluate(()=>document.getElementById('play').click());await step(7);
+ await glide('#explorer',1,10);await tap('[data-question="volume"]');await glide('#explorer',.6,10);await step(1);
  await glide('#volume',1,140);await slide('#volume',2,0,1.6);await step(1.2);await slide('#volume',0,6,2.4);await step(1.2);
- await glide('#explorer',1,10);await click('[data-question="crystals"]');await glide('#explorer',.6,10);await step(1.6);
- await glide('#crystal-block',1,200);await click('[data-step="1"]');await step(1.6);await click('[data-step="2"]');await step(2.6);await click('[data-step="3"]');await step(2.4);
+ await glide('#explorer',1,10);await tap('[data-question="crystals"]');await glide('#explorer',.6,10);await step(1.6);
+ await glide('#crystal-block',1,200);await tap('[data-step="1"]');await step(1.6);await tap('[data-step="2"]');await step(2.6);await tap('[data-step="3"]');await step(2.4);
  await glide('#explorer',1,10);await step(2.4);
 }
 await browser.close();
