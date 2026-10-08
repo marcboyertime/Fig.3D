@@ -1,0 +1,134 @@
+{
+ "source": "wang-2015.pdf",
+ "source_sha256": "9ea685971258bbda41807c4abd9a76dcf3cc73c64b6b534a3d72e1aff8ab1a61",
+ "si_sha256": "7d1a0b28e652ab9a3e7ea1a21f0cb90300a34dded9339f39a498cd50edb38240",
+ "rights": "\u00a9 2015 Macmillan Publishers Limited. Reproduced unchanged with attribution; not repainted.",
+ "figures": {
+  "figure-1": {
+   "doc": "paper",
+   "page": 2,
+   "clip_pt": [
+    60.0,
+    46.0,
+    530.0,
+    326.0
+   ],
+   "scale": 3.0556,
+   "width": 1437,
+   "height": 857,
+   "sha256": "835b4bb6da58ff68a52a3a6cd2396f964f1a5ccb6331a84914d6aa5c6b7b07c4"
+  },
+  "figure-2": {
+   "doc": "paper",
+   "page": 3,
+   "clip_pt": [
+    108.0,
+    46.0,
+    552.0,
+    452.0
+   ],
+   "scale": 4.5833,
+   "width": 2035,
+   "height": 1862,
+   "sha256": "64d06d5ccab7641759bf98bcf939174a17389c37f2b233fcf6720b90144c24bb"
+  },
+  "figure-3": {
+   "doc": "paper",
+   "page": 3,
+   "clip_pt": [
+    300.0,
+    498.0,
+    552.0,
+    645.0
+   ],
+   "scale": 4.5833,
+   "width": 1155,
+   "height": 675,
+   "sha256": "35dd9f45a33601f0d9d871aa158b998def83321906a4f8748703882b371bc5f3"
+  },
+  "figure-4": {
+   "doc": "paper",
+   "page": 4,
+   "clip_pt": [
+    70.0,
+    46.0,
+    525.0,
+    430.0
+   ],
+   "scale": 3.0556,
+   "width": 1392,
+   "height": 1174,
+   "sha256": "358fcc286b03fd978679a6bee44084f5bb692f92a15215cc1cde5e7a1a00140a"
+  },
+  "figure-5": {
+   "doc": "paper",
+   "page": 5,
+   "clip_pt": [
+    306.0,
+    48.0,
+    556.0,
+    200.0
+   ],
+   "scale": 4.5833,
+   "width": 1147,
+   "height": 697,
+   "sha256": "ef287eb750f410b3b73a5b3e67c3f60dc2dfc15dbd525741586bc88147ade1ec"
+  },
+  "figure-2a": {
+   "doc": "paper",
+   "page": 3,
+   "clip_pt": [
+    108.0,
+    46.0,
+    552.0,
+    182.0
+   ],
+   "scale": 4.5833,
+   "width": 2035,
+   "height": 625,
+   "sha256": "70c7942a4720e617702e2d50a57eeb2e75a8d9cb1a1879029f0ee946be1ee5a6"
+  },
+  "figure-2b": {
+   "doc": "paper",
+   "page": 3,
+   "clip_pt": [
+    108.0,
+    182.0,
+    552.0,
+    314.0
+   ],
+   "scale": 4.5833,
+   "width": 2035,
+   "height": 606,
+   "sha256": "81ca1530d199f8907db4ff50821f3b8ec2265d6de8547c4cfdbbaa7143621f4b"
+  },
+  "figure-2c": {
+   "doc": "paper",
+   "page": 3,
+   "clip_pt": [
+    108.0,
+    314.0,
+    552.0,
+    452.0
+   ],
+   "scale": 4.5833,
+   "width": 2035,
+   "height": 633,
+   "sha256": "e8a5fd938975dfa99cede4a7e1dc2a1edec5cdba06d78d261e081931460e6703"
+  },
+  "figure-2a-render": {
+   "doc": "paper",
+   "page": 3,
+   "clip_pt": [
+    135.4,
+    65.2,
+    266.5,
+    157.9
+   ],
+   "scale": 3.0587,
+   "width": 402,
+   "height": 284,
+   "sha256": "40fb6be75538d6a6f48b733c16fd1d07640328e1253303c6d5f7edaf16e4cfa9"
+  }
+ }
+}

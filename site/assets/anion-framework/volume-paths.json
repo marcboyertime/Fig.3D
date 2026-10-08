@@ -1,0 +1,1907 @@
+{
+ "source": "Wang et al., Nat. Mater. 14, 1026 (2015), Supplementary Figures S4-S6, read by colour from the embedded raster images",
+ "volumes_A3": [
+  28.5,
+  34.0,
+  40.0,
+  46.6,
+  54.0,
+  62.1,
+  70.8
+ ],
+ "paths": {
+  "bcc_TT": {
+   "figure": "Figure S4",
+   "images": 9,
+   "eV_per_px": 0.00258,
+   "series": [
+    {
+     "volume_A3": 28.5,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.062,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.18,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.29,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.332,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.29,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.182,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.065,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.332,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 34.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.045,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.123,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.198,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.228,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.198,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.123,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.046,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.228,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 40.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.031,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.081,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.13,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.148,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.13,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.084,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.035,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.148,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 46.6,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.019,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.048,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.076,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.086,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.076,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.051,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.022,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.086,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 54.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.009,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.025,
+       "from": "mirror"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.032,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.037,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.032,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.025,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.012,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.037,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 62.1,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.0,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 70.8,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": -0.005,
+       "from": "partial marker"
+      },
+      {
+       "image": 3,
+       "energy_eV": -0.001,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": -0.001,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": -0.001,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": -0.001,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": -0.001,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": -0.003,
+       "from": "partial marker"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.005,
+     "site_energy_eV": null
+    }
+   ]
+  },
+  "fcc_TOT": {
+   "figure": "Figure S5",
+   "images": 17,
+   "eV_per_px": 0.00258,
+   "series": [
+    {
+     "volume_A3": 28.5,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.205,
+       "from": "marker"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.525,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.662,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.533,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.239,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": -0.056,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": -0.252,
+       "from": "marker"
+      },
+      {
+       "image": 9,
+       "energy_eV": -0.319,
+       "from": "marker"
+      },
+      {
+       "image": 10,
+       "energy_eV": -0.252,
+       "from": "marker"
+      },
+      {
+       "image": 11,
+       "energy_eV": -0.056,
+       "from": "marker"
+      },
+      {
+       "image": 12,
+       "energy_eV": 0.238,
+       "from": "marker"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.533,
+       "from": "marker"
+      },
+      {
+       "image": 14,
+       "energy_eV": 0.662,
+       "from": "marker"
+      },
+      {
+       "image": 15,
+       "energy_eV": 0.525,
+       "from": "marker"
+      },
+      {
+       "image": 16,
+       "energy_eV": 0.205,
+       "from": "marker"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.981,
+     "site_energy_eV": -0.319
+    },
+    {
+     "volume_A3": 34.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.153,
+       "from": "marker"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.399,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.494,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.432,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.293,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.156,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.068,
+       "from": "marker"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.04,
+       "from": "marker"
+      },
+      {
+       "image": 10,
+       "energy_eV": 0.069,
+       "from": "marker"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.156,
+       "from": "marker"
+      },
+      {
+       "image": 12,
+       "energy_eV": 0.293,
+       "from": "marker"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.432,
+       "from": "marker"
+      },
+      {
+       "image": 14,
+       "energy_eV": 0.494,
+       "from": "marker"
+      },
+      {
+       "image": 15,
+       "energy_eV": 0.399,
+       "from": "marker"
+      },
+      {
+       "image": 16,
+       "energy_eV": 0.154,
+       "from": "marker"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.494,
+     "site_energy_eV": 0.04
+    },
+    {
+     "volume_A3": 40.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.084,
+       "from": "marker"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.236,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.35,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.386,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.36,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.318,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.293,
+       "from": "partial marker"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.292,
+       "from": "marker"
+      },
+      {
+       "image": 10,
+       "energy_eV": 0.293,
+       "from": "partial marker"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.318,
+       "from": "mirror"
+      },
+      {
+       "image": 12,
+       "energy_eV": 0.36,
+       "from": "marker"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.386,
+       "from": "marker"
+      },
+      {
+       "image": 14,
+       "energy_eV": 0.35,
+       "from": "marker"
+      },
+      {
+       "image": 15,
+       "energy_eV": 0.236,
+       "from": "marker"
+      },
+      {
+       "image": 16,
+       "energy_eV": 0.084,
+       "from": "mirror"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.386,
+     "site_energy_eV": 0.292
+    },
+    {
+     "volume_A3": 46.6,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.133,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.288,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.376,
+       "from": "marker"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.437,
+       "from": "Figure 3 barrier (the curve peaks here)"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.375,
+       "from": "marker"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.288,
+       "from": "marker"
+      },
+      {
+       "image": 15,
+       "energy_eV": 0.133,
+       "from": "marker"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.437,
+     "site_energy_eV": 0.437
+    },
+    {
+     "volume_A3": 54.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.068,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.192,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.347,
+       "from": "marker"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.427,
+       "from": "partial marker"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.339,
+       "from": "marker"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.185,
+       "from": "marker"
+      },
+      {
+       "image": 15,
+       "energy_eV": 0.068,
+       "from": "mirror"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.427,
+     "site_energy_eV": 0.427
+    },
+    {
+     "volume_A3": 62.1,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.035,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.125,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.257,
+       "from": "marker"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.321,
+       "from": "marker"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.257,
+       "from": "marker"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.125,
+       "from": "marker"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.321,
+     "site_energy_eV": 0.321
+    },
+    {
+     "volume_A3": 70.8,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.009,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.045,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.107,
+       "from": "marker"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.138,
+       "from": "marker"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.107,
+       "from": "marker"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.045,
+       "from": "marker"
+      },
+      {
+       "image": 15,
+       "energy_eV": 0.009,
+       "from": "mirror"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.138,
+     "site_energy_eV": 0.138
+    }
+   ]
+  },
+  "hcp_TOT": {
+   "figure": "Figure S6a",
+   "images": 17,
+   "eV_per_px": 0.00401,
+   "series": [
+    {
+     "volume_A3": 28.5,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.206,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.525,
+       "from": "line"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.662,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.543,
+       "from": "line"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.258,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": -0.047,
+       "from": "line"
+      },
+      {
+       "image": 8,
+       "energy_eV": -0.26,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": -0.334,
+       "from": "line"
+      },
+      {
+       "image": 10,
+       "energy_eV": -0.26,
+       "from": "line"
+      },
+      {
+       "image": 11,
+       "energy_eV": -0.047,
+       "from": "line"
+      },
+      {
+       "image": 12,
+       "energy_eV": 0.258,
+       "from": "line"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.543,
+       "from": "line"
+      },
+      {
+       "image": 14,
+       "energy_eV": 0.662,
+       "from": "line"
+      },
+      {
+       "image": 15,
+       "energy_eV": 0.525,
+       "from": "line"
+      },
+      {
+       "image": 16,
+       "energy_eV": 0.206,
+       "from": "line"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.996,
+     "site_energy_eV": -0.334
+    },
+    {
+     "volume_A3": 34.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.162,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.405,
+       "from": "line"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.501,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.437,
+       "from": "line"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.3,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.156,
+       "from": "line"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.064,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.031,
+       "from": "line"
+      },
+      {
+       "image": 10,
+       "energy_eV": 0.064,
+       "from": "line"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.156,
+       "from": "line"
+      },
+      {
+       "image": 12,
+       "energy_eV": 0.296,
+       "from": "line"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.437,
+       "from": "line"
+      },
+      {
+       "image": 14,
+       "energy_eV": 0.501,
+       "from": "line"
+      },
+      {
+       "image": 15,
+       "energy_eV": 0.405,
+       "from": "line"
+      },
+      {
+       "image": 16,
+       "energy_eV": 0.162,
+       "from": "line"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.501,
+     "site_energy_eV": 0.031
+    },
+    {
+     "volume_A3": 40.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.088,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.244,
+       "from": "line"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.357,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.393,
+       "from": "line"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.364,
+       "from": "partial marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.32,
+       "from": "line"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.296,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.292,
+       "from": "line"
+      },
+      {
+       "image": 10,
+       "energy_eV": 0.296,
+       "from": "line"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.318,
+       "from": "line"
+      },
+      {
+       "image": 12,
+       "energy_eV": 0.359,
+       "from": "line"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.389,
+       "from": "line"
+      },
+      {
+       "image": 14,
+       "energy_eV": 0.353,
+       "from": "line"
+      },
+      {
+       "image": 15,
+       "energy_eV": 0.238,
+       "from": "line"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.393,
+     "site_energy_eV": 0.292
+    },
+    {
+     "volume_A3": 46.6,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.06,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.144,
+       "from": "line"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.232,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.304,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.385,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.44,
+       "from": "Figure 3 hexagon, partly hidden under the fcc diamond (\u00b10.01 eV)"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.383,
+       "from": "line"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.29,
+       "from": "line"
+      },
+      {
+       "image": 14,
+       "energy_eV": 0.218,
+       "from": "line"
+      },
+      {
+       "image": 15,
+       "energy_eV": 0.132,
+       "from": "line"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.44,
+     "site_energy_eV": 0.44
+    },
+    {
+     "volume_A3": 54.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.08,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.21,
+       "from": "line"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.288,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.357,
+       "from": "line"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.421,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.441,
+       "from": "line"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.355,
+       "from": "line"
+      },
+      {
+       "image": 12,
+       "energy_eV": 0.28,
+       "from": "line"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.2,
+       "from": "line"
+      },
+      {
+       "image": 14,
+       "energy_eV": 0.132,
+       "from": "line"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.441,
+     "site_energy_eV": 0.441
+    },
+    {
+     "volume_A3": 62.1,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.041,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.14,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.272,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.332,
+       "from": "line"
+      },
+      {
+       "image": 10,
+       "energy_eV": 0.312,
+       "from": "line"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.264,
+       "from": "line"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.13,
+       "from": "line"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.332,
+     "site_energy_eV": 0.332
+    },
+    {
+     "volume_A3": 70.8,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.015,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.058,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.116,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.148,
+       "from": "line"
+      },
+      {
+       "image": 11,
+       "energy_eV": 0.116,
+       "from": "line"
+      },
+      {
+       "image": 13,
+       "energy_eV": 0.058,
+       "from": "line"
+      },
+      {
+       "image": 17,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.148,
+     "site_energy_eV": 0.148
+    }
+   ]
+  },
+  "hcp_TT": {
+   "figure": "Figure S6b",
+   "images": 9,
+   "eV_per_px": 0.00403,
+   "series": [
+    {
+     "volume_A3": 28.5,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.086,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.257,
+       "from": "line"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.411,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.471,
+       "from": "line"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.411,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.257,
+       "from": "line"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.086,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.471,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 34.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.06,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.173,
+       "from": "line"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.274,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.314,
+       "from": "line"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.274,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.173,
+       "from": "line"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.06,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.314,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 40.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.038,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.108,
+       "from": "line"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.175,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.201,
+       "from": "line"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.175,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.108,
+       "from": "line"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.038,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.201,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 46.6,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.028,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.06,
+       "from": "line"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.102,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.116,
+       "from": "line"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.102,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.06,
+       "from": "line"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.026,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.116,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 54.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.032,
+       "from": "line"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.046,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.052,
+       "from": "line"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.046,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.032,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.052,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 62.1,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.0,
+       "from": "flat: the SI caption states no barrier for V \u2265 62.1 \u00c5\u00b3"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.007,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.007,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 70.8,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": -0.005,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": -0.003,
+       "from": "line"
+      },
+      {
+       "image": 4,
+       "energy_eV": -0.003,
+       "from": "line"
+      },
+      {
+       "image": 5,
+       "energy_eV": -0.003,
+       "from": "line"
+      },
+      {
+       "image": 6,
+       "energy_eV": -0.003,
+       "from": "line"
+      },
+      {
+       "image": 7,
+       "energy_eV": -0.003,
+       "from": "line"
+      },
+      {
+       "image": 8,
+       "energy_eV": -0.005,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.005,
+     "site_energy_eV": null
+    }
+   ]
+  },
+  "hcp_OO": {
+   "figure": "Figure S6c",
+   "images": 9,
+   "eV_per_px": 0.00258,
+   "series": [
+    {
+     "volume_A3": 28.5,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.128,
+       "from": "marker"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.486,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.92,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 1.121,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.92,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.486,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.128,
+       "from": "marker"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 1.121,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 34.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.058,
+       "from": "marker"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.236,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.469,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.579,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.468,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.236,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.058,
+       "from": "marker"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.579,
+     "site_energy_eV": null
+    },
+    {
+     "volume_A3": 40.0,
+     "points": [
+      {
+       "image": 1,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      },
+      {
+       "image": 2,
+       "energy_eV": 0.013,
+       "from": "line"
+      },
+      {
+       "image": 3,
+       "energy_eV": 0.055,
+       "from": "marker"
+      },
+      {
+       "image": 4,
+       "energy_eV": 0.141,
+       "from": "marker"
+      },
+      {
+       "image": 5,
+       "energy_eV": 0.187,
+       "from": "marker"
+      },
+      {
+       "image": 6,
+       "energy_eV": 0.141,
+       "from": "marker"
+      },
+      {
+       "image": 7,
+       "energy_eV": 0.055,
+       "from": "marker"
+      },
+      {
+       "image": 8,
+       "energy_eV": 0.013,
+       "from": "line"
+      },
+      {
+       "image": 9,
+       "energy_eV": 0.0,
+       "from": "end (0 by definition)"
+      }
+     ],
+     "barrier_eV": 0.187,
+     "site_energy_eV": null
+    }
+   ]
+  }
+ },
+ "check_vs_figure3_max_diff_eV": 0.008
+}
