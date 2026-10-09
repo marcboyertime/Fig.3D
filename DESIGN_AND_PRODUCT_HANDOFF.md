@@ -10,6 +10,27 @@ This is the living product/design guide, not only a historical handoff. At the u
 - **Principle:** each card in the collection needs its own visual identity, with a different composition and dominant form and not only different words. Two cards for neighbouring topics never sit next to each other. A card image is designed for the card rather than taken as a screenshot of the explorer's default view, and it still shows that paper's main idea.
 - **Applied (draft, 8 October):** the bcc card is now a Blender render of the bcc tetrahedral-site network, shown as a lattice of cages, with one lithium streak along a chain of face-sharing hops. Its kicker reads "Crystal design". The card order is now bcc companion, silicon nanowires, then fast ion diffusion. The card text column also has `min-width:0` and wraps long words, so it cannot overflow.
 
+### 7 October 2026 (later) — figure switches must never glitch, and figure views must not float in empty space
+
+Right after the calmer labels went live, Marcky sent two screen recordings and a screenshot: "what's causing this sort of glitchiness bro? i need you to go through everything CAREFULLY", then "also weird spacing?" (interwoven battery, Figure 1 view).
+
+Causes found frame by frame:
+
+- Switching paper figures (silicon nanowire, interwoven battery, fast ion diffusion) set the next figure's size before its file had loaded. For a frame or more, the old figure was drawn at the new figure's size, enlarged and cropped, before the new image appeared.
+- Figures could also be sized for the stage's old height while the stage was still changing, then jump to the right size.
+- Wide figures, such as the interwoven battery's Figure 1, sat as a strip centred in a tall, empty stage. The text column kept a minimum height meant for the 3D view's longer copy, which opened a large gap between the figure's heading and its caption.
+- The fast ion diffusion energy readout flashed "NEB image n of 17" for a moment as each point passed during playback, so the line of text flickered between two wordings.
+
+Durable principles:
+
+- Nothing may ever be drawn at a size or place it is not meant to have, even for one frame. Load and decode first, then change source, size and position together while the figure is invisible. Cross-fade figure changes (about 120 ms out, 200 ms in).
+- A figure view fits its figure. A wide figure closes the stage around itself, and the stage eases back to full height for the 3D view. Paper figures sit top left, level with their heading, and the text column closes up under its heading.
+- When layout height changes, the page must not jump. Disable scroll anchoring, and keep enough room at the bottom of the page that the reader's position stays valid.
+- Live readouts keep one wording while something plays, and use tabular figures.
+- Test motion at real frame rates, sampling every frame, not only with stills. The sandbox's WebGL is too slow to judge timing, so paper-view timing was measured with WebGL off at 60 fps.
+
+Built on branch `claude/anchored-labels-icvxii` (draft PR after PR #14). Tested only in headless Chromium. Safari, Firefox and real phones are unchecked.
+
 ### 7 October 2026 — labels must be calm in motion and few (supersedes parts of 6 October)
 
 Marcky's critique of the first labelled version: "you did not do a great job, the labels appear glitchy upon motion and slide all over the place. needs to be integrated much more seamlessly, and without making the figures too busy".

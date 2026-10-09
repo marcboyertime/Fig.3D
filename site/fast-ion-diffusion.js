@@ -1,4 +1,5 @@
 import {Annotations} from './annotations.mjs';
+import {swapFigure,fitStage} from './figure-swap.mjs';
 import {initialState,reduce,FIGURES,DISPLAYS,INSET,clamp,smooth,ease,curveAt,imageAt,ionPositions,singlePosition,hopKind,phi,chainRow,chainBarrier,dist} from './fast-ion-diffusion-model.mjs';
 import {ChannelScene,PALETTE} from './fast-ion-diffusion-scene.mjs';
 const $=id=>document.getElementById(id),all=s=>[...document.querySelectorAll(s)],BASE='assets/fast-ion-diffusion/',SVGNS='http://www.w3.org/2000/svg';
@@ -53,12 +54,15 @@ const DEPTH={
 
 // ————— Paper view —————
 const showingPaper=()=>!['model','chain'].includes(state.display);
-function figureFor(key){const f=FIGURES[key],img=$('paper-image'),src=BASE+f.file;if(!img.src.endsWith(src)){img.src=src;img.width=f.width;img.height=f.height;img.alt=`Original ${f.title}.`;}$('paper-original').href=src;$('paper-caption').textContent=f.caption;}
-function saveFigure(){if(showingPaper()){const v=figureViews[state.display],p=$('paper-viewport');v.x=p.scrollLeft;v.y=p.scrollTop;}}
+function figureFor(key){const f=FIGURES[key],img=$('paper-image'),src=BASE+f.file;swapFigure(img,key,src,()=>{img.width=f.width;img.height=f.height;img.alt=`Original ${f.title}.`;sizeFigure();const v=figureViews[key];$('paper-viewport').scrollTo(v.x,v.y);});$('paper-original').href=src;$('paper-caption').textContent=f.caption;}
+// The figure on screen, which lags the chosen one while the next file decodes.
+const shownFigure=()=>FIGURES[$('paper-image').dataset.key]?$('paper-image').dataset.key:state.display;
+function saveFigure(){if(showingPaper()){const v=figureViews[shownFigure()],p=$('paper-viewport');v.x=p.scrollLeft;v.y=p.scrollTop;}}
 function sizeFigure(){
  if(!showingPaper())return;
- const p=$('paper-viewport'),img=$('paper-image'),v=figureViews[state.display],f=FIGURES[state.display];
- const fit=Math.min(p.clientWidth,p.clientHeight*(f.width/f.height),f.width);
+ const p=$('paper-viewport'),img=$('paper-image'),k=shownFigure(),v=figureViews[k],f=FIGURES[k],st=$('stage');
+ const room=fitStage(st,state.opening||st.classList.contains('is-emerging')?null:{w:f.width,h:f.height,cap:1},{view:$('paper-view'),opening:state.opening||st.classList.contains('is-emerging')})??p.clientHeight;
+ const fit=Math.min(p.clientWidth,room*(f.width/f.height),f.width);
  img.style.width=Math.max(1,fit*v.zoom)+'px';p.classList.toggle('zoomed',v.zoom>1);
  $('figure-out').disabled=v.zoom<=1;$('figure-in').disabled=v.zoom>=4;
  $('figure-help').textContent=v.zoom===1?'Original figure · He, Zhu & Mo 2017 · CC BY 4.0':'Drag or scroll to inspect · '+Math.round(v.zoom*100)+'%';
@@ -258,7 +262,7 @@ function sync(){
  if(key!==lastCaption){$('caption-kicker').textContent=c.kicker;$('caption-title').textContent=c.title;$('caption-copy').textContent=c.copy;$('caption-copy').hidden=!c.copy;const cap=document.querySelector('.caption');cap.classList.remove('changing');void cap.offsetWidth;if(lastCaption&&!state.reduced)cap.classList.add('changing');lastCaption=key;}
  $('caption-note').textContent=paper?'':c.note||'';
  $('paper-details').hidden=!paper||state.opening;$('controls').classList.toggle('dimmed',state.opening);
- if(paper){figureFor(state.display);sizeFigure();}
+ if(paper){figureFor(state.display);sizeFigure();}else fitStage($('stage'),null);
  // Toolbar
  all('[data-question]').forEach(b=>{const on=b.dataset.question===q;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
  $('inspection').setAttribute('aria-labelledby','tab-'+q);
@@ -289,9 +293,10 @@ function sync(){
  if(failed&&state.display==='model'){state.display='3';sync();return;}
  managePlay();
 }
+// While the event plays, the image line keeps one wording; flashing "NEB image n" as each point passes read as flicker.
 function readout(){
  const q=state.question,s=shownProgress();let html='';
- if(q==='event'&&state.compare==='concerted'){const e=curveAt(P3B,s),img=imageAt(P3B,s)+1;const near=Math.abs(img-Math.round(img))<.05,where=near?`NEB image ${Math.round(img)} of ${P3B.length}`:`between NEB images ${Math.floor(img)} and ${Math.floor(img)+1}`;html=`<strong>${fmt(e)} eV</strong> above the end state<span>${where} · group barrier 0.26 eV</span>`;}
+ if(q==='event'&&state.compare==='concerted'){const e=curveAt(P3B,s),img=imageAt(P3B,s)+1;const near=!state.playing&&Math.abs(img-Math.round(img))<.05,where=near?`NEB image ${Math.round(img)} of ${P3B.length}`:`between NEB images ${Math.floor(img)} and ${Math.floor(img)+1}`;html=`<strong>${fmt(e)} eV</strong> above the end state<span>${where} · group barrier 0.26 eV</span>`;}
  else if(q==='event'){const e=curveAt(P3E,s),where=s<.08?'in T2':s>.92?'in T3':Math.abs(s-.5)<.06?'at the O2 site':s<.5?'between T2 and O2':'between O2 and T3';html=`<strong>${fmt(e)} eV</strong> above the T site<span>Ion ${where} · landscape barrier 0.58 eV</span>`;}
  else if(q==='barrier'){const row=chainRow(MODEL,state.K,state.landscape,s);html=`<strong>${fmt(row.E)} eV</strong> above the start<span>Shift ${(3*s).toFixed(2)} Å · group barrier ${chainBarrier(MODEL,state.K,state.landscape).toFixed(2)} eV at K = ${state.K} eV Å</span>`;}
  $('readout').innerHTML=html;$('progress-value').value=q==='barrier'?(3*state.progress).toFixed(2)+' Å':state.progress.toFixed(2);
@@ -319,7 +324,7 @@ function setDisplay(key){
  if(state.opening)stopOpening();
  if(key===state.display){sync();return;}
  saveFigure();state=reduce(state,{type:'display',value:key});sync();
- if(showingPaper())requestAnimationFrame(()=>{const v=figureViews[key];$('paper-viewport').scrollTo(v.x,v.y);});else scene?.wake();
+ if(showingPaper())requestAnimationFrame(()=>{if(shownFigure()!==key)return;const v=figureViews[key];$('paper-viewport').scrollTo(v.x,v.y);});else scene?.wake();
 }
 // Playback: a steady sweep of the event coordinate. Its rate is a reading pace, not a physical speed.
 const PLAY_SECONDS=7;
@@ -428,7 +433,7 @@ $('explore').addEventListener('click',()=>{stopOpening();sync();});
 $('opening-pause').addEventListener('click',()=>{state={...state,openingPaused:!state.openingPaused};sync();});
 $('figure-in').addEventListener('click',()=>zoomFigure(1.5));$('figure-out').addEventListener('click',()=>zoomFigure(1/1.5));$('figure-fit').addEventListener('click',()=>zoomFigure(0));
 {let pan=null;const p=$('paper-viewport');p.addEventListener('pointerdown',e=>{if(figureViews[state.display]?.zoom>1&&e.pointerType!=='touch'){pan={x:e.clientX,y:e.clientY,l:p.scrollLeft,t:p.scrollTop};p.setPointerCapture(e.pointerId);p.classList.add('panning');}});p.addEventListener('pointermove',e=>{if(pan){p.scrollLeft=pan.l-(e.clientX-pan.x);p.scrollTop=pan.t-(e.clientY-pan.y);}});const end=()=>{if(pan){pan=null;p.classList.remove('panning');saveFigure();}};p.addEventListener('pointerup',end);p.addEventListener('pointercancel',end);p.addEventListener('scroll',()=>{if(!pan)saveFigure();},{passive:true});}
-$('paper-image').addEventListener('load',()=>{if(showingPaper()){sizeFigure();const v=figureViews[state.display];$('paper-viewport').scrollTo(v.x,v.y);}});
+$('paper-image').addEventListener('load',()=>{if(showingPaper()){sizeFigure();const v=figureViews[shownFigure()];$('paper-viewport').scrollTo(v.x,v.y);}});
 // Any input on the stage during the opening hands it over.
 $('stage').addEventListener('pointerdown',e=>{if(state.opening&&!e.target.closest('.stage-bar')){stopOpening();sync();}},{capture:true});
 $('channel').addEventListener('keydown',e=>{if(state.opening){stopOpening();sync();}});
